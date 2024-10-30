@@ -189,6 +189,18 @@ button:hover {
     transform: scale(1.05);
 }
 
+.digitalIMG {
+    width: 100px;
+}
+
+.configImg {
+    width: 30px;
+}
+
+.btnPonto {
+    padding: 1px;
+}
+
 .hidden {
     display: none;
 }
