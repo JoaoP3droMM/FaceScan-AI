@@ -194,3 +194,42 @@ button#start-capture:enabled {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+
+
+/* CSS para o contêiner de vídeo */
+#video-container {
+    position: fixed; /* Fixa o contêiner na tela */
+    top: 0; /* Posiciona no topo */
+    left: 0; /* Posiciona à esquerda */
+    width: 100vw; /* Largura total da tela */
+    height: 100vh; /* Altura total da tela */
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
+    z-index: 9999; /* Coloca o contêiner acima de outros elementos */
+    display: none; /* Inicialmente escondido */
+}
+
+#video {
+    width: 100%; /* Largura total do contêiner */
+    height: 100%; /* Altura total do contêiner */
+    object-fit: cover; /* Cobre toda a área do vídeo */
+}
+
+.hidden {
+    display: none; /* Classe para esconder elementos */
+}
+
+#photo-button {
+    position: absolute; /* Para posicionar o botão de captura */
+    bottom: 20px; /* Distância do fundo */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Centraliza perfeitamente */
+    width: 80px; /* Largura do botão */
+    height: 80px; /* Altura do botão */
+    border-radius: 50%; /* Botão redondo */
+    background-color: white; /* Cor do botão */
+    border: none; /* Sem borda */
+    cursor: pointer; /* Cursor de ponteiro */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra do botão */
+    z-index: 10000; /* Coloca o botão acima de outros elementos */
+}

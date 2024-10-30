@@ -5,6 +5,14 @@ import { containerid, retorno, barra, icone } from './variables.js'
 // **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
 
 
+// **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
+
+
+
+// **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
+
+
+
 // Funções do cadastro de funcionários
 export const buttonCadastro = $('#start-capture');
 
@@ -12,12 +20,58 @@ export function enableButton() {
     $('#start-capture').prop('disabled', false);
 }
 
-export function disbleButton() {
+export function disableButton() {
     $('#start-capture').prop('disabled', true);
 }
 
+// Função que inicia a captura de imagem da câmera
+export function iniciarCaptura() {
+    const video = document.getElementById('video');
+    const videoContainer = document.getElementById('video-container');
+
+    // Acessa a câmera do usuário
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+            video.play(); // Inicia a reprodução do vídeo
+
+            // Mostrar o contêiner da câmera
+            videoContainer.classList.remove('hidden'); // Remove a classe hidden
+            videoContainer.style.display = 'block'; // Garante que o contêiner esteja visível
+        })
+        .catch(err => {
+            console.error('Erro ao acessar a câmera: ', err);
+            popUpNotification('Erro ao acessar a câmera.');
+        });
+}
+
+// Ao capturar a imagem, o vídeo deve ser escondido
+export function capturarImagem() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Captura a imagem em formato PNG
+    const imagemCapturada = canvas.toDataURL('image/png');
+
+    // Para o stream de vídeo
+    const stream = video.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop()); // Para o stream de vídeo
+    video.srcObject = null; // Limpa o vídeo
+    $('#video-container').addClass('hidden'); // Esconde o vídeo
+
+    // Chama a função para enviar os dados do funcionário com a imagem
+    enviarDados(imagemCapturada);
+}
+
+
 // Função que envia os dados cadastrais para o MongoDB
-export function enviarDados(callback) {
+export function enviarDados(imagemBase64) {
     const nome = $('#nomeCompleto').val().trim();
     const matricula = $('#matricula').val().trim();
     const cpf = $('#cpf').val().trim();
@@ -25,7 +79,12 @@ export function enviarDados(callback) {
     const filial = $('#filial').val().trim();
 
     if (nome && matricula && cpf) {
-        const dadosFuncionario = { id, nome, matricula, cpf, filial };
+        // Esconde a tela de captura e o botão
+        $('#video-container').addClass('hidden'); // Supondo que esse seja o ID da tela de captura
+
+        const dadosFuncionario = { id, nome, matricula, cpf, filial, fotoBase64: imagemBase64 };
+
+        // Mostra a tela de carregamento
 
         fetch('http://localhost:3002/cadastrarFuncionario', {
             method: 'POST',
@@ -35,10 +94,26 @@ export function enviarDados(callback) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                popUpNotification('Funcionário cadastrado com sucesso');
-                if (callback) callback(); // Chama o callback para executar o script Python
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Funcionário cadastrado com sucesso!',
+                    text: 'Agora você pode bater o ponto usando reconhecimento facial!!',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Recarrega a página após fechar o alert
+                    location.reload(); // Isso irá recarregar a página
+                });
+                window.location.reload()
+                disableButton(); // Desabilita o botão após o envio
             } else {
-                popUpNotification('Erro ao cadastrar funcionário.');
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Erro ao cadastrar funcionário',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Recarrega a página após fechar o alert
+                    location.reload(); // Isso irá recarregar a página
+                });
             }
         })
         .catch(error => {
@@ -50,17 +125,7 @@ export function enviarDados(callback) {
     }
 }
 
-// Função que roda o script Python para captura e treinamento
-export function executarScriptPython() {
-    const matricula = $('#matricula').val().trim();
-    if (matricula) {
-        window.electronAPI.startCaptureAndTraining(matricula);
-        telaDeLoadOn();
-        setTimeout(() => telaDeLoadOff(), 25000); // Oculta a tela de carregamento após o término do script
-    } else {
-        setTimeout(() => telaDeLoadOff(), 25000);
-    }
-}
+
 
 // Impede entrada não numérica em Matrícula e CPF
 export function enforceNumericInput(event) {
@@ -86,13 +151,18 @@ export async function fetchFuncionarioInfo() {
             $('#idfunc').val(funcionario.id || '');
 
             popUpNotification('Funcionário encontrado');
-            enableButton();
+            enableButton(); // Ativa o botão após encontrar o funcionário
         } else {
             popUpNotification('Funcionário não encontrado');
+            disableButton(); // Desativa o botão se não encontrar o funcionário
         }
     } catch (error) {
         console.error('Erro ao buscar informações do usuário: ', error);
-        popUpNotification('Erro ao buscar informações do usuário');
+        Swal.fire({
+            icon: 'error',
+            text: 'Erro ao buscar informações do usuário',
+            confirmButtonText: 'OK'
+        })
     }
 }
 

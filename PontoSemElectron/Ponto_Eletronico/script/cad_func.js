@@ -1,6 +1,5 @@
-// Tela de cadastro de funcionários
-import { voltarPagina, popUpNotification, telaDeLoadOn, telaDeLoadOff } from './globalFunctions.js';
-import { enableButton, disbleButton, enviarDados, executarScriptPython, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
+import { voltarPagina, popUpNotification, telaDeLoadOn, telaDeLoadOff } from './globalFunction.js';
+import { enableButton, disableButton, enviarDados, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
 
 // Voltar à página inicial
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,41 +7,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnSair) {
         btnSair.on('click', voltarPagina);
     }
-});
 
-// Fluxo de cadastro completo acionado pelo botão "Cadastrar"
-$('#start-capture').on('click', function(event) {
-    event.preventDefault();
-    const matricula = $('#matricula').val().trim();
-    if (matricula) {
-        executarScriptPython();
-        enviarDados();
-    } else {
-        popUpNotification('A matrícula é obrigatória para o cadastro!');
-    }
-});
-
-// Adicionar eventListeners para entrada numérica
-$('#matricula').on('keypress', enforceNumericInput);
-
-// Verificação de login
-$('#login-form').on('submit', verificaLogin);
-
-// Buscar informações do funcionário ao preencher o campo matrícula
-let campoExecutado = false;
-$('#matricula').on('keydown', function(event) {
-    if (!campoExecutado && event.key === 'Enter') {
+    // Iniciar captura ao clicar no botão
+    $('#start-capture').on('click', function(event) {
         event.preventDefault();
-        campoExecutado = true;
-        fetchFuncionarioInfo();
-    }
-});
-$('#matricula').on('blur', function() {
-    if (!campoExecutado) {
-        campoExecutado = true;
-        fetchFuncionarioInfo();
-    }
-});
-$('#matricula').on('focus', function() {
-    campoExecutado = false;
+        const matricula = $('#matricula').val().trim();
+        if (matricula) {
+            iniciarCaptura();
+        } else {
+            popUpNotification('Por favor, insira a matrícula para continuar.');
+        }
+    });
+    
+    // Capturar imagem ao clicar no botão
+    $('#photo-button').on('click', function() {
+        capturarImagem();
+    });
+
+    // Impede entrada não numérica em Matrícula e CPF
+    const matriculaInput = document.getElementById('matricula');
+    const cpfInput = document.getElementById('cpf');
+
+    matriculaInput.addEventListener('keypress', enforceNumericInput);
+    cpfInput.addEventListener('keypress', enforceNumericInput);
+    
+    // Enviar dados do funcionário ao clicar no botão
+    $('#registration-form').on('submit', function(event) {
+        event.preventDefault();
+        enviarDados();
+    });
+
+    // Verifica as informações do funcionário
+    $('#matricula').on('change', fetchFuncionarioInfo);
 });

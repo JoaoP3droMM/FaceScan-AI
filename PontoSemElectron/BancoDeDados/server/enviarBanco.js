@@ -45,7 +45,7 @@ app.post('/cadastrarPonto', async (req, res) => {
 // Rota POST para cadastrar funcionário
 app.post('/cadastrarFuncionario', async (req, res) => {
   try {
-    const { id, nome, matricula, cpf, filial } = req.body;
+    const { id, nome, matricula, cpf, filial, fotoBase64 } = req.body; // Incluindo fotoBase64
 
     if (!id || !nome || !matricula || !cpf) {
       return res.status(400).json({ success: false, message: "Dados incompletos" });
@@ -56,15 +56,19 @@ app.post('/cadastrarFuncionario', async (req, res) => {
       nome,
       matricula: String(matricula),
       cpf,
-      filial
+      filial,
+      foto: fotoBase64 // Armazenando a foto em base64
     });
 
     await novoFuncionario.save();
     res.status(201).json({ success: true, message: "Funcionário cadastrado com sucesso" });
   } catch (err) {
+    console.error("Erro ao cadastrar funcionário:", err);
     res.status(500).json({ success: false, message: "Erro ao cadastrar funcionário" });
   }
 });
+
+
 
 // Rota POST para cadastrar usuário
 app.post('/cadastrarUsuario', async (req, res) => {

@@ -27,6 +27,11 @@ body {
     color: #ffffff;
 }
 /* BOTAO VOLTAR */
+
+.imgVoltar {
+    width: 20px;
+}
+
 .botao-voltar {
     position: absolute;
     top: 20px;

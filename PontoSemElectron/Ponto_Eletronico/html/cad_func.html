@@ -48,16 +48,24 @@
             <br><br>
             <button type="button" id="sair">Sair</button>         
         </form>
+
+        <!-- Elementos para captura de imagem -->
+        <div id="video-container" class="hidden">
+            <video id="video" autoplay></video>
+            <button type="button" id="photo-button">📸</button>
+            <!-- Adicione o canvas aqui -->
+            <canvas id="canvas" style="display:none;"></canvas>
+        </div>        
     </div>
 
     <!-- Tela de carregamento -->
     <div class="telacarregamento hidden" id="telacarregamento">
         <h2><strong>Estudando seu rosto 😉</strong></h2>
         <div class="loading-wave">
-         <div class="loading-bar"></div>
-         <div class="loading-bar"></div>
-         <div class="loading-bar"></div>
-         <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
         </div>
     </div>
 </body>
