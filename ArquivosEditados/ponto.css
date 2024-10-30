@@ -1,0 +1,247 @@
+/* Script básico da tela de ponto, essa foi inspirada totalmente na tela de cadastro com algumas 
+   pequenas mudanças
+ */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #094623, #4aa06c);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+
+/* LOADER DE BARRAS */
+
+.loading-wave {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.loading-bar {
+    width: 20px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: gray;
+    border-radius: 5px;
+    animation: loading-wave-animation 1s ease-in-out infinite;
+}
+
+.loading-bar:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.loading-bar:nth-child(3) {
+    animation-delay: 0.2s;
+}
+.loading-bar:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+@keyframes loading-wave-animation {
+    0% {
+     height: 10px;
+    }
+    50% {
+     height: 50px;
+    }
+    100% {
+     height: 10px;
+    }
+}
+
+/* ----------------------------------------------------------------------------- */
+
+/* TELA DE CARREGAMENTO TROCA DE CONTAINER */
+
+.telacarregamento {
+background: white;
+padding: 20px;
+border-radius: 15px;
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+animation: fadeIn 1s ease-in-out;
+overflow: hidden;
+text-align: center;
+}
+
+/* ------------------------------------------------------------------------------ */
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+    overflow: hidden;
+    text-align: center;
+    width: 300px;
+}
+
+
+/* AREA DA NOTIFICAÇÃO */
+.notification{
+    background-color: #ffca1d;
+    color: black;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    z-index: 1;
+    right: 0;
+    bottom: 30px;
+    font-size: 17px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification p{
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+}
+
+.notification.show {
+    opacity: 1;
+}
+.notification.hidden {
+    display: none;
+}
+/* FIM DA AREA NOTIFICAÇÃO */
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* TELA DE RETORNO E BARRA DE PROGRESSO DE TEMPO DE TELA */
+
+.profile {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+    overflow: hidden;
+    text-align: center;
+    width: 300px;
+}
+
+.bar {
+    width: 100%;
+    height: 3%;
+    background: #e5bb2c;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.changebar {
+    width: 1%;
+    height: 100%;
+    background: #a3800e;
+    animation: expandWidth 2.5s linear;
+}
+
+@keyframes expandWidth {
+    from {
+        width: 1%;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* ------------------------------------------------------------------------ */
+
+.recognition,
+.profile {
+    transition: 1s;
+}
+
+.recognition-pic,
+.profile-pic {
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #e5bb2c;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background: #a3800e;
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+#message {
+    color: green;
+    font-weight: bold;
+}
+
+/* PARTE PARA ESTILIZAR O BOTÃO DAS CONFIGURAÇÕES */
+
+.configuracoes {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    display: inline-block;
+}
+.dropdown-config {
+    display: none;
+    position: absolute;
+    background-color: #e5bb2c;
+    min-width: 190px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 203px;
+}
+.dropdown-config a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-config a:hover {
+    background-color: #a3800e;
+    border-radius: 10px;
+    transform: scale(1.05);
+}
+
+.configuracoes.show .dropdown-config {
+    display: block;
+}
+
+
+/* FIM DA ESTILIZAÇÃO DO BOTÃO DE CONFIGURAÇÕES */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

@@ -1,0 +1,18 @@
+2024-10-25 11:53:59 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Projetos\aCasaBrasileira\Ponto\NAMINHAMAQUINAFUNCIONA\BancoDeDados\API\node_modules\node-windows\lib\wrapper.js --file C:\Projetos\aCasaBrasileira\Ponto\NAMINHAMAQUINAFUNCIONA\BancoDeDados\API\puxarBanco.js --scriptoptions= --log "ServicoPuxarBanco wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-10-25 11:53:59 - Started 14584
+2024-10-25 16:18:01 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Projetos\aCasaBrasileira\Ponto\NAMINHAMAQUINAFUNCIONA\BancoDeDados\API\node_modules\node-windows\lib\wrapper.js --file C:\Projetos\aCasaBrasileira\Ponto\NAMINHAMAQUINAFUNCIONA\BancoDeDados\API\puxarBanco.js --scriptoptions= --log "ServicoPuxarBanco wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-10-25 16:18:01 - Started 7956
+2024-10-25 16:48:28 - Stopping servicopuxarbanco.exe
+2024-10-25 16:48:28 - ProcessKill 7956
+2024-10-25 16:48:29 - Found child process: 7980 Name: conhost.exe
+2024-10-25 16:48:29 - Found child process: 8704 Name: node.exe
+2024-10-25 16:48:29 - Stopping process 7980
+2024-10-25 16:48:29 - Send SIGINT 7980
+2024-10-25 16:48:29 - SIGINT to 7980 failed - Killing as fallback
+2024-10-25 16:48:29 - Stopping process 8704
+2024-10-25 16:48:29 - Send SIGINT 8704
+2024-10-25 16:48:29 - SIGINT to 8704 failed - Killing as fallback
+2024-10-25 16:48:29 - Stopping process 7956
+2024-10-25 16:48:29 - Send SIGINT 7956
+2024-10-25 16:48:29 - SIGINT to 7956 failed - Killing as fallback
+2024-10-25 16:48:29 - Finished servicopuxarbanco.exe

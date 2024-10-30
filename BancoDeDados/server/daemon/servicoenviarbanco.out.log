@@ -1,0 +1,76 @@
+DB.JS RODANDO....
+MODELS.JS RODANDO...
+Servidor rodando na porta 3002
+Conectado ao MongoDB
+Verificando registros não sincronizados...
+[]
+Verificando registros não sincronizados...
+[]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+DB.JS RODANDO....
+MODELS.JS RODANDO...
+Servidor rodando na porta 3002
+Conectado ao MongoDB
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
+Verificando registros não sincronizados...
+[
+  {
+    _id: new ObjectId('671bb3bde1bc2b1e7eff10e6'),
+    idfuncionario: 7885,
+    timeunix: 1729868733
+  }
+]
