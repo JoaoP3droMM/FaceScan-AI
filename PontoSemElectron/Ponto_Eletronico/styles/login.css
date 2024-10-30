@@ -1,0 +1,132 @@
+/* Estilização pardrão da página de login ( usada como modelo para as outras telas ) */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #146e3b, #094623 );
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.container img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.container h1 {
+    font-size: 2em; 
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+/* BOTAO VOLTAR */
+.botao-voltar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: inline-block;
+}
+
+.botao-voltar button {
+    background-color: #e5bb2c;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.botao-voltar button:hover {
+    background-color: #d4a927;
+    transform: scale(1.05);
+}
+/* ------------------------------- */
+
+/* AREA DA NOTIFICAÇÃO */
+.notification{
+    background-color: #ffca1d;
+    color: black;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    z-index: 1;
+    right: 0;
+    bottom: 30px;
+    font-size: 17px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification p{
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+}
+
+.notification.show {
+    opacity: 1;
+}
+.notification.hidden {
+    display: none;
+}
+/* FIM DA AREA NOTIFICAÇÃO */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #e5bb2c; 
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: transparent; 
+    color: white; 
+}
+
+.form-group input::placeholder {
+    color: #ffffff; 
+}
+
+.form-group button {
+    width: 220px;
+    padding: 10px;
+    background-color: #e5bb2c; 
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: #f0ce5d;
+    transform: scale(1.05); 
+}
+
+.custom-confirm-button {
+    background-color: #ff5733; /* Cor personalizada */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+  
+.custom-confirm-button:hover {
+    background-color: #c4451b; /* Cor no hover */
+}
