@@ -1,119 +1,105 @@
+# ********************************************************************************** #
+# Import das bibliotecas
 import os
 import tensorflow as tf
+from tensorflow.python.util import deprecation
 import cv2
 import numpy as np
 from numpy import expand_dims
 from keras_facenet import FaceNet
 import pickle
-import time
 import json
-import base64
 import sys
+import io
 import logging
 
 # Supressão de mensagens do TensorFlow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  
 tf.get_logger().setLevel(logging.ERROR)
 
-# Função para decodificar a imagem base64
-def decode_base64_and_convert_to_image(base64_string):
-    try:
-        image_data = base64.b64decode(base64_string.split(",")[1])
-        np_img = np.frombuffer(image_data, np.uint8)
-        return cv2.imdecode(np_img, cv2.IMREAD_COLOR)
-    except (IndexError, ValueError) as e:
-        print("Erro ao decodificar a imagem:", str(e))
-        sys.exit(1)
+# Força o encoding UTF-8
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# Verifica se o argumento com a imagem foi passado
-if len(sys.argv) != 2:
-    print("Erro: Imagem em base64 não fornecida.")
-    sys.exit(1)
-
-# Decodifica a imagem base64 para formato OpenCV
-base64_image_string = sys.argv[1]
-try:
-    gbr1 = decode_base64_and_convert_to_image(base64_image_string)
-except Exception as e:
-    print(f"Erro ao decodificar a imagem: {e}")
-    sys.exit(1)
-
-# Obtém o diretório atual e carrega Haarcascade e FaceNet
+# ********************************************************************************** #
+# Obtendo o diretório atual do script
 script_dir = os.path.dirname(os.path.abspath(__file__))
-HaarCascade = cv2.CascadeClassifier(os.path.join(script_dir, 'haarcascade_frontalface_default.xml'))
 
-if HaarCascade.empty():
-    print("Erro ao carregar o Haarcascade. Verifique o caminho do arquivo.")
-    sys.exit(1)
-
+# ********************************************************************************** #
+# Carregando o modelo FaceNet
 MyFaceNet = FaceNet()
 
-# Carregando o banco de dados de embeddings
+# ********************************************************************************** #
+# Carregando IA do banco de dados.pkl
 data_path = os.path.join(script_dir, "data.pkl")
 try:
     with open(data_path, "rb") as myfile:
         database = pickle.load(myfile)
+        for key in database:
+            print(f'Chave no banco de dados: {key}')
 except FileNotFoundError:
     print(f"Erro: O arquivo '{data_path}' não foi encontrado. Verifique se o treinamento foi realizado corretamente.")
-    sys.exit(1)
+    exit()
 
-# Definindo parâmetros de foco e de reconhecimento
-focus_center = (325, 205)
-focus_axes = (105, 150)
-focus_angle = 0
+# ********************************************************************************** #
+# Variáveis para correspondência
 best_match = "Desconhecido"
 best_dist = float('inf')
-threshold = 0.7
-face_detected_time = 0
-face_detected_start_time = None
-required_face_time = 2  # segundos
+threshold = 1.5  # Limiar para correspondência válida
 
-# Função para verificação de ponto na elipse
-def is_point_in_ellipse(center, axes, angle, point):
-    x, y = point
-    h, k = center
-    cos_a = np.cos(np.radians(angle))
-    sin_a = np.sin(np.radians(angle))
-    term1 = ((cos_a * (x - h) + sin_a * (y - k))**2) / (axes[0]**2)
-    term2 = ((sin_a * (x - h) - cos_a * (y - k))**2) / (axes[1]**2)
-    return (term1 + term2) <= 1
+# Função para processar a imagem e obter a assinatura
+def process_image(image_path):
+    image = cv2.imread(image_path)
+    if image is None:
+        print(f"Erro ao carregar a imagem: {image_path}")
+        return None
+    image = cv2.resize(image, (160, 160))  # Redimensiona para 160x160, exigido pelo FaceNet
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = expand_dims(image, axis=0)
+    return MyFaceNet.embeddings(image)
 
-# Detecta e processa a face
-face = HaarCascade.detectMultiScale(gbr1, 1.1, 4)
-for (x1, y1, width, height) in face:
-    x2, y2 = x1 + width, y1 + height
-    face_center = (int((x1 + x2) / 2), int((y1 + y2) / 2))
+# ********************************************************************************** #
+# Carregando as duas imagens temporárias
+temp_image_paths = [
+    os.path.join(script_dir, 'temporarios', 'imagem_temporaria.jpg')
+]
 
-    if is_point_in_ellipse(focus_center, focus_axes, focus_angle, face_center):
-        if face_detected_start_time is None:
-            face_detected_start_time = time.time()
-        face_detected_time = time.time() - face_detected_start_time
+# Processando as imagens e obtendo as assinaturas
+for temp_image_path in temp_image_paths:
+    assinatura = process_image(temp_image_path)
+    if assinatura is None:
+        continue
 
-        if face_detected_time >= required_face_time:
-            face_crop = gbr1[y1:y2, x1:x2]
-            face_crop = cv2.resize(face_crop, (160, 160))
-            face_rgb = cv2.cvtColor(face_crop, cv2.COLOR_BGR2RGB)
-            face_rgb = expand_dims(face_rgb, axis=0)
+    # Comparando com o banco de dados
+    for key, value in database.items():
+        dist = np.linalg.norm(value - assinatura)
+        if dist < best_dist and dist < threshold:
+            best_dist = dist
+            best_match = key
 
-            assinatura = MyFaceNet.embeddings(face_rgb)
+# ********************************************************************************** #
+# Mostrando o melhor resultado
+if best_match != "Desconhecido":
+    print(f'Pessoa identificada: {best_match} com distância {best_dist}')
+else:
+    print('Nenhum rosto correspondente foi encontrado.')
 
-            for key, value in database.items():
-                dist = np.linalg.norm(value - assinatura)
-                if dist < best_dist and dist < threshold:
-                    best_dist = dist
-                    best_match = key
+# Construindo o dicionário de resultado para enviar ao Electron
+result = {
+    "nome": best_match if best_match != "Desconhecido" else None,
+    "distancia": float(best_dist) if best_match != "Desconhecido" else None
+}
 
-            if best_match != "Desconhecido":
-                result = {
-                    "nome": best_match,
-                    "distancia": float(best_dist)
-                }
-                print(json.dumps(result))
-                sys.exit(0)
-    else:
-        face_detected_time = 0
-        face_detected_start_time = None
+# Função auxiliar para converter todo np.float32 em float
+def convert_np(obj):
+    if isinstance(obj, np.float32):
+        return float(obj)
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()  # Converte arrays numpy para listas
+    return obj
 
-if best_match == "Desconhecido":
-    print("Nenhum rosto correspondente foi encontrado.")
+result = {key: convert_np(value) for key, value in result.items()}
+
+# Envia o resultado como JSON para o Electron
+print(json.dumps(result))
