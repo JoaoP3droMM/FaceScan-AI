@@ -1,5 +1,5 @@
 import { voltarPagina, popUpNotification, telaDeLoadOn, telaDeLoadOff } from './globalFunction.js';
-import { enableButton, disableButton, enviarDados, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
+import { toggleButton, enviarDados, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
 
 // Voltar à página inicial
 document.addEventListener('DOMContentLoaded', () => {

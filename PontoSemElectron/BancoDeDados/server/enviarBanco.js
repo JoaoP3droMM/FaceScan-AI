@@ -7,12 +7,14 @@ const { FuncionarioModel, PontosBatidosModel, UserModel } = require("../models")
 const app = express();
 const port = 3002;
 
-// Middleware
+// Configuração do CORS
 app.use(cors({
-  origin: 'http://localhost:5500' // Permitir dados do servidor: do python
+  origin: ['http://127.0.0.1:5500', 'http://localhost:5500']
 }));
-app.use(bodyParser.json({ limit: '10mb' })); // Ajuste para receber imagens grandes em base64
-app.use(bodyParser.urlencoded({ extended: true }));
+
+// Aumenta o limite de payload para processar imagens base64 grandes
+app.use(bodyParser.json({ limit: '10mb' })); // Aumente o limite conforme necessário
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 connectDB();
 
@@ -47,7 +49,7 @@ app.post('/cadastrarPonto', async (req, res) => {
 // Rota POST para cadastrar funcionário
 app.post('/cadastrarFuncionario', async (req, res) => {
   try {
-    const { id, nome, matricula, cpf, filial, fotoBase64 } = req.body; // Incluindo fotoBase64
+    const { id, nome, matricula, cpf, filial, fotoBase64 } = req.body;
 
     if (!id || !nome || !matricula || !cpf) {
       return res.status(400).json({ success: false, message: "Dados incompletos" });
@@ -59,7 +61,7 @@ app.post('/cadastrarFuncionario', async (req, res) => {
       matricula: String(matricula),
       cpf,
       filial,
-      foto: fotoBase64 // Armazenando a foto em base64
+      foto: fotoBase64
     });
 
     await novoFuncionario.save();
@@ -69,8 +71,6 @@ app.post('/cadastrarFuncionario', async (req, res) => {
     res.status(500).json({ success: false, message: "Erro ao cadastrar funcionário" });
   }
 });
-
-
 
 // Rota POST para cadastrar usuário
 app.post('/cadastrarUsuario', async (req, res) => {
@@ -83,7 +83,7 @@ app.post('/cadastrarUsuario', async (req, res) => {
 
     const novoUsuario = new UserModel({
       userName: userName,
-      password: password // Considere hash para a senha em produção
+      password: password
     });
 
     await novoUsuario.save();
@@ -94,7 +94,7 @@ app.post('/cadastrarUsuario', async (req, res) => {
   }
 });
 
-// Nova Rota POST para cadastrar foto em base64
+// Rota POST para cadastrar foto em base64
 app.post('/cadastrarFoto', async (req, res) => {
   try {
     const { idfuncionario, nome, matricula, fotoBase64 } = req.body;
@@ -105,8 +105,8 @@ app.post('/cadastrarFoto', async (req, res) => {
 
     const funcionario = await FuncionarioModel.findOneAndUpdate(
       { matricula: String(matricula) },
-      { $set: { foto: fotoBase64 } },  // campo 'foto' para armazenar a imagem base64
-      { new: true, upsert: true } // Cria um novo registro caso o funcionário não exista
+      { $set: { foto: fotoBase64 } },
+      { new: true, upsert: true }
     );
 
     res.status(201).json({ success: true, message: "Foto cadastrada com sucesso", funcionario });
