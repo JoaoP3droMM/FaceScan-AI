@@ -135,3 +135,12 @@ body {
 .custom-confirm-button:hover {
     background-color: #c4451b; /* Cor no hover */
 }
+
+.swal-button-custom{
+    background-color: #0d7038; 
+    color: white;
+}
+
+.swal-button-custom:hover{
+    background-color: #094623;
+}

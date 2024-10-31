@@ -257,3 +257,12 @@ button:hover {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+.swal-button-custom{
+    background-color: #0d7038; 
+    color: white;
+}
+
+.swal-button-custom:hover{
+    background-color: #094623;
+}

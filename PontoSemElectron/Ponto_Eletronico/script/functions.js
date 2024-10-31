@@ -85,7 +85,6 @@ export function enviarDados(imagemBase64) {
         const dadosFuncionario = { id, nome, matricula, cpf, filial, fotoBase64: imagemBase64 };
 
         // Mostra a tela de carregamento
-
         fetch('http://localhost:3002/cadastrarFuncionario', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -94,31 +93,36 @@ export function enviarDados(imagemBase64) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Funcionário cadastrado com sucesso!',
-                    text: 'Agora você pode bater o ponto usando reconhecimento facial!!',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    // Recarrega a página após fechar o alert
-                    location.reload(); // Isso irá recarregar a página
+                // Chamada para a API de conversão
+                return fetch('http://localhost:5000/executar-conversao', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
                 });
-                window.location.reload()
-                disableButton(); // Desabilita o botão após o envio
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    text: 'Erro ao cadastrar funcionário',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    // Recarrega a página após fechar o alert
-                    location.reload(); // Isso irá recarregar a página
-                });
+                throw new Error('Erro ao cadastrar funcionário');
             }
+        })
+        .then(response => response.json())
+        .then(conversaoData => {
+            // Lida com a resposta da API de conversão se necessário
+            Swal.fire({
+                icon: 'success',
+                title: 'Funcionário cadastrado com sucesso!',
+                text: 'Agora você pode bater o ponto usando reconhecimento facial!!',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                location.reload(); // Recarrega a página após fechar o alert
+            });
         })
         .catch(error => {
             console.error('Error:', error);
-            popUpNotification('Erro ao registrar funcionário');
+            Swal.fire({
+                icon: 'error',
+                text: 'Erro ao cadastrar funcionário ou executar a conversão',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                location.reload(); // Recarrega a página após fechar o alert
+            });
         });
     } else {
         popUpNotification('Por favor, preencha todos os campos!');
@@ -392,7 +396,10 @@ export async function verificaLogin(event, telaRedirecionada) {
                 icon: 'error',
                 title: 'Erro de conexão',
                 text: 'Não foi possível realizar o login.',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'swal-button-custom'
+                }
             })
         }
     }

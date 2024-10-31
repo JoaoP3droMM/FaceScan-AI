@@ -233,3 +233,12 @@ button#start-capture:enabled {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra do botão */
     z-index: 10000; /* Coloca o botão acima de outros elementos */
 }
+
+.swal-button-custom{
+    background-color: #0d7038; 
+    color: white;
+}
+
+.swal-button-custom:hover{
+    background-color: #094623;
+}

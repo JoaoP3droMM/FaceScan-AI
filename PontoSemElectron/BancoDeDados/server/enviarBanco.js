@@ -8,7 +8,9 @@ const app = express();
 const port = 3002;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5500' // Permitir dados do servidor: do python
+}));
 app.use(bodyParser.json({ limit: '10mb' })); // Ajuste para receber imagens grandes em base64
 app.use(bodyParser.urlencoded({ extended: true }));
 

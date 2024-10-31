@@ -3,9 +3,11 @@ import base64
 from pymongo import MongoClient
 from flask import Flask, jsonify
 from treinamento import exec_treinamento
+from flask_cors import CORS
 
 # Configurações do Flask
 app = Flask(__name__)
+CORS(app)  # Permitir todas as origens
 
 # Configurações de conexão com o MongoDB
 client = MongoClient('mongodb://localhost:27017')
