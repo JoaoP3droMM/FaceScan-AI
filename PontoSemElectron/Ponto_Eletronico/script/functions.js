@@ -178,16 +178,35 @@ export async function fetchFuncionarioInfo() {
 
 // Função para iniciar o reconhecimento facial automaticamente ao carregar a página
 export function iniciarReconhecimentoAutomatico() {
-    window.electronAPI.startRecognition()
-    popUpNotification('Iniciando reconhecimento facial...')
-    telaDeLoadOn()
+    // Exibir a tela de carregamento
+    popUpNotification('Iniciando reconhecimento facial...');
+    telaDeLoadOn();
     
-    const container = $('#container').get(0)
+    const container = $('#container').get(0);
     if (container) {
-        container.classList.add('hidden')
+        container.classList.add('hidden'); // Esconde o container
     } else {
-        console.error("Elemento com id 'container' não encontrado.")
+        console.error("Elemento com id 'container' não encontrado.");
     }
+
+    // Acessar a câmera
+    const video = document.getElementById('video');
+    const constraints = {
+        video: {
+            facingMode: 'user' // Usar a câmera frontal
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+            video.srcObject = stream; // Define o stream de vídeo
+            video.play(); // Inicia a reprodução do vídeo
+            $('#video-container').removeClass('hidden'); // Mostra o container de vídeo
+        })
+        .catch((error) => {
+            console.error("Erro ao acessar a câmera:", error);
+            showErrorAlert("Não foi possível acessar a câmera. Verifique as permissões.");
+        });
 }
 
 // Função para buscar funcionário pela matricula
@@ -320,7 +339,25 @@ export function erroNoCadastrado() {
     }, 2500)
 }
 
+export function capturarImagemPonto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
 
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Captura a imagem em formato PNG
+    const imagemCapturada = canvas.toDataURL('image/png');
+
+    // Para o stream de vídeo
+    const stream = video.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop()); // Para o stream de vídeo
+    video.srcObject = null; // Limpa o vídeo
+    $('#video-container').addClass('hidden'); // Esconde o vídeo
+}
 
 
 // **************************************(((TELAS DE LOGIN)))*************************************************************************

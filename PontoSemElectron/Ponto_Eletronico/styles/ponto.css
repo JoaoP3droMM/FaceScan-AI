@@ -258,6 +258,51 @@ button:hover {
     100% { background-position: 0% 50%; }
 }
 
+
+
+
+/* CSS para o contêiner de vídeo */
+#video-container {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    z-index: 9999; 
+    /* Remova a linha abaixo */
+    /* display: none; */
+}
+
+.hidden {
+    display: none; 
+}
+
+#video {
+    width: 100%; /* Largura total do contêiner */
+    height: 100%; /* Altura total do contêiner */
+    object-fit: cover; /* Cobre toda a área do vídeo */
+}
+
+.hidden {
+    display: none; /* Classe para esconder elementos */
+}
+
+#photo-button {
+    position: absolute; /* Para posicionar o botão de captura */
+    bottom: 20px; /* Distância do fundo */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Centraliza perfeitamente */
+    width: 80px; /* Largura do botão */
+    height: 80px; /* Altura do botão */
+    border-radius: 50%; /* Botão redondo */
+    background-color: white; /* Cor do botão */
+    border: none; /* Sem borda */
+    cursor: pointer; /* Cursor de ponteiro */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra do botão */
+    z-index: 10000; /* Coloca o botão acima de outros elementos */
+}
+
 .swal-button-custom{
     background-color: #0d7038; 
     color: white;

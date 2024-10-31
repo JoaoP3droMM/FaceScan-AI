@@ -14,6 +14,7 @@ import {
     telaDeResposta,
     enviarPontoParaBanco,
     mostrarConfiguracoes,
+    capturarImagemPonto,
     erroDeFacial,
     erroNoCadastrado,
 } from './functions.js';
@@ -66,6 +67,11 @@ $(document).ready(() => {
                     });
             }
         });
+
+        $('#photo-button').on('click', function() {
+            capturarImagem();
+        });
+
     } else {
         console.error("API de reconhecimento facial não está disponível.");
     }
