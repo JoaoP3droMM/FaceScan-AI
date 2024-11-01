@@ -1,5 +1,3 @@
-# ********************************************************************************** #
-# Import das bibliotecas
 import os
 import tensorflow as tf
 from tensorflow.python.util import deprecation
@@ -9,10 +7,7 @@ from numpy import expand_dims
 from keras_facenet import FaceNet
 import pickle
 import json
-import sys
-import io
 import logging
-
 
 def reconhecimentoFacial(): 
     # Supressão de mensagens do TensorFlow
@@ -21,91 +16,60 @@ def reconhecimentoFacial():
     tf.get_logger().setLevel(logging.ERROR)
     deprecation._PRINT_DEPRECATION_WARNINGS = False
 
-    # ********************************************************************************** #
     # Obtendo o diretório atual do script
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # ********************************************************************************** #
     # Carregando o modelo FaceNet
     MyFaceNet = FaceNet()
 
-    # ********************************************************************************** #
-    # Carregando IA do banco de dados.pkl
+    # Carregando o banco de dados do arquivo data.pkl
     data_path = os.path.join(script_dir, "data.pkl")
     try:
         with open(data_path, "rb") as myfile:
             database = pickle.load(myfile)
-            for key in database:
-                print(f'Chave no banco de dados: {key}')
+            print(f"Banco de dados carregado com sucesso. Chaves encontradas: {list(database.keys())}")
     except FileNotFoundError:
         print(f"Erro: O arquivo '{data_path}' não foi encontrado. Verifique se o treinamento foi realizado corretamente.")
-        exit()
+        return json.dumps({"status": "erro", "mensagem": "Arquivo de dados não encontrado."})
 
-    # ********************************************************************************** #
-    # Variáveis para correspondência
-    threshold = 1.5  # Limiar para correspondência válida
+    # Limiar para correspondência válida
+    threshold = 1.5
 
-    # Função para processar a imagem e obter a assinatura
     def process_image(image_path):
         image = cv2.imread(image_path)
         if image is None:
             print(f"Erro ao carregar a imagem: {image_path}")
             return None
-        image = cv2.resize(image, (160, 160))  # Redimensiona para 160x160, exigido pelo FaceNet
+        image = cv2.resize(image, (160, 160))
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = expand_dims(image, axis=0)
         return MyFaceNet.embeddings(image)
 
-    # Função para reconhecer a face
     def reconhecer_face():
-        # Carregando as imagens temporárias
-        temp_image_paths = [
-            os.path.join(script_dir, 'temporarios', 'imagem_temporaria.jpg')
-        ]
+        temp_image_path = os.path.join(script_dir, 'temp', 'foto_recebida.jpg')
+        assinatura = process_image(temp_image_path)
+        if assinatura is None:
+            return json.dumps({"status": "erro", "mensagem": "Imagem recebida não pôde ser processada."})
 
-        # Inicializando a melhor correspondência
         best_match = "Desconhecido"
         best_dist = float('inf')
 
-        # Processando as imagens e obtendo as assinaturas
-        for temp_image_path in temp_image_paths:
-            assinatura = process_image(temp_image_path)
-            if assinatura is None:
-                continue
+        for key, value in database.items():
+            dist = np.linalg.norm(value - assinatura)
+            if dist < best_dist and dist < threshold:
+                best_dist = dist
+                best_match = key
 
-            # Comparando com o banco de dados
-            for key, value in database.items():
-                dist = np.linalg.norm(value - assinatura)
-                if dist < best_dist and dist < threshold:
-                    best_dist = dist
-                    best_match = key
-
-        # Construindo o dicionário de resultado para enviar
         result = {
             "nome": best_match if best_match != "Desconhecido" else None,
             "distancia": float(best_dist) if best_match != "Desconhecido" else None
         }
 
-        # Função auxiliar para converter todo np.float32 em float
-        def convert_np(obj):
-            if isinstance(obj, np.float32):
-                return float(obj)
-            if isinstance(obj, np.ndarray):
-                return obj.tolist()  # Converte arrays numpy para listas
-            return obj
-
-        result = {key: convert_np(value) for key, value in result.items()}
-
-        # Envia o resultado como JSON
+        print("Resultado do reconhecimento facial:", result)
         return json.dumps(result)
 
-    if not os.path.exists(data_path):
-        print(f"Erro: O arquivo '{data_path}' não foi encontrado.")
-        exit()
+    return reconhecer_face()
 
-    # Se o script for executado diretamente, executa o reconhecimento
-    if __name__ == "__main__":
-        resultado = reconhecer_face()
-        print(resultado)
-
-reconhecimentoFacial()
+if __name__ == "__main__":
+    resultado = reconhecimentoFacial()
+    print("Resultado do reconhecimento facial:", resultado)
