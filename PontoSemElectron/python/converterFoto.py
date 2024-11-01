@@ -10,6 +10,7 @@ from flask_cors import CORS
 import cv2
 import numpy as np
 import json
+import requests  # Certifique-se de importar requests se for usar
 
 logging.basicConfig(
     filename='server_log.log',
@@ -47,30 +48,12 @@ def decode_and_save_image(base64_string, filename, target_size=(640, 480)):
     nparr = np.frombuffer(image_data, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     
-    # Redimensionar para a resolução desejada (160x160)
+    # Redimensionar para a resolução desejada
     img_resized = cv2.resize(img, target_size)
     
     # Salvar a imagem redimensionada
     cv2.imwrite(filename, img_resized)
-    print(f"Imagem salva e redimensionada para {target_size} em {filename}")
-
-@app.route('/executar-conversao', methods=['POST'])
-def executar_conversao():
-    try:
-        for funcionario in collection.find():
-            nome = funcionario.get("matricula")
-            foto_base64 = funcionario.get("foto")
-            if foto_base64:
-                try:
-                    filename = os.path.join(output_dir, f"{nome}.jpg")
-                    decode_and_save_image(foto_base64, filename)
-                    print(f"Imagem salva para o funcionário {nome}")
-                except Exception as e:
-                    print(f"Erro ao salvar a imagem para o funcionário {nome}: {e}")
-        exec_treinamento()
-        return jsonify({"status": "sucesso", "mensagem": "Conversão realizada com sucesso!"})
-    except Exception as e:
-        return jsonify({"status": "erro", "mensagem": str(e)})
+    logging.info(f"Imagem salva e redimensionada para {target_size} em {filename}")
 
 @app.route('/receber-foto', methods=['POST'])
 def receber_foto():
@@ -79,15 +62,71 @@ def receber_foto():
         foto_base64 = data.get("imagem")
 
         if not foto_base64:
+            logging.error("Imagem em base64 não fornecida.")
             return jsonify({"status": "erro", "mensagem": "Imagem em base64 é obrigatória"}), 400
 
         filename = os.path.join(output_dir, "foto_recebida.jpg")
         decode_and_save_image(foto_base64, filename)
+        
         resultado = reconhecimentoFacial()
-        print("Resultado do reconhecimento facial:", resultado)
+        logging.info(f"Resultado do reconhecimento facial: {resultado}")
 
-        return jsonify(json.loads(resultado)), 200
+        # Extrair a matrícula do resultado do reconhecimento facial
+        resultado_dict = json.loads(resultado)
+        nome_reconhecido = resultado_dict.get("nome")  # Obtemos o nome da matrícula reconhecida
+        distancia = resultado_dict.get("distancia")
+
+        print(f'O nome identificado foi {nome_reconhecido} com distância {distancia}')
+        if not nome_reconhecido:
+            logging.error("Matrícula não encontrada no resultado do reconhecimento.")
+            return jsonify({"status": "erro", "mensagem": "Matrícula não reconhecida."}), 404
+
+        logging.info(f"Matrícula reconhecida: {nome_reconhecido}")
+
+        # Enviar a matrícula para a API Express
+        buscar_funcionario_url = f"http://localhost:3000/buscarFuncionario/{nome_reconhecido}"
+        response = requests.get(buscar_funcionario_url)
+
+        if response.status_code == 200:
+            funcionario_info = response.json()  # Obtemos os dados do funcionário
+            logging.info(f"Funcionário encontrado: {funcionario_info}")
+            return jsonify(funcionario_info), 200  # Retornar os dados do funcionário
+        else:
+            logging.error(f"Erro ao buscar funcionário: {response.json()}")
+            return jsonify({"status": "erro", "mensagem": response.json().get("message", "Erro ao buscar funcionário.")}), 500
+
     except Exception as e:
+        logging.error(f"Erro ao receber foto: {e}")
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+@app.route('/reconhecimento', methods=['POST'])
+def reconhecimento():
+    try:
+        data = request.get_json()
+        matricula = data.get("matricula")
+
+        if not matricula:
+            logging.error("Matrícula não fornecida para reconhecimento.")
+            return jsonify({"status": "erro", "mensagem": "Matrícula é obrigatória"}), 400
+
+        # Aqui você pode adicionar a lógica para buscar o funcionário
+        funcionario = collection.find_one({"matricula": matricula})
+
+        if funcionario:
+            logging.info(f"Funcionário encontrado: {funcionario}")
+            return jsonify({
+                "status": "sucesso",
+                "funcionario": {
+                    "nome": funcionario.get("nome"),
+                    "matricula": funcionario.get("matricula"),
+                    "id": str(funcionario.get("_id"))
+                }
+            }), 200
+        else:
+            logging.warning(f"Funcionário com matrícula {matricula} não encontrado.")
+            return jsonify({"status": "erro", "mensagem": "Funcionário não encontrado"}), 404
+    except Exception as e:
+        logging.error(f"Erro ao processar reconhecimento: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 if __name__ == "__main__":

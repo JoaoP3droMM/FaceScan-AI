@@ -42,6 +42,7 @@ app.get("/buscarFuncionario/:matricula", async (req, res) => {
   const { matricula } = req.params
   try {
     const funcionario = await FuncionarioModel.findOne({ matricula: String(matricula) })
+    console.log('Achei')
     if (!funcionario) {
       return res.status(404).json({ success: false, message: "Funcionário não encontrado" })
     }

@@ -165,6 +165,7 @@ export async function fetchFuncionarioInfo() {
 // **************************************(((PONTO)))*************************************************************************
 
 // Função para iniciar o reconhecimento facial automaticamente ao carregar a página
+// Função para iniciar o reconhecimento facial automaticamente ao carregar a página
 export function iniciarReconhecimentoAutomatico() {
     popUpNotification('Iniciando reconhecimento facial...');
     const container = $('#container').get(0);
@@ -206,12 +207,12 @@ export function capturarImagemPonto() {
     context.drawImage(video, 0, 0, 640, 480);
     const base64Image = canvas.toDataURL('image/png');
 
-    console.log("Imagem capturada em base64 (640x480):", base64Image);
+    // console.log("Imagem capturada em base64 (640x480):", base64Image);
     enviarImagemParaReconhecimento(base64Image);
 }
 
-// Função para enviar a imagem para reconhecimento facial
 export function enviarImagemParaReconhecimento(base64Image) {
+    console.log("Enviando imagem para reconhecimento...");
     $.ajax({
         url: 'http://localhost:5000/receber-foto', // URL da API Python
         type: 'POST',
@@ -219,19 +220,20 @@ export function enviarImagemParaReconhecimento(base64Image) {
         data: JSON.stringify({ imagem: base64Image }), // Envia a imagem em base64
         success: (response) => {
             console.log("Resposta de reconhecimento:", response);
-            if (response.result) {
-                popUpNotification("Foto recebida com sucesso");
-                buscarFuncionarioPorMatricula(response.result.matricula) // Supondo que o retorno contém a matrícula
+            if (response.matricula) { // Verifica se a matrícula foi retornada
+                alert("Foto recebida com sucesso");
+                buscarFuncionarioPorMatricula(response.matricula) // Busca funcionário pela matrícula
                     .then(funcionario => {
                         const horaDaBatida = new Date().toISOString();
                         enviarPontoParaBanco(funcionario, horaDaBatida);
                     })
                     .catch(error => {
+                        console.error("Erro ao buscar dados do funcionário:", error);
                         showErrorAlert("Erro ao buscar dados do funcionário: " + error);
                     });
             } else {
-                showErrorAlert(response.error || "Erro no reconhecimento facial");
-                console.error("Erro no reconhecimento facial:", response.error);
+                showErrorAlert("Erro no reconhecimento facial");
+                console.error("Erro no reconhecimento facial:", response);
             }
         },
         error: (xhr, status, error) => {
@@ -241,25 +243,6 @@ export function enviarImagemParaReconhecimento(base64Image) {
     });
 }
 
-// Função para buscar funcionário pela matrícula
-export function buscarFuncionarioPorMatricula(matricula) {
-    console.log("Iniciando busca do funcionário com a matrícula:", matricula);
-    
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: `http://localhost:3000/buscarFuncionario/${matricula}`, 
-            type: 'GET',
-            success: (response) => {
-                console.log("Funcionário encontrado:", response);
-                resolve(response);
-            },
-            error: (xhr, status, error) => {
-                console.error("Erro ao buscar funcionário:", status, error);
-                reject(error);
-            }
-        });
-    });
-}
 
 // Função para enviar o ponto ao banco de dados
 export function enviarPontoParaBanco(funcionario, horaDaBatida) {
@@ -273,7 +256,7 @@ export function enviarPontoParaBanco(funcionario, horaDaBatida) {
         time: horaDaBatida.split('T')[1].split('.')[0],
     };
 
-    console.log("Enviando ponto para o banco:", data);
+    console.log("Enviando ponto para o banco:", data); // Verifique se os dados estão corretos
 
     $.ajax({
         url: 'http://localhost:3002/cadastrarPonto',
@@ -316,6 +299,12 @@ export function telaDeResposta(nome, cpf) {
 
 // Inicialização e vinculação de eventos
 $(document).ready(() => {
+
+    $('form').on('submit', (event) => {
+        event.preventDefault(); // Previne o recarregamento da página
+    });
+
+
     $('.btnPonto').on('click', iniciarReconhecimentoAutomatico);
     $('form').on('submit', (event) => event.preventDefault());
     $('#photo-button').on('click', capturarImagemPonto);
@@ -323,14 +312,14 @@ $(document).ready(() => {
     if (window.electronAPI && typeof window.electronAPI.onRecognitionComplete === 'function') {
         window.electronAPI.onRecognitionComplete((result) => {
             if (result && result.nome && result.distancia) {
-                const matricula = result.nome;
+                const matricula = result.nome; // Supondo que a matrícula é retornada como 'nome'
 
                 console.log("Resultado do reconhecimento facial:", result);
                 popUpNotification('Face reconhecida com sucesso!');
-                buscarFuncionarioPorMatricula(matricula)
+                buscarFuncionarioPorMatricula(matricula) // Busca o funcionário usando a matrícula
                     .then(funcionario => {
                         const horaDaBatida = new Date().toISOString();
-                        enviarPontoParaBanco(funcionario, horaDaBatida);
+                        enviarPontoParaBanco(funcionario, horaDaBatida); // Envia o ponto ao banco
                     })
                     .catch(error => {
                         showErrorAlert("Erro ao buscar dados do funcionário: " + error);
