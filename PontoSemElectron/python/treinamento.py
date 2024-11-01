@@ -9,11 +9,6 @@ import sys
 
 def exec_treinamento(): 
     # ********************************************************************************** #
-    # Reconfigurando stdout e stderr para suportar UTF-8 (Sistema não chorar com nome de usuário com acento)
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-
-    # ********************************************************************************** #
     # Obtendo o diretório atual do script
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -74,12 +69,11 @@ def exec_treinamento():
     # ********************************************************************************** #
     # Salvando o banco de dados em 'data.pkl'
     data_path = os.path.join(script_dir, "data.pkl")
-    with open(data_path, "wb") as myfile:
-        pickle.dump(database, myfile)
-    print(f"Processamento concluído e banco de dados salvo em '{data_path}'.")
-
-    # ********************************************************************************** #
-    print("Processamento concluído e banco de dados salvo em 'data.pkl'.")
+    try:
+        with open(data_path, "wb") as myfile:
+            pickle.dump(database, myfile)
+    finally:
+        print(f"Processamento concluído e banco de dados salvo em '{data_path}'.")
 
 
 exec_treinamento()

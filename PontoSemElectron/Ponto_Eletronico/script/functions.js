@@ -76,7 +76,7 @@ export function enviarDados(imagemBase64) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            return fetch('http://localhost:5000/executar-conversao', {
+            return fetch('http://localhost:5000/receber-foto', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -145,14 +145,28 @@ export async function fetchFuncionarioInfo() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // **************************************(((PONTO)))*************************************************************************
 
 // Função para iniciar o reconhecimento facial automaticamente ao carregar a página
 export function iniciarReconhecimentoAutomatico() {
-    // Exibir a tela de carregamento
     popUpNotification('Iniciando reconhecimento facial...');
-    telaDeLoadOn();
-    
     const container = $('#container').get(0);
     if (container) {
         container.classList.add('hidden'); // Esconde o container
@@ -163,9 +177,7 @@ export function iniciarReconhecimentoAutomatico() {
     // Acessar a câmera
     const video = document.getElementById('video');
     const constraints = {
-        video: {
-            facingMode: 'user' // Usar a câmera frontal
-        }
+        video: { facingMode: 'user' } // Usar a câmera frontal
     };
 
     navigator.mediaDevices.getUserMedia(constraints)
@@ -180,23 +192,109 @@ export function iniciarReconhecimentoAutomatico() {
         });
 }
 
-// Função para buscar funcionário pela matricula
+// Função para capturar a imagem e enviar para reconhecimento facial
+export function capturarImagemPonto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    // Define a resolução desejada para a captura
+    canvas.width = 64;
+    canvas.height = 64;
+
+    // Desenha o frame do vídeo no canvas
+    context.drawImage(video, 0, 0, 64, 64);
+    const base64Image = canvas.toDataURL('image/png');
+
+    console.log("Imagem capturada em base64 (64x64):", base64Image);
+    enviarImagemParaReconhecimento(base64Image);
+}
+
+// Função para enviar a imagem para reconhecimento facial
+export function enviarImagemParaReconhecimento(base64Image) {
+    $.ajax({
+        url: 'http://localhost:5000/receber-foto', // URL da API Python
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ imagem: base64Image }), // Envia a imagem em base64
+        success: (response) => {
+            console.log("Resposta de reconhecimento:", response);
+            if (response.result) {
+                popUpNotification("Foto recebida com sucesso");
+                buscarFuncionarioPorMatricula(response.result.matricula) // Supondo que o retorno contém a matrícula
+                    .then(funcionario => {
+                        const horaDaBatida = new Date().toISOString();
+                        enviarPontoParaBanco(funcionario, horaDaBatida);
+                    })
+                    .catch(error => {
+                        showErrorAlert("Erro ao buscar dados do funcionário: " + error);
+                    });
+            } else {
+                showErrorAlert(response.error || "Erro no reconhecimento facial");
+                console.error("Erro no reconhecimento facial:", response.error);
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error("Erro ao enviar imagem:", error);
+            showErrorAlert("Erro no reconhecimento facial. Tente novamente.");
+        }
+    });
+}
+
+// Função para buscar funcionário pela matrícula
 export function buscarFuncionarioPorMatricula(matricula) {
-    console.log("Iniciando busca do funcionário com a matrícula:", matricula); // Log da matrícula buscada
+    console.log("Iniciando busca do funcionário com a matrícula:", matricula);
     
     return new Promise((resolve, reject) => {
         $.ajax({
             url: `http://localhost:3000/buscarFuncionario/${matricula}`, 
             type: 'GET',
-            success: function(response) {
-                console.log("Requisição bem-sucedida. Funcionário encontrado:", response); // Log da resposta da API
-                resolve(response); // Retorna os dados do funcionário
+            success: (response) => {
+                console.log("Funcionário encontrado:", response);
+                resolve(response);
             },
-            error: function(xhr, status, error) {
-                console.error("Erro ao buscar funcionário. Status:", status, "Erro:", error); // Log do erro
+            error: (xhr, status, error) => {
+                console.error("Erro ao buscar funcionário:", status, error);
                 reject(error);
             }
         });
+    });
+}
+
+// Função para enviar o ponto ao banco de dados
+export function enviarPontoParaBanco(funcionario, horaDaBatida) {
+    const data = {
+        idfuncionario: funcionario.id,
+        nome: funcionario.nome,
+        matricula: funcionario.matricula,
+        sync: false,
+        timeunix: Math.floor(Date.now() / 1000),
+        date: horaDaBatida.split('T')[0],
+        time: horaDaBatida.split('T')[1].split('.')[0],
+    };
+
+    console.log("Enviando ponto para o banco:", data);
+
+    $.ajax({
+        url: 'http://localhost:3002/cadastrarPonto',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: (response) => {
+            console.log("Resposta ao cadastrar ponto:", response);
+            if (response.success) {
+                setTimeout(() => {
+                    telaDeResposta(funcionario.nome, funcionario.cpf);
+                }, 100);
+                popUpNotification(response.message);
+            } else {
+                showErrorAlert(response.message);
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error("Erro ao cadastrar ponto:", error);
+            showErrorAlert("Erro ao cadastrar ponto. Tente novamente mais tarde.");
+        }
     });
 }
 
@@ -206,217 +304,47 @@ export function telaDeResposta(nome, cpf) {
     containerid.addClass("hidden");
     barra.addClass("changebar-ativo");
     
-    // Atribuindo o nome e CPF aos elementos HTML da tela de retorno
     document.getElementById("nomeFuncionario").innerText = nome || "Nome não encontrado";
     document.getElementById("cpfFuncionario").innerText = cpf || "CPF não encontrado";
 
-    setTimeout(function() {
+    setTimeout(() => {
         barra.removeClass("changebar-ativo");
         retorno.addClass("hidden");
         containerid.removeClass("hidden");
     }, 2500);
 }
 
-// Função para enviar o ponto ao banco de dados
-export function enviarPontoParaBanco(funcionario, horaDaBatida) {
-    const data = {
-        idfuncionario: funcionario.id,
-        nome: funcionario.nome,
-        matricula: funcionario.matricula,
-        sync: false, // Valor padrão de sincronização
-        timeunix: Math.floor(Date.now() / 1000), // Timestamp UNIX
-        date: horaDaBatida.split('T')[0], // Data atual
-        time: horaDaBatida.split('T')[1].split('.')[0], // Hora atual
-    };
-
-    console.log("Enviando ponto para o banco:", data); // Log dos dados que serão enviados
-
-    $.ajax({
-        url: 'http://localhost:3002/cadastrarPonto',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: (response) => {
-            console.log("Resposta da API ao cadastrar ponto:", response); // Log da resposta da API
-            if (response.success) {
-                telaDeLoadOff(); // Oculta a tela de carregamento
-                setTimeout(() => {
-                    telaDeResposta(funcionario.nome, funcionario.cpf); // Chama a tela de resposta após um pequeno atraso
-                }, 100); // Pequeno atraso para garantir que a tela de carregamento esteja oculta
-                popUpNotification(response.message); // Notificação de sucesso
-            } else {
-                showErrorAlert(response.message); // Notificação de erro
-            }
-        },
-        error: (xhr, status, error) => {
-            console.error("Erro ao cadastrar ponto:", error); // Log de erro
-            showErrorAlert("Erro ao cadastrar ponto. Tente novamente mais tarde.");
-        }
-    });
-}
-
-// Função para mostrar/ocultar configurações e fechar a câmera
-export function mostrarConfiguracoes() {
-    document.querySelector('.configuracoes').classList.toggle('show');
-}
-
-// Mensagem caso os rostos estejam errados
-export function erroDeFacial() { 
-    retorno.classList.remove("hidden");
-    containerid.classList.add("hidden");
-    barra.classList.add("changebar-ativo2");
-    
-    let employeeId = "Facial não reconhecida";
-    icone.classList.add('fa-regular', 'fa-3x', 'fa-face-sad-tear');
-
-    document.getElementById("errorType").innerText = employeeId;
-
-    setTimeout(function() {
-        barra.classList.remove("changebar-ativo");
-        retorno.classList.add("hidden");
-        containerid.classList.remove("hidden");
-    }, 2500);
-}
-
-// Mensagem caso os rostos não estejam cadastrados
-export function erroNoCadastrado() {
-    retorno.classList.remove("hidden");
-    containerid.classList.add("hidden");
-    barra.classList.add("changebar-ativo2");
-    
-    let employeeId = "Usuário não cadastrado";
-    icone.classList.add('fa-solid', 'fa-3x', 'fa-xmark');
-
-    document.getElementById("errorType").innerText = employeeId;
-
-    setTimeout(function() {
-        barra.classList.remove("changebar-ativo");
-        retorno.classList.add("hidden");
-        containerid.classList.remove("hidden");
-    }, 2500);
-}
-
-
-
-
-
-
-export function capturarImagemPonto() {
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
-
-    // Define o tamanho do canvas para 64x64
-    canvas.width = 64;
-    canvas.height = 64;
-
-    // Desenha o frame do vídeo redimensionado no canvas
-    context.drawImage(video, 0, 0, 64, 64);
-
-    // Converte a imagem do canvas para base64
-    const base64Image = canvas.toDataURL('image/png');
-
-    // Exemplo de log para verificar a imagem capturada
-    console.log("Imagem capturada em base64 (64x64):", base64Image);
-
-    // Envia a imagem para a API Flask
-    enviarImagemParaReconhecimento(base64Image);
-}
-
-
-
-
-
-
-
-function enviarImagemParaReconhecimento(base64Image) {
-    $.ajax({
-        url: 'http://localhost:5000/recognize', // Rota da API
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ image: base64Image }), // Envia a imagem em formato JSON
-        success: (response) => {
-            console.log("Resposta da API de reconhecimento:", response);
-            if (response.result) {
-                popUpNotification("Foto recebida com sucesso");
-                console.log("Resultado do reconhecimento facial:", response.result);
-                // Aqui você pode processar o resultado como desejar
-            } else {
-                showErrorAlert(response.error || "Erro no reconhecimento facial");
-                console.error("Erro no reconhecimento facial:", response.error);
-            }
-        },
-        error: (xhr, status, error) => {
-            console.error("Erro ao enviar imagem para reconhecimento:", error);
-            showErrorAlert("Erro no reconhecimento facial. Tente novamente.");
-        }
-    });
-}
-
-// Código de inicialização
+// Inicialização e vinculação de eventos
 $(document).ready(() => {
-    // Adiciona evento para o botão de "Bater Ponto"
     $('.btnPonto').on('click', iniciarReconhecimentoAutomatico);
+    $('form').on('submit', (event) => event.preventDefault());
+    $('#photo-button').on('click', capturarImagemPonto);
 
-    // Impede que a página seja atualizada ao submeter o formulário
-    $('form').on('submit', (event) => {
-        event.preventDefault();
-    });
-
-    // Adiciona funcionalidade ao botão de configurações
-    $('#btnConfig').on('click', mostrarConfiguracoes);
-
-    $('#photo-button').on('click', function() {
-        capturarImagemPonto();
-    });
-
-    // Verifica se a API de reconhecimento facial está disponível
     if (window.electronAPI && typeof window.electronAPI.onRecognitionComplete === 'function') {
-        // Lida com o evento de reconhecimento facial completo
         window.electronAPI.onRecognitionComplete((result) => {
             if (result && result.nome && result.distancia) {
-                const matricula = result.nome; // Usa o 'nome' retornado como a matrícula
+                const matricula = result.nome;
 
                 console.log("Resultado do reconhecimento facial:", result);
-
-                popUpNotification('Face reconhecida com sucesso!'); // Notificação de sucesso
-                buscarFuncionarioPorMatricula(matricula) // Chama a função para buscar os dados do funcionário
+                popUpNotification('Face reconhecida com sucesso!');
+                buscarFuncionarioPorMatricula(matricula)
                     .then(funcionario => {
-                        const horaDaBatida = new Date().toISOString(); // Captura a hora atual
-                        enviarPontoParaBanco(funcionario, horaDaBatida); // Envia os dados para o banco
+                        const horaDaBatida = new Date().toISOString();
+                        enviarPontoParaBanco(funcionario, horaDaBatida);
                     })
                     .catch(error => {
                         showErrorAlert("Erro ao buscar dados do funcionário: " + error);
                     });
             } else {
-                erroDeFacial(); // Chama a função para exibir erro
+                erroDeFacial();
             }
         });
     }
 });
 
-// Função para exibir mensagens na tela
-function exibirMensagem(mensagem) {
-    const mensagemDiv = document.getElementById('mensagem');
-    mensagemDiv.innerText = mensagem;
-    mensagemDiv.classList.remove('hidden'); // Torna a mensagem visível
 
-    // Oculta a mensagem após um tempo
-    setTimeout(() => {
-        mensagemDiv.classList.add('hidden');
-    }, 5000); // Dura 5 segundos
-}
 
-// Uso da função de mensagem ao enviar a imagem
-success: (response) => {
-    console.log("Resposta da API ao cadastrar ponto:", response); // Log da resposta da API
-    if (response.success) {
-        exibirMensagem("Ponto cadastrado com sucesso!"); // Mensagem de sucesso
-        // ... restante do código
-    } else {
-        exibirMensagem(response.message); // Mensagem de erro
-    }
-}
+
 
 
 

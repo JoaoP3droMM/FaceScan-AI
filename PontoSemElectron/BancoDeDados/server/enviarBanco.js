@@ -3,30 +3,31 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const connectDB = require("../db");
 const { FuncionarioModel, PontosBatidosModel, UserModel } = require("../models");
+const fetch = require('node-fetch'); // Para fazer requisições ao servidor Python
 
 const app = express();
 const port = 3002;
 
 // Configuração do CORS
 app.use(cors({
-  origin: ['http://127.0.0.1:5500', 'http://localhost:5500']
+  origin: ['http://localhost:5000']
 }));
 
 // Aumenta o limite de payload para processar imagens base64 grandes
-app.use(bodyParser.json({ limit: '10mb' })); // Aumente o limite conforme necessário
+app.use(bodyParser.json({ limit: '10mb' })); 
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 connectDB();
 
 // Rota POST para cadastrar ponto batido
 app.post('/cadastrarPonto', async (req, res) => {
+  const { idfuncionario, nome, matricula, sync = false } = req.body;
+
+  if (!idfuncionario || !nome || !matricula) {
+    return res.status(400).json({ success: false, message: "Dados incompletos" });
+  }
+
   try {
-    const { idfuncionario, nome, matricula, sync = false } = req.body;
-
-    if (!idfuncionario || !nome || !matricula) {
-      return res.status(400).json({ success: false, message: "Dados incompletos" });
-    }
-
     const now = new Date();
     const novoPonto = new PontosBatidosModel({
       idfuncionario,
@@ -41,20 +42,20 @@ app.post('/cadastrarPonto', async (req, res) => {
     await novoPonto.save();
     res.status(201).json({ success: true, message: "Ponto cadastrado com sucesso" });
   } catch (err) {
-    console.error("Erro ao cadastrar ponto:", err.message, err.stack);
+    console.error("Erro ao cadastrar ponto:", err.message);
     res.status(500).json({ success: false, message: "Erro ao cadastrar ponto", error: err.message });
   }
 });
 
 // Rota POST para cadastrar funcionário
 app.post('/cadastrarFuncionario', async (req, res) => {
+  const { id, nome, matricula, cpf, filial, fotoBase64 } = req.body;
+
+  if (!id || !nome || !matricula || !cpf) {
+    return res.status(400).json({ success: false, message: "Dados incompletos" });
+  }
+
   try {
-    const { id, nome, matricula, cpf, filial, fotoBase64 } = req.body;
-
-    if (!id || !nome || !matricula || !cpf) {
-      return res.status(400).json({ success: false, message: "Dados incompletos" });
-    }
-
     const novoFuncionario = new FuncionarioModel({
       id,
       nome,
@@ -67,42 +68,20 @@ app.post('/cadastrarFuncionario', async (req, res) => {
     await novoFuncionario.save();
     res.status(201).json({ success: true, message: "Funcionário cadastrado com sucesso" });
   } catch (err) {
-    console.error("Erro ao cadastrar funcionário:", err);
-    res.status(500).json({ success: false, message: "Erro ao cadastrar funcionário" });
-  }
-});
-
-// Rota POST para cadastrar usuário
-app.post('/cadastrarUsuario', async (req, res) => {
-  try {
-    const { userName, password } = req.body;
-
-    if (!userName || !password) {
-      return res.status(400).json({ success: false, message: "Dados incompletos" });
-    }
-
-    const novoUsuario = new UserModel({
-      userName: userName,
-      password: password
-    });
-
-    await novoUsuario.save();
-    res.status(201).json({ success: true, message: "Usuário cadastrado com sucesso" });
-  } catch (err) {
-    console.error("Erro ao cadastrar usuário:", err);
-    res.status(500).json({ success: false, message: "Erro ao cadastrar usuário" });
+    console.error("Erro ao cadastrar funcionário:", err.message);
+    res.status(500).json({ success: false, message: "Erro ao cadastrar funcionário", error: err.message });
   }
 });
 
 // Rota POST para cadastrar foto em base64
 app.post('/cadastrarFoto', async (req, res) => {
+  const { idfuncionario, nome, matricula, fotoBase64 } = req.body;
+
+  if (!idfuncionario || !nome || !matricula || !fotoBase64) {
+    return res.status(400).json({ success: false, message: "Dados incompletos" });
+  }
+
   try {
-    const { idfuncionario, nome, matricula, fotoBase64 } = req.body;
-
-    if (!idfuncionario || !nome || !matricula || !fotoBase64) {
-      return res.status(400).json({ success: false, message: "Dados incompletos" });
-    }
-
     const funcionario = await FuncionarioModel.findOneAndUpdate(
       { matricula: String(matricula) },
       { $set: { foto: fotoBase64 } },
@@ -111,41 +90,40 @@ app.post('/cadastrarFoto', async (req, res) => {
 
     res.status(201).json({ success: true, message: "Foto cadastrada com sucesso", funcionario });
   } catch (err) {
-    console.error("Erro ao cadastrar foto:", err.message, err.stack);
+    console.error("Erro ao cadastrar foto:", err.message);
     res.status(500).json({ success: false, message: "Erro ao cadastrar foto", error: err.message });
   }
 });
 
-// Processar dados e atualizar status de sincronização
-async function processarDados() {
-  try {
-    const response = await axios.get('http://localhost:3000/info');
-    const dados = response.data;
+// Rota POST para enviar foto em base64 para o servidor Python
+app.post('/enviarFotoParaPython', async (req, res) => {
+  const { fotoBase64 } = req.body;
 
-    for (const item of dados) {
-      const id = item.idfuncionario;
-      const timeunix = item.timeunix;
-
-      try {
-        await axios.put(`http://localhost:3333/cartao/${id}`, {
-          datetime: timeunix
-        });
-
-        console.log(`PUT realizado com sucesso para o id ${id}`);
-
-        await PontosBatidosModel.updateOne(
-          { idfuncionario: id },
-          { $set: { sync: true } }
-        );
-        console.log(`Campo sync atualizado para o id ${id}`);
-      } catch (putError) {
-        console.error(`Erro ao fazer PUT para o id ${id}:`, putError);
-      }
-    }
-  } catch (error) {
-    console.error('Erro ao obter dados do endpoint:', error);
+  if (!fotoBase64) {
+    return res.status(400).json({ success: false, message: "Imagem em base64 é obrigatória" });
   }
-}
+
+  try {
+    // Envia a imagem para a API do Python
+    const response = await fetch('http://localhost:5000/receber-foto', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ imagem: fotoBase64 })
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro na resposta do servidor Python');
+    }
+
+    const data = await response.json();
+    res.status(200).json({ success: true, message: data.mensagem });
+  } catch (err) {
+    console.error("Erro ao enviar foto para o servidor Python:", err.message);
+    res.status(500).json({ success: false, message: "Erro ao enviar foto", error: err.message });
+  }
+});
 
 // Iniciar servidor
 app.listen(port, () => {

@@ -3,7 +3,7 @@ import {
     voltarPagina,
     popUpNotification,
     hideNotification,
-    telaDeLoadOn,
+    // telaDeLoadOn,
     telaDeLoadOff,
     showAlert,
     showErrorAlert,
@@ -17,6 +17,7 @@ import {
     capturarImagemPonto,
     erroDeFacial,
     erroNoCadastrado,
+    enviarImagemParaReconhecimento,
 } from './functions.js';
 
 $(document).ready(() => {

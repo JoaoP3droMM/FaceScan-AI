@@ -1,0 +1,23 @@
+2024-11-01 15:58:54,547 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-01 15:58:54,547 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-01 15:59:12,263 - INFO - 127.0.0.1 - - [01/Nov/2024 15:59:12] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 15:59:12,268 - INFO - 127.0.0.1 - - [01/Nov/2024 15:59:12] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:02:36,799 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-01 16:02:36,799 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-01 16:02:50,578 - INFO - 127.0.0.1 - - [01/Nov/2024 16:02:50] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:02:50,584 - INFO - Loading weights.
+2024-11-01 16:02:50,584 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:02:52,067 - INFO - 127.0.0.1 - - [01/Nov/2024 16:02:52] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:03:56,690 - INFO - 127.0.0.1 - - [01/Nov/2024 16:03:56] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:03:56,694 - INFO - Loading weights.
+2024-11-01 16:03:56,695 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:03:58,546 - INFO - 127.0.0.1 - - [01/Nov/2024 16:03:58] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:04:50,754 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-01 16:04:50,754 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-01 16:04:56,818 - INFO - 127.0.0.1 - - [01/Nov/2024 16:04:56] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:04:56,823 - INFO - Loading weights.
+2024-11-01 16:04:56,823 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:04:58,301 - INFO - 127.0.0.1 - - [01/Nov/2024 16:04:58] "POST /receber-foto HTTP/1.1" 200 -
