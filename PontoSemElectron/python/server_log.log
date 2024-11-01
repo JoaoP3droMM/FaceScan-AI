@@ -51,3 +51,49 @@
 2024-11-01 16:16:05,714 - INFO - Loading weights.
 2024-11-01 16:16:05,714 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
 2024-11-01 16:16:10,073 - INFO - 127.0.0.1 - - [01/Nov/2024 16:16:10] "[35m[1mPOST /receber-foto HTTP/1.1[0m" 500 -
+2024-11-01 16:23:11,234 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-01 16:23:11,234 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-01 16:23:24,480 - INFO - 127.0.0.1 - - [01/Nov/2024 16:23:24] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:23:24,488 - INFO - Loading weights.
+2024-11-01 16:23:24,489 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:23:28,451 - INFO - 127.0.0.1 - - [01/Nov/2024 16:23:28] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:24:16,417 - INFO - 127.0.0.1 - - [01/Nov/2024 16:24:16] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:24:16,423 - INFO - Loading weights.
+2024-11-01 16:24:16,423 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:24:20,631 - INFO - 127.0.0.1 - - [01/Nov/2024 16:24:20] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:25:21,172 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-01 16:25:21,172 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-01 16:25:42,374 - INFO - 127.0.0.1 - - [01/Nov/2024 16:25:42] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:25:42,382 - INFO - Loading weights.
+2024-11-01 16:25:42,382 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:25:46,388 - INFO - 127.0.0.1 - - [01/Nov/2024 16:25:46] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:28:14,967 - INFO - 127.0.0.1 - - [01/Nov/2024 16:28:14] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:28:14,981 - INFO - Loading weights.
+2024-11-01 16:28:14,981 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:28:19,375 - INFO - 127.0.0.1 - - [01/Nov/2024 16:28:19] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:28:36,592 - INFO - 127.0.0.1 - - [01/Nov/2024 16:28:36] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:28:36,598 - INFO - Loading weights.
+2024-11-01 16:28:36,599 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:28:40,647 - INFO - 127.0.0.1 - - [01/Nov/2024 16:28:40] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:29:08,054 - INFO - 127.0.0.1 - - [01/Nov/2024 16:29:08] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:29:08,065 - INFO - Loading weights.
+2024-11-01 16:29:08,065 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:29:12,461 - INFO - 127.0.0.1 - - [01/Nov/2024 16:29:12] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:29:46,230 - INFO - 127.0.0.1 - - [01/Nov/2024 16:29:46] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:29:46,242 - INFO - Loading weights.
+2024-11-01 16:29:46,242 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:29:50,546 - INFO - 127.0.0.1 - - [01/Nov/2024 16:29:50] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:30:02,558 - INFO - 127.0.0.1 - - [01/Nov/2024 16:30:02] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:30:02,572 - INFO - Loading weights.
+2024-11-01 16:30:02,572 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:30:06,388 - INFO - 127.0.0.1 - - [01/Nov/2024 16:30:06] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:30:46,464 - INFO - 127.0.0.1 - - [01/Nov/2024 16:30:46] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:30:46,478 - INFO - Loading weights.
+2024-11-01 16:30:46,479 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:30:50,676 - INFO - 127.0.0.1 - - [01/Nov/2024 16:30:50] "POST /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:31:02,471 - INFO - 127.0.0.1 - - [01/Nov/2024 16:31:02] "OPTIONS /receber-foto HTTP/1.1" 200 -
+2024-11-01 16:31:02,483 - INFO - Loading weights.
+2024-11-01 16:31:02,484 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-01 16:31:06,607 - INFO - 127.0.0.1 - - [01/Nov/2024 16:31:06] "POST /receber-foto HTTP/1.1" 200 -

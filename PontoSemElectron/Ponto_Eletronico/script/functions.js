@@ -199,14 +199,14 @@ export function capturarImagemPonto() {
     const context = canvas.getContext('2d');
 
     // Define a resolução desejada para a captura
-    canvas.width = 64;
-    canvas.height = 64;
+    canvas.width = 640;
+    canvas.height = 480;
 
-    // Desenha o frame do vídeo no canvas
-    context.drawImage(video, 0, 0, 64, 64);
+    // Desenha o frame do vídeo no canvas com a resolução aumentada
+    context.drawImage(video, 0, 0, 640, 480);
     const base64Image = canvas.toDataURL('image/png');
 
-    console.log("Imagem capturada em base64 (64x64):", base64Image);
+    console.log("Imagem capturada em base64 (640x480):", base64Image);
     enviarImagemParaReconhecimento(base64Image);
 }
 

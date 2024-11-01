@@ -7,6 +7,9 @@ from flask import Flask, jsonify, request
 from treinamento import exec_treinamento
 from reconhecimento import reconhecimentoFacial
 from flask_cors import CORS
+import cv2
+import numpy as np
+import json
 
 logging.basicConfig(
     filename='server_log.log',
@@ -32,12 +35,24 @@ collection = db['funcionarios']
 output_dir = os.path.join(os.path.dirname(__file__), 'temp')
 os.makedirs(output_dir, exist_ok=True)
 
-def decode_and_save_image(base64_string, filename):
+def decode_and_save_image(base64_string, filename, target_size=(640, 480)):
+    # Remover o cabeçalho do base64, se houver
     if base64_string.startswith("data:image"):
         base64_string = base64_string.split(",")[1]
+    
+    # Decodificar a imagem em base64
     image_data = base64.b64decode(base64_string)
-    with open(filename, 'wb') as f:
-        f.write(image_data)
+    
+    # Converter a imagem para o formato que o OpenCV possa ler
+    nparr = np.frombuffer(image_data, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    
+    # Redimensionar para a resolução desejada (160x160)
+    img_resized = cv2.resize(img, target_size)
+    
+    # Salvar a imagem redimensionada
+    cv2.imwrite(filename, img_resized)
+    print(f"Imagem salva e redimensionada para {target_size} em {filename}")
 
 @app.route('/executar-conversao', methods=['POST'])
 def executar_conversao():

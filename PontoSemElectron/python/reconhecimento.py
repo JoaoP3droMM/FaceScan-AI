@@ -33,7 +33,7 @@ def reconhecimentoFacial():
         return json.dumps({"status": "erro", "mensagem": "Arquivo de dados não encontrado."})
 
     # Limiar para correspondência válida
-    threshold = 1.5
+    threshold = 1.2
 
     def process_image(image_path):
         image = cv2.imread(image_path)
