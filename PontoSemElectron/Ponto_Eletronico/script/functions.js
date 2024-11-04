@@ -489,7 +489,14 @@ export async function verificaLogin(event, telaRedirecionada) {
                     icon: 'error',
                     title: 'Usuário ou senha inválidos',
                     text: 'Não foi possível realizar o login.',
-                    confirmButtonText: 'OK'
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast'
+                    }
                 })
                 userNameInput.val('')
                 passwordInput.val('')
@@ -500,84 +507,15 @@ export async function verificaLogin(event, telaRedirecionada) {
                 icon: 'error',
                 title: 'Erro de conexão',
                 text: 'Não foi possível realizar o login.',
-                confirmButtonText: 'OK',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
                 customClass: {
-                    confirmButton: 'swal-button-custom'
+                    popup: 'colored-toast'
                 }
             })
         }
-    }
-}
-
-
-
-// **************************************(((CADASTRO USUARIO)))*************************************************************************
-
-
-// Com o evento, a função cadastrarUsuario é chamada
-export function cadastrarUsuario(event) {
-    event.preventDefault()
-
-    const userNameInput = $('#username')
-    const passwordInput = $('#password')
-    let userName = userNameInput.val()
-    let password = passwordInput.val()
-
-    // Verificação da senha com pelo menos 4 caracteres
-    if (userName && password) {
-        if (password.length < 4) {
-            showErrorAlert('A senha deve ter pelo menos 4 caracteres.')
-            return
-        }
-
-        fetch('http://localhost:3002/cadastrarUsuario', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userName, password }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText)
-            }
-            return response.json() // Mudei para response.json()
-        })
-        .then(data => {
-            // Limpa os inputs
-            userNameInput.val('')
-            passwordInput.val('')
-
-            // Verifica se a resposta tem sucesso
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Usuário cadastrado com sucesso!',
-                    text: 'Agora você pode logar com este usuário.',
-                    confirmButtonText: 'OK'
-                })
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro!',
-                    text: data.message || 'Ocorreu um erro ao cadastrar o usuário.',
-                    confirmButtonText: 'OK'
-                })
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error)
-            // Limpa os inputs
-            userNameInput.val('')
-            passwordInput.val('') // Corrigido para limpar a senha
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro de conexão',
-                text: 'Não foi possível cadastrar o usuário.',
-                confirmButtonText: 'OK'
-            })
-        })
-    } else {
-        showErrorAlert('Preencha todos os dados!')
     }
 }
