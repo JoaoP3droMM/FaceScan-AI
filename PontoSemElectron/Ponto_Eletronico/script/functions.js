@@ -1,7 +1,7 @@
 // Importando as funções globais e variaveis
 import { voltarPagina, popUpNotification, hideNotification, showAlert, showErrorAlert } from './globalFunction.js'
 import { containerid, retorno, barra, icone } from './variables.js'
-
+let isTraining = false;
 // **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
 
 
@@ -53,6 +53,8 @@ export function capturarImagem() {
 
 // Função que envia os dados cadastrais para o MongoDB
 export function enviarDados(imagemBase64) {
+    isTraining = true; // Ativa o modo de treinamento no início da função
+
     const nome = $('#nomeCompleto').val().trim();
     const matricula = $('#matricula').val().trim();
     const cpf = $('#cpf').val().trim();
@@ -61,6 +63,7 @@ export function enviarDados(imagemBase64) {
 
     if (!nome || !matricula || !cpf) {
         popUpNotification('Por favor, preencha todos os campos!');
+        isTraining = false; // Desativa o modo de treinamento se houver erro de validação
         return;
     }
 
@@ -84,8 +87,7 @@ export function enviarDados(imagemBase64) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Envie a imagem para o servidor Python **somente** aqui se necessário
-            return fetch('http://localhost:5000/receber-foto-cadastro', {
+            return fetch('http://localhost:5000/cadastro', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ imagem: imagemBase64, matricula: matricula })
@@ -110,6 +112,9 @@ export function enviarDados(imagemBase64) {
             text: 'Erro ao cadastrar funcionário ou executar a conversão',
             confirmButtonText: 'OK'
         });
+    })
+    .finally(() => {
+        isTraining = false; // Garante que `isTraining` seja desativado após o término do processo
     });
 }
 
@@ -180,6 +185,11 @@ let videoStream; // Variável para armazenar o stream de vídeo
 
 // Função para iniciar o reconhecimento facial automaticamente ao carregar a página
 export function iniciarReconhecimentoAutomatico() {
+    if (isTraining) {
+        console.log("O sistema está em treinamento. Ponto não será registrado.");
+        return; // Interrompe a execução se estiver em treinamento
+    }
+
     popUpNotification('Iniciando reconhecimento facial...');
     const container = $('#container').get(0);
     if (container) {
@@ -195,7 +205,6 @@ export function iniciarReconhecimentoAutomatico() {
     };
 
     if (videoStream) {
-        // Se o stream já estiver ativo, não faz nada
         console.log("Câmera já ativada.");
         return;
     }
@@ -203,9 +212,9 @@ export function iniciarReconhecimentoAutomatico() {
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
             videoStream = stream; // Armazena o stream
-            video.srcObject = stream; // Define o stream de vídeo
-            video.play(); // Inicia a reprodução do vídeo
-            $('#video-container').removeClass('hidden'); // Mostra o container de vídeo
+            video.srcObject = stream;
+            video.play();
+            $('#video-container').removeClass('hidden');
         })
         .catch((error) => {
             console.error("Erro ao acessar a câmera:", error);
@@ -232,14 +241,19 @@ export function capturarImagemPonto() {
 }
 
 export function enviarImagemParaReconhecimento(base64Image, matricula) {
+    if (isTraining) {
+        console.log("Em treinamento, a imagem não será usada para bater o ponto.");
+        return; // Interrompe a execução se estiver em treinamento
+    }
+
     console.log("Enviando imagem para reconhecimento...");
-    $('.btnPonto').prop('disabled', true); // Desabilita o botão
+    $('.btnPonto').prop('disabled', true);
 
     $.ajax({
-        url: 'http://localhost:5000/ponto', // URL da API Python
+        url: 'http://localhost:5001/ponto',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ imagem: base64Image, matricula: matricula }), // Envia a imagem em base64 e a matrícula
+        data: JSON.stringify({ imagem: base64Image, matricula: matricula }),
         success: (response) => {
             console.log("Resposta de reconhecimento:", response);
             if (response.matricula) {
@@ -263,8 +277,8 @@ export function enviarImagemParaReconhecimento(base64Image, matricula) {
             showErrorAlert("Erro no reconhecimento facial. Tente novamente.");
         },
         complete: () => {
-            $('.btnPonto').prop('disabled', false); // Reabilita o botão após a chamada
-            console.log("Botão reabilitado."); // Adicione este log
+            $('.btnPonto').prop('disabled', false);
+            console.log("Botão reabilitado.");
         }
     });
 }

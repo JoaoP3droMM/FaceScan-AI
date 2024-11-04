@@ -1,0 +1,18 @@
+2024-11-04 16:05:22,908 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-04 16:05:22,908 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-04 16:06:38,235 - INFO - 127.0.0.1 - - [04/Nov/2024 16:06:38] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-04 16:06:38,243 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-04 16:06:38,244 - INFO - Loading weights.
+2024-11-04 16:06:38,244 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-04 16:06:40,271 - DEBUG - Creating converter from 3 to 5
+2024-11-04 16:06:43,980 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:08:56,981 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:11:12,148 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:13:27,316 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:15:42,484 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:17:57,653 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:20:12,820 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:21:23,653 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-04 16:21:23,654 - INFO - [33mPress CTRL+C to quit[0m

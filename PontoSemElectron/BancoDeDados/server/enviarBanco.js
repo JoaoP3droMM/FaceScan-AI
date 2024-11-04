@@ -78,7 +78,7 @@ app.post('/enviarFotoParaPython', async (req, res) => {
 
   try {
     // Envia a imagem para a API do Python
-    const response = await fetch('http://localhost:5000/receber-foto-cadastro', {
+    const response = await fetch('http://localhost:5000/cadastro', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
