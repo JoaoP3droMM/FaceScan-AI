@@ -14,6 +14,7 @@ body {
     margin: 0;
 }
 
+
 /* LOADER DE BARRAS */
 
 .loading-wave {
@@ -241,4 +242,9 @@ button#start-capture:enabled {
 
 .swal-button-custom:hover{
     background-color: #094623;
+}
+
+.colored-toast {
+    margin-top: 30px;
+    width: 200px;
 }

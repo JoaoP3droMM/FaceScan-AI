@@ -19,32 +19,64 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 connectDB();
 
-// Rota POST para cadastrar funcionário
-app.post('/cadastrarFuncionario', async (req, res) => {
-  const { id, nome, matricula, cpf, filial, fotoBase64, sync = false } = req.body;
+// Rota POST para cadastrar usuário
+app.post('/cadastrarUsuario', async (req, res) => {
+  const { username, password } = req.body;
+  
+  console.log("Dados recebidos no servidor:", req.body); // Adicione esta linha
 
-  if (!id || !nome || !matricula || !cpf) {
-    return res.status(400).json({ success: false, message: "Dados incompletos" });
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: "Username e senha são obrigatórios" });
   }
 
   try {
-    const novoFuncionario = new FuncionarioModel({
-      id,
-      nome,
-      matricula: String(matricula),
-      cpf,
-      filial,
-      foto: fotoBase64,
-      sync
+    const novoUsuario = new UserModel({
+      username,
+      password,
     });
 
-    await novoFuncionario.save();
-    res.status(201).json({ success: true, message: "Funcionário cadastrado com sucesso" });
+    await novoUsuario.save();
+    res.status(201).json({ success: true, message: "Usuário cadastrado com sucesso" });
   } catch (err) {
-    console.error("Erro ao cadastrar funcionário:", err.message);
-    res.status(500).json({ success: false, message: "Erro ao cadastrar funcionário", error: err.message });
+    console.error("Erro ao cadastrar usuário:", err.message);
+    res.status(500).json({ success: false, message: "Erro ao cadastrar usuário", error: err.message });
   }
 });
+
+// Rota POST para cadastrar usuário
+app.post('/cadastrarUsuario', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+      return res.status(400).json({ success: false, message: "Username e senha são obrigatórios" });
+  }
+
+  try {
+      // Verifica se o usuário já existe
+      const usuarioExistente = await UserModel.findOne({ username });
+
+      if (usuarioExistente) {
+          return res.status(400).json({ success: false, message: "O usuário já existe" });
+      }
+
+      // Aqui você pode usar bcrypt para hash da senha antes de salvar
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      const novoUsuario = new UserModel({
+          username,
+          password: hashedPassword,
+      });
+
+      await novoUsuario.save();
+      res.status(201).json({ success: true, message: "Usuário cadastrado com sucesso" });
+  } catch (err) {
+      console.error("Erro ao cadastrar usuário:", err.message);
+      res.status(500).json({ success: false, message: "Erro ao cadastrar usuário", error: err.message });
+  }
+});
+
+
+
 
 // Rota POST para cadastrar foto em base64
 app.post('/cadastrarFoto', async (req, res) => {

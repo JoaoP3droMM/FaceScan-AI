@@ -2,7 +2,6 @@
 
 /* ********************************************************************************** */
 // Import das funções
-import { voltarPagina, popUpNotification, hideNotification, telaDeLoadOn, telaDeLoadOff, showAlert, showErrorAlert } from './globalFunction.js'
 import { usuario, senha, pagina_ponto, verificaLogin } from './functions.js'
 
 

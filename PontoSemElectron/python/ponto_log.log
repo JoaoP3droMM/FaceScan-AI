@@ -26,3 +26,11 @@
 2024-11-04 16:25:06,068 - DEBUG - Creating converter from 3 to 5
 2024-11-04 16:25:11,172 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
 2024-11-04 16:25:11,271 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:27:27,008 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:27:27,011 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 16:29:42,165 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-04 16:29:42,166 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-04 16:29:42,207 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-04 16:29:42,210 - INFO - 127.0.0.1 - - [04/Nov/2024 16:29:42] "POST /ponto HTTP/1.1" 200 -
+2024-11-04 16:29:42,225 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-04 16:29:42,227 - INFO - 127.0.0.1 - - [04/Nov/2024 16:29:42] "POST /ponto HTTP/1.1" 200 -

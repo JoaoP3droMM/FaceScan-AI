@@ -53,70 +53,155 @@ export function capturarImagem() {
 
 // Função que envia os dados cadastrais para o MongoDB
 export function enviarDados(imagemBase64) {
-    isTraining = true; // Ativa o modo de treinamento no início da função
+    // Captura dos campos comuns
+    const nome = $('#nomeCompleto').length ? $('#nomeCompleto').val().trim() : '';
+    const matricula = $('#matricula').length ? $('#matricula').val().trim() : '';
+    const cpf = $('#cpf').length ? $('#cpf').val().trim() : '';
+    const id = $('#idfunc').length ? $('#idfunc').val().trim() : '';
+    const filial = $('#filial').length ? $('#filial').val().trim() : '';
 
-    const nome = $('#nomeCompleto').val().trim();
-    const matricula = $('#matricula').val().trim();
-    const cpf = $('#cpf').val().trim();
-    const id = $('#idfunc').val().trim();
-    const filial = $('#filial').val().trim();
+    // Captura dos campos de cadastro de usuário
+    const username = $('#username').length ? $('#username').val().trim() : '';
+    const password = $('#password').length ? $('#password').val().trim() : '';
 
-    if (!nome || !matricula || !cpf) {
-        popUpNotification('Por favor, preencha todos os campos!');
-        isTraining = false; // Desativa o modo de treinamento se houver erro de validação
-        return;
-    }
+    // Verificação condicional para determinar o tipo de envio
+    if (nome && matricula && cpf) {
+        // Procede com o cadastro de funcionários
+        const dadosFuncionario = {
+            id,
+            nome,
+            matricula,
+            cpf,
+            filial,
+            fotoBase64: imagemBase64,
+            sync: false
+        };
 
-    const dadosFuncionario = { 
-        id, 
-        nome, 
-        matricula, 
-        cpf, 
-        filial, 
-        fotoBase64: imagemBase64,
-        sync: false 
-    };
-
-    $('#video-container').addClass('hidden');
-
-    fetch('http://localhost:3002/cadastrarFuncionario', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dadosFuncionario)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            return fetch('http://localhost:5000/cadastro', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ imagem: imagemBase64, matricula: matricula })
+        fetch('http://localhost:3002/cadastrarFuncionario', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosFuncionario)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Funcionário cadastrado com sucesso!',
+                    text: 'Agora você pode bater o ponto usando reconhecimento facial!',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    $('#nomeCompleto').val('');
+                    $('#matricula').val('');
+                    $('#cpf').val('');
+                    $('#idfunc').val('');
+                    $('#filial').val('');
+                });
+            } else {
+                throw new Error('Erro ao cadastrar funcionário');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            Swal.fire({
+                icon: 'error',
+                text: 'Erro ao cadastrar funcionário.',
+                confirmButtonText: 'OK'
             });
-        } else {
-            throw new Error('Erro ao cadastrar funcionário');
+        });
+
+    } else if (username && password) {
+        if (password.length < 4) {
+            Swal.fire({
+                icon: 'error',
+                text: 'A senha deve ter pelo menos 4 caracteres.',
+                confirmButtonText: 'OK'
+            });
+            return;
         }
-    })
-    .then(response => response.json())
-    .then(() => {
+    
+        // Certifique-se de que ambos `username` e `password` estão presentes na estrutura do corpo JSON
+        const dadosUsuario = {
+            username: username,
+            password: password
+        };
+        console.log("Dados a serem enviados:", dadosUsuario);
+        fetch('http://localhost:3002/cadastrarUsuario', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosUsuario)
+        })
+        .then(response => response.json()) // Transformar a resposta em JSON
+        .then(data => {
+            if (data.success) {
+                // Limpa os campos de username e password após o sucesso
+                console.log("Username:", username);
+                console.log("Password:", password);
+                $('#username').val('');
+                $('#password').val('');
+                
+                // Exibe o toast de sucesso
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuário cadastrado com sucesso!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast'
+                    }
+                });
+            } else {
+                // Aqui você lida com o caso onde o usuário já existe
+                if (data.message === "O usuário já existe") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Atenção!',
+                        text: 'Usuário já cadastrado.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'colored-toast'
+                        }
+                    });
+                } else {
+                    throw new Error(data.message || 'Erro ao cadastrar usuário');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro de conexão',
+                text: 'Ocorreu um erro ao conectar ao servidor.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'colored-toast'
+                }
+            });
+        });
+
+    } else {
+        // Se nenhum conjunto de campos estiver completo, avisa o usuário
         Swal.fire({
-            icon: 'success',
-            title: 'Funcionário cadastrado com sucesso!',
-            text: 'Agora você pode bater o ponto usando reconhecimento facial!',
+            icon: 'warning',
+            text: 'Por favor, preencha os campos necessários!',
             confirmButtonText: 'OK'
         });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            icon: 'error',
-            text: 'Erro ao cadastrar funcionário ou executar a conversão',
-            confirmButtonText: 'OK'
-        });
-    })
-    .finally(() => {
-        isTraining = false; // Garante que `isTraining` seja desativado após o término do processo
-    });
+    }
 }
+
+
 
 
 

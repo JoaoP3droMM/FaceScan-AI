@@ -4,16 +4,16 @@
 // Import das funções
 
 // Funções Globais
-import { voltarPagina, popUpNotification, hideNotification, telaDeLoadOn, telaDeLoadOff, showAlert, showErrorAlert } from './globalFunction.js'
-import { cadastrarUsuario } from './functions.js'
+import { voltarPagina } from './globalFunction.js'
+import { cadastrarUsuario, enviarDados } from './functions.js'
 
 
 /* ********************************************************************************** */
 // Adiciona o evendo ao clicar no botão cadastrar
-$('#registration-form').on('submit', cadastrarUsuario,  function(event) {
-    event.preventDefault();
-    // enviarDados();
-})
+$('#registration-form').on('submit', function(event) {
+    event.preventDefault(); // Impede o envio do formulário
+    enviarDados(); // Chama a função que envia os dados
+});
 
 // Voltando para página inicial ao clicar em sair
 document.addEventListener('DOMContentLoaded', () => {

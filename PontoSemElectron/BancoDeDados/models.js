@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema({
-  userName: String,
-  password: String,
-})
+  username: { type: String, required: true, unique: true }, // Certifique-se de que 'unique' está definido
+  password: { type: String, required: true } // Lembre-se de aplicar hashing na senha antes de salvar
+});
 
 const funcionarioSchema = new mongoose.Schema({
   id: Number,
@@ -25,7 +25,7 @@ const pontosBatidosSchema = new mongoose.Schema({
   time: String,
 })
 
-const UserModel = mongoose.model("usuarios", userSchema)
+const UserModel = mongoose.model('User', userSchema);
 const FuncionarioModel = mongoose.model("funcionarios", funcionarioSchema)
 const PontosBatidosModel = mongoose.model("pontos_batidos", pontosBatidosSchema)
 
