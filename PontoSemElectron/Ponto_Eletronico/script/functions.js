@@ -176,7 +176,8 @@ export async function fetchFuncionarioInfo() {
 
 // **************************************(((PONTO)))*************************************************************************
 
-// Função para iniciar o reconhecimento facial automaticamente ao carregar a página
+let videoStream; // Variável para armazenar o stream de vídeo
+
 // Função para iniciar o reconhecimento facial automaticamente ao carregar a página
 export function iniciarReconhecimentoAutomatico() {
     popUpNotification('Iniciando reconhecimento facial...');
@@ -193,8 +194,15 @@ export function iniciarReconhecimentoAutomatico() {
         video: { facingMode: 'user' } // Usar a câmera frontal
     };
 
+    if (videoStream) {
+        // Se o stream já estiver ativo, não faz nada
+        console.log("Câmera já ativada.");
+        return;
+    }
+
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
+            videoStream = stream; // Armazena o stream
             video.srcObject = stream; // Define o stream de vídeo
             video.play(); // Inicia a reprodução do vídeo
             $('#video-container').removeClass('hidden'); // Mostra o container de vídeo
@@ -219,22 +227,24 @@ export function capturarImagemPonto() {
     context.drawImage(video, 0, 0, 640, 480);
     const base64Image = canvas.toDataURL('image/png');
 
-    // console.log("Imagem capturada em base64 (640x480):", base64Image);
-    enviarImagemParaReconhecimento(base64Image);
+    const matricula = "123456"; // Aqui você deve pegar a matrícula correta do contexto
+    enviarImagemParaReconhecimento(base64Image, matricula);
 }
 
-export function enviarImagemParaReconhecimento(base64Image) {
+export function enviarImagemParaReconhecimento(base64Image, matricula) {
     console.log("Enviando imagem para reconhecimento...");
+    $('.btnPonto').prop('disabled', true); // Desabilita o botão
+
     $.ajax({
-        url: 'http://localhost:5000/receber-foto-ponto', // URL da API Python
+        url: 'http://localhost:5000/ponto', // URL da API Python
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ imagem: base64Image }), // Envia a imagem em base64
+        data: JSON.stringify({ imagem: base64Image, matricula: matricula }), // Envia a imagem em base64 e a matrícula
         success: (response) => {
             console.log("Resposta de reconhecimento:", response);
-            if (response.matricula) { // Verifica se a matrícula foi retornada
+            if (response.matricula) {
                 alert("Foto recebida com sucesso");
-                buscarFuncionarioPorMatricula(response.matricula) // Busca funcionário pela matrícula
+                buscarFuncionarioPorMatricula(response.matricula)
                     .then(funcionario => {
                         const horaDaBatida = new Date().toISOString();
                         enviarPontoParaBanco(funcionario, horaDaBatida);
@@ -251,44 +261,10 @@ export function enviarImagemParaReconhecimento(base64Image) {
         error: (xhr, status, error) => {
             console.error("Erro ao enviar imagem:", error);
             showErrorAlert("Erro no reconhecimento facial. Tente novamente.");
-        }
-    });
-}
-
-
-// Função para enviar o ponto ao banco de dados
-export function enviarPontoParaBanco(funcionario, horaDaBatida) {
-    const data = {
-        idfuncionario: funcionario.id,
-        nome: funcionario.nome,
-        matricula: funcionario.matricula,
-        sync: false,
-        timeunix: Math.floor(Date.now() / 1000),
-        date: horaDaBatida.split('T')[0],
-        time: horaDaBatida.split('T')[1].split('.')[0],
-    };
-
-    console.log("Enviando ponto para o banco:", data); // Verifique se os dados estão corretos
-
-    $.ajax({
-        url: 'http://localhost:3002/cadastrarPonto',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: (response) => {
-            console.log("Resposta ao cadastrar ponto:", response);
-            if (response.success) {
-                setTimeout(() => {
-                    telaDeResposta(funcionario.nome, funcionario.cpf);
-                }, 100);
-                popUpNotification(response.message);
-            } else {
-                showErrorAlert(response.message);
-            }
         },
-        error: (xhr, status, error) => {
-            console.error("Erro ao cadastrar ponto:", error);
-            showErrorAlert("Erro ao cadastrar ponto. Tente novamente mais tarde.");
+        complete: () => {
+            $('.btnPonto').prop('disabled', false); // Reabilita o botão após a chamada
+            console.log("Botão reabilitado."); // Adicione este log
         }
     });
 }

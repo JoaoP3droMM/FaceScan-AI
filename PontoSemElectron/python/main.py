@@ -2,6 +2,7 @@ import os
 import base64
 import logging
 import sys
+from datetime import datetime, timedelta
 from pymongo import MongoClient
 from flask import Flask, jsonify, request
 from treinamento import exec_treinamento
@@ -79,7 +80,8 @@ def receber_foto_cadastro():
 
         # Chame o treinamento sem registrar ponto
         print('Iniciando treinamento com a nova foto registrada...')
-        exec_treinamento(cadastrar=True)  # Adicione um parâmetro para controlar o registro
+        exec_treinamento(modo="cadastro", registrar_ponto=False)
+        print('Treinamento finalizado!!!')
 
         return jsonify({"status": "sucesso", "mensagem": "Foto recebida e atualizada com sucesso!"}), 200
 
@@ -89,38 +91,60 @@ def receber_foto_cadastro():
 
 
 
-@app.route('/receber-foto-ponto', methods=['POST'])
-def receber_foto_ponto():
+@app.route('/ponto', methods=['POST'])
+def ponto():
     try:
         data = request.get_json()
         foto_base64 = data.get("imagem")
+        matricula = data.get("matricula")
 
-        if not foto_base64:
-            logging.error("Imagem em base64 não fornecida.")
-            return jsonify({"status": "erro", "mensagem": "Imagem em base64 é obrigatória"}), 400
+        if not foto_base64 or not matricula:
+            logging.error("Imagem em base64 ou matrícula não fornecida.")
+            return jsonify({"status": "erro", "mensagem": "Imagem em base64 e matrícula são obrigatórias"}), 400
 
         filename = os.path.join(output_dir, "foto_ponto.jpg")
         decode_and_save_image(foto_base64, filename)
 
-        resultado = reconhecimentoFacial()
-        logging.info(f"Resultado do reconhecimento facial: {resultado}")
+        # Chamada para reconhecimentoFacial no modo "ponto"
+        resultado = reconhecimentoFacial(modo="ponto")
 
-        resultado_dict = json.loads(resultado)
-        nome_reconhecido = resultado_dict.get("nome")
-        distancia = resultado_dict.get("distancia")
-
-        print(f'O nome identificado foi {nome_reconhecido} com distância {distancia}')
-        print(f'Iniciando batida de ponto para a matrícula: {nome_reconhecido}...')
-        registrar_ponto(nome_reconhecido)
-        print('Sincronizando pontos batidos...')
-        sincronizar_pontos()
+        # Verifica se o resultado é um dicionário conforme o esperado
+        if isinstance(resultado, dict):
+            nome_reconhecido = resultado.get('nome')
+            distancia = resultado.get('distancia')
+        else:
+            logging.error("O resultado do reconhecimento facial não é um dicionário.")
+            return jsonify({"status": "erro", "mensagem": "Erro no reconhecimento facial"}), 500
 
         if not nome_reconhecido:
-            logging.error("Matrícula não encontrada no resultado do reconhecimento.")
-            return jsonify({"status": "erro", "mensagem": "Matrícula não reconhecida."}), 404
+            logging.warning("Nenhum rosto reconhecido.")
+            return jsonify({"status": "erro", "mensagem": "Rosto não reconhecido."}), 404
 
-        logging.info(f"Matrícula reconhecida: {nome_reconhecido}")
+        # Timestamp atual
+        agora = datetime.now()
 
+        # Timestamp limite de 5 minutos atrás
+        limite_tempo = agora - timedelta(minutes=5)
+
+        # Verifica se há batida recente para evitar duplicidade
+        batida_recente = db['pontos'].find_one({
+            "codigo_funcionario": matricula,
+            "timestamp": {"$gte": limite_tempo}
+        })
+
+        if batida_recente:
+            logging.warning(f"Batida duplicada detectada para a matrícula: {matricula}.")
+            return jsonify({"status": "erro", "mensagem": "Batida de ponto já registrada."}), 409
+
+        # Registrar ponto no banco
+        registrar_ponto(nome_reconhecido)
+        logging.info(f'Batida de ponto registrada para a matrícula: {nome_reconhecido}.')
+
+        # Sincronizar pontos (chamada de função que sincroniza com o sistema)
+        sincronizar_pontos()
+        logging.info('Sincronização de pontos concluída.')
+
+        # Buscar informações do funcionário
         buscar_funcionario_url = f"http://localhost:3000/buscarFuncionario/{nome_reconhecido}"
         response = requests.get(buscar_funcionario_url)
 
@@ -133,36 +157,7 @@ def receber_foto_ponto():
             return jsonify({"status": "erro", "mensagem": response.json().get("message", "Erro ao buscar funcionário.")}), 500
 
     except Exception as e:
-        logging.error(f"Erro ao receber foto para ponto: {e}")
-        return jsonify({"status": "erro", "mensagem": str(e)}), 500
-
-@app.route('/reconhecimento', methods=['POST'])
-def reconhecimento():
-    try:
-        data = request.get_json()
-        matricula = data.get("matricula")
-
-        if not matricula:
-            logging.error("Matrícula não fornecida para reconhecimento.")
-            return jsonify({"status": "erro", "mensagem": "Matrícula é obrigatória"}), 400
-
-        funcionario = collection.find_one({"matricula": matricula})
-
-        if funcionario:
-            logging.info(f"Funcionário encontrado: {funcionario}")
-            return jsonify({
-                "status": "sucesso",
-                "funcionario": {
-                    "nome": funcionario.get("nome"),
-                    "matricula": funcionario.get("matricula"),
-                    "id": str(funcionario.get("_id"))
-                }
-            }), 200
-        else:
-            logging.warning(f"Funcionário com matrícula {matricula} não encontrado.")
-            return jsonify({"status": "erro", "mensagem": "Funcionário não encontrado"}), 404
-    except Exception as e:
-        logging.error(f"Erro ao processar reconhecimento: {e}")
+        logging.error(f"Erro ao receber foto para batida de ponto: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 if __name__ == "__main__":

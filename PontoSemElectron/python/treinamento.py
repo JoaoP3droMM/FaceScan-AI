@@ -6,27 +6,20 @@ from keras_facenet import FaceNet
 import pickle
 import logging
 
-def exec_treinamento(): 
-    # Configuração do logging
+def exec_treinamento(modo="cadastro", registrar_ponto=False):
     logging.basicConfig(level=logging.INFO)
 
-    # Obtendo o diretório atual do script
     script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Carregando o Haarcascade
     HaarCascade = cv2.CascadeClassifier(os.path.join(script_dir, 'haarcascade_frontalface_default.xml'))
     if HaarCascade.empty():
         logging.error("Erro ao carregar o Haarcascade. Verifique o caminho do arquivo.")
         return
 
-    # Inicializando o modelo FaceNet
     MyFaceNet = FaceNet()
     database = {}
 
-    # Diretório das imagens
     folder = os.path.join(script_dir, 'fotos')
 
-    # Processa cada arquivo no diretório
     for filename in os.listdir(folder):
         filepath = os.path.join(folder, filename)
         
@@ -38,7 +31,6 @@ def exec_treinamento():
 
             logging.info(f"Imagem '{filename}' carregada com sucesso.")
 
-            # Detectando rostos na imagem
             faces = HaarCascade.detectMultiScale(img, 1.1, 4)
 
             if len(faces) > 0:
@@ -51,19 +43,23 @@ def exec_treinamento():
                 face_array = asarray(face)
                 face_array = expand_dims(face_array, axis=0)
                 signature = MyFaceNet.embeddings(face_array)
-
-                # Adicionando a assinatura ao banco de dados
                 database[os.path.splitext(filename)[0]] = signature
             else:
                 logging.warning(f"Nenhum rosto detectado na imagem '{filename}'.")
         else:
             logging.warning(f"'{filename}' não é um arquivo válido.")
 
-    # Salvando o banco de dados em 'data.pkl'
     data_path = os.path.join(script_dir, "data.pkl")
     with open(data_path, "wb") as myfile:
         pickle.dump(database, myfile)
 
     logging.info(f"Processamento concluído e banco de dados salvo em '{data_path}'.")
+
+    # Verifica o modo antes de retornar
+    if modo == "ponto":
+        print("Treinamento concluído no modo ponto.")
+    else:
+        print("Treinamento concluído no modo cadastro, sem reconhecimento de ponto.")
+
 
 exec_treinamento()

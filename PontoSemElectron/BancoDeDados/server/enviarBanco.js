@@ -19,34 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 connectDB();
 
-// Rota POST para cadastrar ponto batido
-app.post('/cadastrarPonto', async (req, res) => {
-  const { idfuncionario, nome, matricula, sync = false } = req.body;
-
-  if (!idfuncionario || !nome || !matricula) {
-    return res.status(400).json({ success: false, message: "Dados incompletos" });
-  }
-
-  try {
-    const now = new Date();
-    const novoPonto = new PontosBatidosModel({
-      idfuncionario,
-      nome,
-      matricula: String(matricula),
-      sync,
-      timeunix: Math.floor(now.getTime() / 1000),
-      date: now.toISOString().split('T')[0],
-      time: now.toTimeString().split(' ')[0],
-    });
-
-    await novoPonto.save();
-    res.status(201).json({ success: true, message: "Ponto cadastrado com sucesso" });
-  } catch (err) {
-    console.error("Erro ao cadastrar ponto:", err.message);
-    res.status(500).json({ success: false, message: "Erro ao cadastrar ponto", error: err.message });
-  }
-});
-
 // Rota POST para cadastrar funcionário
 app.post('/cadastrarFuncionario', async (req, res) => {
   const { id, nome, matricula, cpf, filial, fotoBase64, sync = false } = req.body;
