@@ -56,44 +56,44 @@ export function hideNotification() {
     }
 }
 
-// Função global da tela de carregamento para uso através da classe hidden
-export function telaDeLoadOn() {
-    const load = $('#telacarregamento')
-    const container = $('#containerid') // Use o ID correto do seu container de formulário
+// // Função global da tela de carregamento para uso através da classe hidden
+// export function telaDeLoadOn() {
+//     const load = $('#telacarregamento')
+//     const container = $('#containerid') // Use o ID correto do seu container de formulário
 
-    if (load.length) {
-        load.removeClass("hidden") // Remove a classe "hidden" da tela de carregamento
-    } else {
-        console.error("Elemento 'telacarregamento' não encontrado.")
-    }
+//     if (load.length) {
+//         load.removeClass("hidden") // Remove a classe "hidden" da tela de carregamento
+//     } else {
+//         console.error("Elemento 'telacarregamento' não encontrado.")
+//     }
 
-    if (container.length) {
-        container.addClass("hidden") // Adiciona a classe "hidden" para ocultar o formulário
-    } else {
-        console.error("Elemento 'container' não encontrado.")
-    }
-}
+//     if (container.length) {
+//         container.addClass("hidden") // Adiciona a classe "hidden" para ocultar o formulário
+//     } else {
+//         console.error("Elemento 'container' não encontrado.")
+//     }
+// }
 
-export function telaDeLoadOff() {
-    const load = $('#telacarregamento')
-    const container = $('#containerid')
+// export function telaDeLoadOff() {
+//     const load = $('#telacarregamento')
+//     const container = $('#containerid')
 
-    if (load.length) {
-        load.addClass("hidden") // Oculta a tela de carregamento
-    } else {
-        console.error("Elemento 'telacarregamento' não encontrado.")
-    }
+//     if (load.length) {
+//         load.addClass("hidden") // Oculta a tela de carregamento
+//     } else {
+//         console.error("Elemento 'telacarregamento' não encontrado.")
+//     }
 
-    if (container.length) {
-        container.removeClass("hidden") // Mostra o formulário
-    } else {
-        console.error("Elemento 'container' não encontrado.")
-    }
+//     if (container.length) {
+//         container.removeClass("hidden") // Mostra o formulário
+//     } else {
+//         console.error("Elemento 'container' não encontrado.")
+//     }
 
-    // Limpar os campos de input
-    $('#matricula').val('') 
-    $('#cpf').val('')       
-    $('#nomeCompleto').val('') 
-    $('#filial').val('')    
-    $('#idfunc').val('') 
-}
+//     // Limpar os campos de input
+//     $('#matricula').val('') 
+//     $('#cpf').val('')       
+//     $('#nomeCompleto').val('') 
+//     $('#filial').val('')    
+//     $('#idfunc').val('') 
+// }

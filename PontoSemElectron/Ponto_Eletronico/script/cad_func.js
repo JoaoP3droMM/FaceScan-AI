@@ -1,4 +1,4 @@
-import { voltarPagina, popUpNotification, telaDeLoadOn, telaDeLoadOff } from './globalFunction.js';
+import { voltarPagina, popUpNotification } from './globalFunction.js';
 import { toggleButton, enviarDados, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
 
 // Voltar à página inicial

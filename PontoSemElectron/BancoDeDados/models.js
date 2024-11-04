@@ -12,6 +12,7 @@ const funcionarioSchema = new mongoose.Schema({
   cpf: Number,
   filial: Number,
   foto: String,
+  sync: {type: Boolean, default: false}
 })
 
 const pontosBatidosSchema = new mongoose.Schema({

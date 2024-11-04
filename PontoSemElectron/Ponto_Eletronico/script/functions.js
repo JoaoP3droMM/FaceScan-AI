@@ -1,5 +1,5 @@
 // Importando as funções globais e variaveis
-import { voltarPagina, popUpNotification, hideNotification, telaDeLoadOn, telaDeLoadOff, showAlert, showErrorAlert } from './globalFunction.js'
+import { voltarPagina, popUpNotification, hideNotification, showAlert, showErrorAlert } from './globalFunction.js'
 import { containerid, retorno, barra, icone } from './variables.js'
 
 // **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
@@ -64,7 +64,15 @@ export function enviarDados(imagemBase64) {
         return;
     }
 
-    const dadosFuncionario = { id, nome, matricula, cpf, filial, fotoBase64: imagemBase64 };
+    const dadosFuncionario = { 
+        id, 
+        nome, 
+        matricula, 
+        cpf, 
+        filial, 
+        fotoBase64: imagemBase64,
+        sync: false 
+    };
 
     $('#video-container').addClass('hidden');
 
@@ -76,9 +84,11 @@ export function enviarDados(imagemBase64) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            return fetch('http://localhost:5000/receber-foto', {
+            // Envie a imagem para o servidor Python **somente** aqui se necessário
+            return fetch('http://localhost:5000/receber-foto-cadastro', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ imagem: imagemBase64, matricula: matricula })
             });
         } else {
             throw new Error('Erro ao cadastrar funcionário');
@@ -102,6 +112,8 @@ export function enviarDados(imagemBase64) {
         });
     });
 }
+
+
 
 // Impede entrada não numérica em Matrícula e CPF
 export function enforceNumericInput(event) {
@@ -214,7 +226,7 @@ export function capturarImagemPonto() {
 export function enviarImagemParaReconhecimento(base64Image) {
     console.log("Enviando imagem para reconhecimento...");
     $.ajax({
-        url: 'http://localhost:5000/receber-foto', // URL da API Python
+        url: 'http://localhost:5000/receber-foto-ponto', // URL da API Python
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ imagem: base64Image }), // Envia a imagem em base64
@@ -331,13 +343,14 @@ $(document).ready(() => {
     }
 });
 
-
-
-
-
-
-
-
+export function mostrarConfiguracoes() {
+    const configuracoes = document.querySelector('.configuracoes');
+    if (configuracoes) {
+        configuracoes.classList.toggle('show'); // Alterna a classe 'show' para mostrar/ocultar o menu
+    } else {
+        console.error("Elemento com a classe 'configuracoes' não encontrado.");
+    }
+}
 
 // **************************************(((TELAS DE LOGIN)))*************************************************************************
 

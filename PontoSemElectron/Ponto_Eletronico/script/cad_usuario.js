@@ -10,7 +10,10 @@ import { cadastrarUsuario } from './functions.js'
 
 /* ********************************************************************************** */
 // Adiciona o evendo ao clicar no botão cadastrar
-$('#registration-form').on('submit', cadastrarUsuario)
+$('#registration-form').on('submit', cadastrarUsuario,  function(event) {
+    event.preventDefault();
+    // enviarDados();
+})
 
 // Voltando para página inicial ao clicar em sair
 document.addEventListener('DOMContentLoaded', () => {

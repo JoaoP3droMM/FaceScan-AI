@@ -10,7 +10,7 @@ const port = 3002;
 
 // Configuração do CORS
 app.use(cors({
-  origin: ['http://localhost:5000']
+  origin: ['http://localhost:5000', 'http://localhost:3000', 'http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:3002']
 }));
 
 // Aumenta o limite de payload para processar imagens base64 grandes
@@ -49,7 +49,7 @@ app.post('/cadastrarPonto', async (req, res) => {
 
 // Rota POST para cadastrar funcionário
 app.post('/cadastrarFuncionario', async (req, res) => {
-  const { id, nome, matricula, cpf, filial, fotoBase64 } = req.body;
+  const { id, nome, matricula, cpf, filial, fotoBase64, sync = false } = req.body;
 
   if (!id || !nome || !matricula || !cpf) {
     return res.status(400).json({ success: false, message: "Dados incompletos" });
@@ -62,7 +62,8 @@ app.post('/cadastrarFuncionario', async (req, res) => {
       matricula: String(matricula),
       cpf,
       filial,
-      foto: fotoBase64
+      foto: fotoBase64,
+      sync
     });
 
     await novoFuncionario.save();
@@ -105,7 +106,7 @@ app.post('/enviarFotoParaPython', async (req, res) => {
 
   try {
     // Envia a imagem para a API do Python
-    const response = await fetch('http://localhost:5000/receber-foto', {
+    const response = await fetch('http://localhost:5000/receber-foto-cadastro', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
