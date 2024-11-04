@@ -34,3 +34,13 @@
 2024-11-04 16:29:42,210 - INFO - 127.0.0.1 - - [04/Nov/2024 16:29:42] "POST /ponto HTTP/1.1" 200 -
 2024-11-04 16:29:42,225 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
 2024-11-04 16:29:42,227 - INFO - 127.0.0.1 - - [04/Nov/2024 16:29:42] "POST /ponto HTTP/1.1" 200 -
+2024-11-04 17:56:43,035 - INFO - 127.0.0.1 - - [04/Nov/2024 17:56:43] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-04 17:56:43,082 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-04 17:56:43,082 - INFO - Loading weights.
+2024-11-04 17:56:43,083 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-04 17:56:48,142 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-04 17:57:19,935 - INFO - 127.0.0.1 - - [04/Nov/2024 17:57:19] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-04 17:57:19,947 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-04 17:57:19,947 - INFO - Loading weights.
+2024-11-04 17:57:19,947 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-04 17:57:24,864 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000

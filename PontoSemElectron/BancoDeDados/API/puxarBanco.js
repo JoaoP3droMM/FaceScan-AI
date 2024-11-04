@@ -26,7 +26,7 @@ app.get("/usuarios", async (req, res) => {
 app.post("/verificarLogin", async (req, res) => {
   const { username, password } = req.body
   try {
-    const usuario = await UserModel.findOne({ userName: username, password })
+    const usuario = await UserModel.findOne({ username, password })
     if (usuario) {
       res.json({ success: true, autenticado: true })
     } else {
