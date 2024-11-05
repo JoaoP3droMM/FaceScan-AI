@@ -262,7 +262,7 @@ export function mostrarConfiguracoes() {
 
 // **************************************(((CADASTRO USUARIO)))*************************************************************************
 
-
+// Cadastra os usuários do sistema no banco de dados
 export function cadastarUsu() {
     // Captura os campos de cadastro de usuário
     const username = novoUsuario.length ? novoUsuario.val().trim() : '';

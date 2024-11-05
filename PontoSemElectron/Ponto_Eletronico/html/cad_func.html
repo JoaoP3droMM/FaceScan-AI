@@ -1,25 +1,35 @@
+<!-- Tela que tira a foto do funcionário, e a cadastra no banco de dados, treinando a IA e permitindo
+     o reconhecimento facial de forma adequada -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Funcionário</title>
+
     <link rel="stylesheet" href="../styles/cadastro.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="../script/globalFunction.js" defer></script>
     <script type="module" src="../script/functions.js" defer></script>
     <script type="module" src="../script/cad_func.js" defer></script>    
+    <script type="module" src="../script/variables.js" defer></script>
+
+    <title>Cadastro de Funcionário</title>
 </head>
 <body>
+
+    <!-- Formulário com o conteúdo central da página -->
     <div class="container" id="containerid">
         <h2>Cadastro de Funcionario</h2>
-        <form id="registration-form">
+        <form id="formulario-cad-func">
             <div id="form-fields">
                 <div class="grupo-formulario" id="matricula-group">
                     <label for="matricula">Matrícula</label>
-                    <input type="text" id="matricula" pattern="\d*" required autofocus>
+                    <!-- Deixa o input como obrigatório e já focado ao recarregar a página -->
+                    <input type="text" id="matricula" required autofocus> 
                 </div>
                 <div class="grupo-formulario" id="cpf-group">
                     <label for="cpf">CPF</label>
@@ -33,23 +43,24 @@
                     <label for="filial">Filial</label>
                     <input type="text" id="filial" disabled>
                 </div>
+
                 <!-- INPUT INVISIVEL DO ID DO FUNCIONARIO FAMOSA GAMBIARRA -->
                 <div class="grupo-formulario">
                     <input type="hidden" id="idfunc" readonly>
                 </div>
             </div>
 
-            <!-- Alert Falso -->
-            <div id="notification" class="notification hidden">
-                <p id="notificacao-default"></p>
+            <!-- Secção dos botões de cadastro e o de sair que retorna para a tela de ponto -->
+            <div class="botoesFunc">
+                <button type="button" id="start-capture" disabled>Cadastrar</button>
+                <br><br>
+                <button type="button" id="sairCF">Sair</button>    
             </div>
-            
-            <button type="button" id="start-capture" disabled>Cadastrar</button>
-            <br><br>
-            <button type="button" id="sair">Sair</button>         
         </form>
+        <!-- Fim do formulario central -->
 
-        <!-- Elementos para captura de imagem -->
+
+        <!-- Elementos para abrir a câmera e capturar a imagem -->
         <div id="video-container" class="hidden">
             <video id="video" autoplay></video>
             <button type="button" id="cadastro-button"></button>
@@ -57,7 +68,7 @@
         </div>        
     </div>
 
-    <!-- Tela de carregamento -->
+    <!-- Tela de carregamento, indica para o usuaŕio que o sistema está treinando a IA -->
     <div class="telacarregamento hidden" id="telacarregamento">
         <h2><strong>Estudando seu rosto 😉</strong></h2>
         <div class="loading-wave">

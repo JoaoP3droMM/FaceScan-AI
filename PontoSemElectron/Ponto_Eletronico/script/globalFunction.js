@@ -1,11 +1,13 @@
-// **************************************(((FUNÇÕES GLOBAIS)))*************************************************************************
+// Funções Globais, que são chamadas e usadas várias vezes ao longo do código
 
+// ****************************************************************************************************
 // Função que volta para a página de login
 export function voltarPagina() {
     window.location.href = 'ponto.html'
     console.log('voltando')
 }
 
+// ****************************************************************************************************
 // Alerta de sucesso utilizando SweetAlert2
 export function showAlert(mensagem) {
     Swal.fire({
@@ -16,6 +18,7 @@ export function showAlert(mensagem) {
     })
 }
 
+// ****************************************************************************************************
 // Alerta de erro utilizando SweetAlert2
 export function showErrorAlert(mensagem) {
     Swal.fire({
@@ -26,6 +29,7 @@ export function showErrorAlert(mensagem) {
     })
 }
 
+// ****************************************************************************************************
 // Alerta falso
 export function popUpNotification(message) {
     const notificationElement = document.getElementById('notification')
@@ -45,6 +49,7 @@ export function popUpNotification(message) {
     }, 3000) // Esconde após 3 segundos
 }
 
+// ****************************************************************************************************
 // Função para mostrar o alerta falso
 export function hideNotification() {
     const notificationElement = $('#notification')
@@ -56,6 +61,7 @@ export function hideNotification() {
     }
 }
 
+// ****************************************************************************************************
 // // Função global da tela de carregamento para uso através da classe hidden
 // export function telaDeLoadOn() {
 //     const load = $('#telacarregamento')

@@ -6,3 +6,10 @@ export let usuario = $('#username')
 export let senha = $('#password')
 export let novoUsuario = $('#newUsername')
 export let novaSenha = $('#newPassword')
+
+// Tela de cadastro de funcionário
+export let matriculaInput = $('#matricula')
+export let btnSairCF = $('#sairCF')
+export let btnCadastrar = $('#start-capture')
+export let btnFoto = $('#cadastro-button')
+export let formularioCadFunc = $('#formulario-cad-func')

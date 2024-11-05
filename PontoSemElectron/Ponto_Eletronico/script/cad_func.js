@@ -1,43 +1,42 @@
-import { voltarPagina, popUpNotification } from './globalFunction.js';
-import { toggleButton, enviarFotoCadastro, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
+/* Tela que tira a foto do funcionário, e a cadastra no banco de dados, treinando a IA e permitindo
+     o reconhecimento facial de forma adequada */
 
-// Voltar à página inicial
-document.addEventListener('DOMContentLoaded', () => {
-    const btnSair = $('#sair');
-    if (btnSair) {
-        btnSair.on('click', voltarPagina);
-    }
+// ****************************************************************************************************
+// Import das funções
+import { voltarPagina } from './globalFunction.js';
+import { enviarFotoCadastro, iniciarCaptura, capturarImagem, enforceNumericInput, 
+        fetchFuncionarioInfo } from './functions.js';
+import { matriculaInput, btnSairCF, btnCadastrar, btnFoto, formularioCadFunc } from './variables.js'
 
-    // Iniciar captura ao clicar no botão
-    $('#start-capture').on('click', function(event) {
-        event.preventDefault();
-        const matricula = $('#matricula').val().trim();
-        if (matricula) {
-            iniciarCaptura();
-        } else {
-            popUpNotification('Por favor, insira a matrícula para continuar.');
-        }
-    });
+// ****************************************************************************************************
+// Voltando para página inicial ao clicar em sair
+btnSairCF.on('click', voltarPagina)
+
+// ****************************************************************************************************
+// Iniciar captura ao clicar no 'cadastrar'
+btnCadastrar.on('click', function(event) {
+    event.preventDefault() // Impede que a página atualize sozinha ao enviar o formulário
+    iniciarCaptura() // Chama a função que abre a câmera
+})
+
+// ****************************************************************************************************
+// Capturar imagem ao clicar no botão branco
+btnFoto.on('click', function(event) {
+    event.preventDefault()
+    capturarImagem() // Chama a função que captura a imagem da câmera
+})
+
+// ****************************************************************************************************
+// Impede entrada não numérica no input de Matrícula (digitar letras e caracteres especiais)
+matriculaInput.on('keypress', enforceNumericInput);
     
-    // Capturar imagem ao clicar no botão
-    $('#cadastro-button').on('click', function() {
-        capturarImagem();
-    });
-
-    // Impede entrada não numérica em Matrícula e CPF
-    const matriculaInput = document.getElementById('matricula');
-    const cpfInput = document.getElementById('cpf');
-
-    matriculaInput.addEventListener('keypress', enforceNumericInput);
-    cpfInput.addEventListener('keypress', enforceNumericInput);
-    
-    // Enviar dados do funcionário ao clicar no botão
-    $('#registration-form').on('submit', function(event) {
-        event.preventDefault(); // Impede a atualização da página
-        console.log('Formulário submetido sem atualizar a página');
-        enviarFotoCadastro(); // Chama a função que envia os dados
-    });
-
-    // Verifica as informações do funcionário
-    $('#matricula').on('change', fetchFuncionarioInfo);
+// ****************************************************************************************************
+// Enviar dados do funcionário ao clicar no botão
+formularioCadFunc.on('submit', function(event) {
+    event.preventDefault(); // Impede a atualização da página ao enviar o formulário
+    enviarFotoCadastro(); // Chama a função que envia os dados do funcionário e a foto em base64
 });
+
+// ****************************************************************************************************
+// Se o usuário mudar a matrícula ele busca as novas informações correspondentes ao funcionário
+matriculaInput.on('change', fetchFuncionarioInfo);
