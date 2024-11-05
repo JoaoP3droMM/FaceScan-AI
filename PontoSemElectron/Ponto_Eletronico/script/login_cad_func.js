@@ -2,7 +2,8 @@
 
 /* ********************************************************************************** */
 // Import das funções
-import { pagina_ponto, verificaLogin } from './functions.js'
+import { verificaLogin } from './functions.js'
+import { voltarPagina } from './globalFunction.js'
 
 
 /* ********************************************************************************** */
@@ -18,6 +19,6 @@ $(document).ready(function() {
         verificaLogin(e, telaRedirecionada) // Redireciona para a url armazenada na variavel
     })
 
-    $('#pagina-ponto').on('click', pagina_ponto) // Quando o usuário clica em voltar, ele 
+    $('#pagina-ponto').on('click', voltarPagina) // Quando o usuário clica em voltar, ele 
                                                  // retorna ao ponto
 })

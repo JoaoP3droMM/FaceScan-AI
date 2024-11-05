@@ -1,6 +1,6 @@
 // Importando as funções globais e variaveis
 import { voltarPagina, popUpNotification, hideNotification, showAlert, showErrorAlert } from './globalFunction.js'
-import { usuario, senha } from './variables.js'
+import { usuario, senha, novoUsuario, novaSenha } from './variables.js'
 
 let isTraining = false;
 
@@ -264,100 +264,90 @@ export function mostrarConfiguracoes() {
 
 
 export function cadastarUsu() {
-    // Captura dos campos de cadastro de usuário
-    const username = usuario.length ? usuario.val().trim() : '';
-    const password = senha.length ? senha.val().trim() : '';
+    // Captura os campos de cadastro de usuário
+    const username = novoUsuario.length ? novoUsuario.val().trim() : '';
+    const password = novaSenha.length ? novaSenha.val().trim() : '';
 
-    if (username && password) {
-        if (password.length < 4) {
-            Swal.fire({
-                icon: 'error',
-                text: 'A senha deve ter pelo menos 4 caracteres.',
-                confirmButtonText: 'OK'
+    // Função auxiliar para exibir alertas
+    const showAlert = (icon, title, text, toast = false) => {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            toast: toast,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'colored-toast'
+            }
+        });
+    };
+
+    // Verifica se os imputs estão preenchidos
+    if (!username || !password) {
+        showAlert('error', 'Erro', 'Por favor, preencha todos os campos.');
+        return;
+    }
+
+    // Verifica se o conteúdo da senha tem mais de 4 caracteres
+    if (password.length < 4) {
+        showAlert('info', 'Erro', 'A senha deve ter pelo menos 4 caracteres.', true);
+        return;
+    }
+
+    // Estrutura do corpo JSON para o envio dos dados para a API de cadastro
+    const dadosUsuario = { username, password };
+
+    // Função para limpar os campos de entrada
+    const limparCampos = () => {
+        novoUsuario.val('');
+        novaSenha.val('');
+    };
+
+    // Função principal para cadastro
+    const realizarCadastro = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/cadastrarUsuario', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosUsuario)
             });
-            return;
-        }
-    
-        // Certifique-se de que ambos `username` e `password` estão presentes na estrutura do corpo JSON
-        const dadosUsuario = {
-            username: username,
-            password: password
-        };
-        console.log("Dados a serem enviados:", dadosUsuario);
-        fetch('http://localhost:3002/cadastrarUsuario', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosUsuario)
-        })
-        .then(response => response.json()) // Transformar a resposta em JSON
-        .then(data => {
+
+            const data = await response.json(); // Transformar a resposta em JSON
+
+            // Verifica se o envio dos dados foi feito
             if (data.success) {
-                // Limpa os campos de username e password após o sucesso
-                console.log("Username:", username);
-                console.log("Password:", password);
-                usuario.val('');
-                senha.val('');
-                
-                // Exibe o toast de sucesso
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Usuário cadastrado com sucesso!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    customClass: {
-                        popup: 'colored-toast'
-                    }
-                });
+                // Limpa os campos após o sucesso
+                limparCampos();
+
+                // Emite a mensagem de sucesso
+                showAlert('success', 'Sucesso', 'Usuário cadastrado com sucesso!', true);
+
+            // Se o envio dos dados deu errado... 
             } else {
-                // Aqui você lida com o caso onde o usuário já existe
+                // Verifica se o usuário já existe
                 if (data.message === "O usuário já existe") {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Atenção!',
-                        text: 'Usuário já cadastrado.',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        customClass: {
-                            popup: 'colored-toast'
-                        }
-                    });
+                    showAlert('warning', 'Atenção!', 'Nome de usuário já cadastrado.', true);
+                // Caso o usuário não exista e ele não consiga cadastrar no banco (por algum outro motivo) 
                 } else {
                     throw new Error(data.message || 'Erro ao cadastrar usuário');
                 }
             }
-        })
-        .catch(error => {
+        } catch (error) {
+            // Caso haja algum erro de conexão
             console.error('Erro:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro de conexão',
-                text: 'Ocorreu um erro ao conectar ao servidor.',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: {
-                    popup: 'colored-toast'
-                }
-            });
-        });
-    }
+            showAlert('error', 'Erro de conexão', 'Ocorreu um erro ao conectar ao servidor.', true);
+        }
+    };
+
+    // Chama a função que envia o cadastro para o banco
+    realizarCadastro();
 }
 
 
 // **************************************(((TELAS DE LOGIN)))*************************************************************************
-
-// Função para redirecionar para a página de ponto
-export function pagina_ponto() {
-    window.location.href = 'ponto.html'
-}
 
 // Verificando login e redirecionando para a página correta
 export async function verificaLogin(event, telaRedirecionada) {

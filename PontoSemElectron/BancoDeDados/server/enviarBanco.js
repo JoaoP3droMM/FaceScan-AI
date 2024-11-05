@@ -19,38 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 connectDB();
 
-// Rota POST para cadastrar usuário
-app.post('/cadastrarUsuario', async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-      return res.status(400).json({ success: false, message: "Username e senha são obrigatórios" });
-  }
-
-  try {
-      // Verifica se o usuário já existe
-      const usuarioExistente = await UserModel.findOne({ username });
-
-      if (usuarioExistente) {
-          return res.status(400).json({ success: false, message: "O usuário já existe" });
-      }
-
-      // Aqui você pode usar bcrypt para hash da senha antes de salvar
-      const hashedPassword = await bcrypt.hash(password, 10);
-      
-      const novoUsuario = new UserModel({
-          username,
-          password: hashedPassword,
-      });
-
-      await novoUsuario.save();
-      res.status(201).json({ success: true, message: "Usuário cadastrado com sucesso" });
-  } catch (err) {
-      console.error("Erro ao cadastrar usuário:", err.message);
-      res.status(500).json({ success: false, message: "Erro ao cadastrar usuário", error: err.message });
-  }
-});
-
 // Rota POST para enviar foto em base64 para o servidor Python
 app.post('/enviarFotoParaPython', async (req, res) => {
   const { fotoBase64 } = req.body;

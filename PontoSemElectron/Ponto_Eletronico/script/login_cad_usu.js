@@ -2,13 +2,14 @@
 
 /* ********************************************************************************** */
 // Import das funções
-import { pagina_ponto, verificaLogin } from './functions.js'
+import { verificaLogin } from './functions.js'
+import { voltarPagina } from './globalFunction.js'
 
 
 /* ********************************************************************************** */
 // Manipulação de eventos
 $(document).ready(function() {
-    let telaRedirecionada = '../html/usu.html' // Aqui é para tornar mais fácil, eu
+    let telaRedirecionada = '../html/cad_usuario.html' // Aqui é para tornar mais fácil, eu
                                                     // copiei e colei este código no login
                                                     // de usuarios e só troco o valor dessa
                                                     // variavel. Stonks 🤑🤑🤑🤑🤑🤑🤑
@@ -18,6 +19,6 @@ $(document).ready(function() {
         verificaLogin(e, telaRedirecionada) // Redireciona para a url armazenada na variavel
     })
 
-    $('#pagina-ponto').on('click', pagina_ponto) // Quando o usuário clica em voltar, ele 
+    $('#pagina-ponto').on('click', voltarPagina) // Quando o usuário clica em voltar, ele 
                                                  // retorna ao ponto
 })

@@ -117,7 +117,7 @@ h1 {
     color: #333;
 }
 
-.form-group {
+.grupo-formulario {
     margin-bottom: 15px;
     animation: fadeInInput 0.5s ease;
     transform-origin: top;

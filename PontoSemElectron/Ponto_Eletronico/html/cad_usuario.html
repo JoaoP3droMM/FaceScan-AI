@@ -1,41 +1,52 @@
+<!-- Tela onde é feito o cadastro de usuários do sistema (para realizar o cadastro de funcionários
+     e de novos usuários) -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário</title>
+
     <link rel="stylesheet" href="../styles/cadastro.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="../script/cad_usuario.js" defer></script>
     <script type="module" src="../script/functions.js" defer></script>
+    <script type="module" src="../script/variables.js" defer></script>
+
+    <title>Cadastro de Usuário</title>
 </head>
 <body>
+    <!-- Container onde temos o formulário de registro de novos usuários do sistema -->
     <div class="container">
         <h1>Cadastro de Admin</h1>
-        <form id="registration-form">
-            <div id="form-fields">
-                <div class="form-group">
-                    <label for="username">Nome de Usuário</label>
-                    <input type="text" id="username" required>
+        <form id="cadastro-usuarios">
+            <div id="inputs-de-formulario">
+                <!-- Secção do username -->
+                <div class="grupo-formulario">
+                    <label for="newUsername">Nome de Usuário</label>
+                    <input type="text" id="newUsername" required>
                 </div>
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" required>
+                <!-- Secção da senha -->
+                <div class="grupo-formulario">
+                    <label for="newPassword">Senha</label>
+                    <input type="password" id="newPassword" required>
                 </div>
             </div>
 
-            <!-- Alert Falso -->
-            <div id="notification" class="notification hidden">
-                <p id="notificacao-default"></p>
+            <!-- Secção dos botões de cadastro e o de sair que retorna para a tela de ponto -->
+            <div class="botoesCad">
+                <button type="submit" id="start-capture">Cadastrar</button>
+                <br><br>
+                <button type="button" id="sair">Sair</button> 
             </div>
-
-            <button type="submit" id="start-capture">Cadastrar</button>
-            <br><br>
-            <button type="button" id="sair">Sair</button>         
         </form>
     </div>
+
+    <!-- Tela de carregamento que indica para o usuário que o sistema está processando uma ação
+            (inicialmente oculta) -->
     <div class="telacarregamento hidden" id="telacarregamento">
         <div class="loading-wave">
           <div class="loading-bar"></div>
@@ -44,5 +55,6 @@
           <div class="loading-bar"></div>
         </div>
     </div>
+
 </body>
 </html>

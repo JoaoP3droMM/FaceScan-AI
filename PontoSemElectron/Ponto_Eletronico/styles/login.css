@@ -88,11 +88,11 @@ body {
 }
 /* FIM DA AREA NOTIFICAÇÃO */
 
-.form-group {
+.grupo-formulario {
     margin-bottom: 15px;
 }
 
-.form-group input {
+.grupo-formulario input {
     width: 200px;
     padding: 10px;
     margin-bottom: 10px;
@@ -103,11 +103,11 @@ body {
     color: white; 
 }
 
-.form-group input::placeholder {
+.grupo-formulario input::placeholder {
     color: #ffffff; 
 }
 
-.form-group button {
+.grupo-formulario button {
     width: 220px;
     padding: 10px;
     background-color: #e5bb2c; 
@@ -118,7 +118,7 @@ body {
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.form-group button:hover {
+.grupo-formulario button:hover {
     background-color: #f0ce5d;
     transform: scale(1.05); 
 }

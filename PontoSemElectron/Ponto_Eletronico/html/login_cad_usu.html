@@ -12,9 +12,10 @@
 
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src="../script/login_cad_func.js" defer></script>
+    <script type="module" src="../script/login_cad_usu.js" defer></script>
     <script type="module" src="../script/variables.js" defer></script>
     <script type="module" src="../script/functions.js" defer></script>
+    
     <title>Login - A Casa Brasileira</title>
 </head>
 <body>
@@ -31,15 +32,15 @@
         <br><br>
         <form id="login-form">
             <!-- Campo de username com um placeholder para orientar o usuário. O termo required o torna obrigatório -->
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <input type="text" id="username" placeholder="Usuário" required>
             </div>
             <!-- Campo de senha com placeholder para orientar o usuário -->
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <input type="password" id="password" placeholder="Senha" required>
             </div>
             <!-- Botão de login. Este é o responsavel por verificar o login e enviar para a página correta -->
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <button type="submit" id="btnEntrar">ENTRAR</button>
             </div>
         </form> 

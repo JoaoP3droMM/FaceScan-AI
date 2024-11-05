@@ -10,6 +10,7 @@ from flask_cors import CORS
 from threading import Thread
 from treinamento import exec_treinamento
 from converterImagem import salvar_fotos_funcionarios
+from cadastrarUsuario import cadastrar_usuario
 
 # Configuração de logging
 logging.basicConfig(
@@ -113,6 +114,16 @@ def cadastro():
     except Exception as e:
         logging.error(f"Erro ao cadastrar funcionário: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+@app.route('/cadastrarUsuario', methods=['POST'])
+def route_cadastrar_usuario():
+    """Rota para cadastro de novo usuário."""
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    # Chama a função de cadastro de usuário
+    return cadastrar_usuario(username, password)
 
 if __name__ == "__main__":
     app.run(port=5000)
