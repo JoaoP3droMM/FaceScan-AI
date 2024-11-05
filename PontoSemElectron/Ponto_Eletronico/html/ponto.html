@@ -25,7 +25,7 @@
             <h1>Sistema de Ponto Eletrônico</h1>
             <img src="../assets/digital.png" class="digitalIMG">
             <br><br>
-            <button class="btnPonto"><h2>Bater Ponto</h2></button>
+            <button id="btnIniciarCamera" type="button" class="btnPonto"><h2>Bater Ponto</h2></button>
             <br>
         </div>
         <!-- Alert Falso -->
@@ -56,7 +56,7 @@
     <!-- Elementos para captura de imagem -->
     <div id="video-container" class="hidden">
         <video id="video" autoplay></video>
-        <button type="button" id="photo-button"></button>
+        <button id="btnCapturarImagem" type="button" class="btnCaptura"></button>
         <!-- Adicione o canvas aqui -->
         <canvas id="canvas" style="display:none;"></canvas>
     </div>        

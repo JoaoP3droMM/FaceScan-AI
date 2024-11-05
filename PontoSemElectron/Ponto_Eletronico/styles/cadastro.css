@@ -220,7 +220,7 @@ button#start-capture:enabled {
     display: none; /* Classe para esconder elementos */
 }
 
-#photo-button {
+#cadastro-button {
     position: absolute; /* Para posicionar o botão de captura */
     bottom: 20px; /* Distância do fundo */
     left: 50%; /* Centraliza horizontalmente */

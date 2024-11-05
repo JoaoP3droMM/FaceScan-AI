@@ -47,3 +47,155 @@
 2024-11-04 17:59:03,828 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
 2024-11-04 17:59:40,692 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
 2024-11-04 18:01:19,004 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:45:56,781 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 08:45:56,790 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 08:47:30,717 - INFO - 127.0.0.1 - - [05/Nov/2024 08:47:30] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 08:47:30,736 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 08:47:30,737 - INFO - Loading weights.
+2024-11-05 08:47:30,737 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 08:47:30,756 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 08:47:30,756 - INFO - Loading weights.
+2024-11-05 08:47:30,757 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 08:47:33,741 - DEBUG - Creating converter from 3 to 5
+2024-11-05 08:47:39,172 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:47:39,174 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:49:51,651 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:49:51,652 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:51:53,768 - INFO - 127.0.0.1 - - [05/Nov/2024 08:51:53] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 08:51:53,787 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 08:51:53,787 - INFO - Loading weights.
+2024-11-05 08:51:53,788 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 08:51:58,943 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:52:06,821 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:52:06,822 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:54:13,795 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:54:21,986 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:54:21,987 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:56:28,966 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:56:37,160 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:56:37,161 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 08:58:44,131 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-05 08:58:44,158 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-05 08:58:44,163 - INFO - 127.0.0.1 - - [05/Nov/2024 08:58:44] "POST /ponto HTTP/1.1" 200 -
+2024-11-05 08:58:52,323 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-05 08:58:52,324 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-05 08:58:52,338 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-05 08:58:52,343 - INFO - 127.0.0.1 - - [05/Nov/2024 08:58:52] "POST /ponto HTTP/1.1" 200 -
+2024-11-05 08:58:52,346 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-05 08:58:52,351 - INFO - 127.0.0.1 - - [05/Nov/2024 08:58:52] "POST /ponto HTTP/1.1" 200 -
+2024-11-05 09:00:03,453 - INFO - 127.0.0.1 - - [05/Nov/2024 09:00:03] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 09:00:03,468 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 09:00:03,469 - INFO - Loading weights.
+2024-11-05 09:00:03,469 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 09:00:08,539 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 09:02:21,219 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 09:04:36,391 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 09:06:51,554 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 09:08:40,548 - INFO - 127.0.0.1 - - [05/Nov/2024 09:08:40] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 09:08:40,558 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 09:08:40,559 - INFO - Loading weights.
+2024-11-05 09:08:40,559 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 09:08:45,918 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 09:09:06,723 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-05 09:09:06,735 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-05 09:09:06,739 - INFO - 127.0.0.1 - - [05/Nov/2024 09:09:06] "POST /ponto HTTP/1.1" 200 -
+2024-11-05 09:11:01,411 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 09:49:35,656 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 09:49:35,656 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 10:30:39,375 - INFO - 127.0.0.1 - - [05/Nov/2024 10:30:39] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:30:39,401 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:30:39,415 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:31:33,602 - INFO - 127.0.0.1 - - [05/Nov/2024 10:31:33] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:31:33,614 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:31:33,639 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:34:51,259 - INFO - 127.0.0.1 - - [05/Nov/2024 10:34:51] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:34:51,274 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:34:51,298 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:43:53,393 - INFO - 127.0.0.1 - - [05/Nov/2024 10:43:53] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:43:53,405 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:45:21,603 - INFO - 127.0.0.1 - - [05/Nov/2024 10:45:21] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:45:21,616 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:48:11,242 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:54:43,072 - INFO - 127.0.0.1 - - [05/Nov/2024 10:54:43] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:54:43,082 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:55:29,256 - INFO - 127.0.0.1 - - [05/Nov/2024 10:55:29] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:55:29,263 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:57:47,068 - INFO - 127.0.0.1 - - [05/Nov/2024 10:57:47] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:57:47,084 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:58:18,286 - INFO - 127.0.0.1 - - [05/Nov/2024 10:58:18] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 10:58:18,293 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 10:58:48,539 - ERROR - Imagem em base64 ou matrícula não fornecida.
+2024-11-05 10:58:48,539 - INFO - 127.0.0.1 - - [05/Nov/2024 10:58:48] "[31m[1mPOST /ponto HTTP/1.1[0m" 400 -
+2024-11-05 11:03:04,481 - INFO - 127.0.0.1 - - [05/Nov/2024 11:03:04] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 11:03:04,488 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:15:24,728 - INFO - 127.0.0.1 - - [05/Nov/2024 11:15:24] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 11:15:24,735 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:16:43,422 - INFO - 127.0.0.1 - - [05/Nov/2024 11:16:43] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 11:16:43,429 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:19:32,083 - INFO - 127.0.0.1 - - [05/Nov/2024 11:19:32] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 11:19:32,089 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:21:26,162 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:21:56,721 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:22:47,577 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:23:43,243 - INFO - Loading weights.
+2024-11-05 11:23:43,243 - INFO - Loading weights.
+2024-11-05 11:23:43,245 - INFO - Loading weights.
+2024-11-05 11:23:43,246 - INFO - Loading weights.
+2024-11-05 11:23:43,246 - INFO - Loading weights.
+2024-11-05 11:23:43,247 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,247 - INFO - Loading weights.
+2024-11-05 11:23:43,247 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,247 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,247 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,247 - INFO - Loading weights.
+2024-11-05 11:23:43,247 - INFO - Loading weights.
+2024-11-05 11:23:43,247 - INFO - Loading weights.
+2024-11-05 11:23:43,248 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,248 - INFO - Loading weights.
+2024-11-05 11:23:43,248 - INFO - Loading weights.
+2024-11-05 11:23:43,248 - INFO - Loading weights.
+2024-11-05 11:23:43,252 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,252 - INFO - Loading weights.
+2024-11-05 11:23:43,253 - INFO - Loading weights.
+2024-11-05 11:23:43,253 - INFO - Loading weights.
+2024-11-05 11:23:43,253 - INFO - Loading weights.
+2024-11-05 11:23:43,303 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,253 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,253 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,254 - INFO - Loading weights.
+2024-11-05 11:23:43,254 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,300 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,301 - INFO - Loading weights.
+2024-11-05 11:23:43,301 - INFO - Loading weights.
+2024-11-05 11:23:43,301 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,301 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,302 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,303 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,303 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,253 - INFO - Loading weights.
+2024-11-05 11:23:43,305 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,305 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,305 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:23:43,306 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:24:06,811 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 11:24:06,811 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 11:24:08,895 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:24:08,896 - INFO - Loading weights.
+2024-11-05 11:24:08,896 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:24:10,661 - DEBUG - Creating converter from 3 to 5
+2024-11-05 11:24:13,885 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 11:24:57,065 - INFO - 127.0.0.1 - - [05/Nov/2024 11:24:57] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 11:24:57,083 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 11:24:57,083 - INFO - Loading weights.
+2024-11-05 11:24:57,083 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 11:25:01,764 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 11:26:27,890 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 11:27:17,027 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 11:28:43,042 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 11:29:32,198 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 11:30:58,212 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-05 11:30:58,276 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-05 11:30:58,281 - INFO - 127.0.0.1 - - [05/Nov/2024 11:30:58] "POST /ponto HTTP/1.1" 200 -

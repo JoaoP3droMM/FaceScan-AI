@@ -288,7 +288,7 @@ button:hover {
     display: none; /* Classe para esconder elementos */
 }
 
-#photo-button {
+#btnCapturarImagem {
     position: absolute; /* Para posicionar o botão de captura */
     bottom: 20px; /* Distância do fundo */
     left: 50%; /* Centraliza horizontalmente */

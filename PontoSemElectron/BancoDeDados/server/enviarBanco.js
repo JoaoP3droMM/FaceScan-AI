@@ -22,30 +22,6 @@ connectDB();
 // Rota POST para cadastrar usuário
 app.post('/cadastrarUsuario', async (req, res) => {
   const { username, password } = req.body;
-  
-  console.log("Dados recebidos no servidor:", req.body); // Adicione esta linha
-
-  if (!username || !password) {
-    return res.status(400).json({ success: false, message: "Username e senha são obrigatórios" });
-  }
-
-  try {
-    const novoUsuario = new UserModel({
-      username,
-      password,
-    });
-
-    await novoUsuario.save();
-    res.status(201).json({ success: true, message: "Usuário cadastrado com sucesso" });
-  } catch (err) {
-    console.error("Erro ao cadastrar usuário:", err.message);
-    res.status(500).json({ success: false, message: "Erro ao cadastrar usuário", error: err.message });
-  }
-});
-
-// Rota POST para cadastrar usuário
-app.post('/cadastrarUsuario', async (req, res) => {
-  const { username, password } = req.body;
 
   if (!username || !password) {
       return res.status(400).json({ success: false, message: "Username e senha são obrigatórios" });
@@ -72,31 +48,6 @@ app.post('/cadastrarUsuario', async (req, res) => {
   } catch (err) {
       console.error("Erro ao cadastrar usuário:", err.message);
       res.status(500).json({ success: false, message: "Erro ao cadastrar usuário", error: err.message });
-  }
-});
-
-
-
-
-// Rota POST para cadastrar foto em base64
-app.post('/cadastrarFoto', async (req, res) => {
-  const { idfuncionario, nome, matricula, fotoBase64 } = req.body;
-
-  if (!idfuncionario || !nome || !matricula || !fotoBase64) {
-    return res.status(400).json({ success: false, message: "Dados incompletos" });
-  }
-
-  try {
-    const funcionario = await FuncionarioModel.findOneAndUpdate(
-      { matricula: String(matricula) },
-      { $set: { foto: fotoBase64 } },
-      { new: true, upsert: true }
-    );
-
-    res.status(201).json({ success: true, message: "Foto cadastrada com sucesso", funcionario });
-  } catch (err) {
-    console.error("Erro ao cadastrar foto:", err.message);
-    res.status(500).json({ success: false, message: "Erro ao cadastrar foto", error: err.message });
   }
 });
 

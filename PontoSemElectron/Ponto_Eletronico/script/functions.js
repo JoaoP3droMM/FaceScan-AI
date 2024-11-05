@@ -1,10 +1,13 @@
 // Importando as funções globais e variaveis
 import { voltarPagina, popUpNotification, hideNotification, showAlert, showErrorAlert } from './globalFunction.js'
 import { containerid, retorno, barra, icone } from './variables.js'
+
 let isTraining = false;
+
+
+
+
 // **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
-
-
 
 // Funções do cadastro de funcionários
 export const buttonCadastro = $('#start-capture');
@@ -48,162 +51,56 @@ export function capturarImagem() {
     video.srcObject = null;
     $('#video-container').addClass('hidden');
 
-    enviarDados(imagemCapturada);
+    enviarFotoCadastro(imagemCapturada);
 }
 
 // Função que envia os dados cadastrais para o MongoDB
-export function enviarDados(imagemBase64) {
-    // Captura dos campos comuns
-    const nome = $('#nomeCompleto').length ? $('#nomeCompleto').val().trim() : '';
-    const matricula = $('#matricula').length ? $('#matricula').val().trim() : '';
-    const cpf = $('#cpf').length ? $('#cpf').val().trim() : '';
-    const id = $('#idfunc').length ? $('#idfunc').val().trim() : '';
-    const filial = $('#filial').length ? $('#filial').val().trim() : '';
+export function enviarFotoCadastro(imagemBase64) {
+    const id = $('#idfunc').val().trim();
+    const nome = $('#nomeCompleto').val().trim();
+    const matricula = $('#matricula').val().trim();
+    const cpf = $('#cpf').val().trim();
+    const filial = $('#filial').val().trim();
 
-    // Captura dos campos de cadastro de usuário
-    const username = $('#username').length ? $('#username').val().trim() : '';
-    const password = $('#password').length ? $('#password').val().trim() : '';
-
-    // Verificação condicional para determinar o tipo de envio
-    if (nome && matricula && cpf) {
-        // Procede com o cadastro de funcionários
-        const dadosFuncionario = {
-            id,
-            nome,
-            matricula,
-            cpf,
-            filial,
-            fotoBase64: imagemBase64,
-            sync: false
-        };
-
-        fetch('http://localhost:3002/cadastrarFuncionario', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosFuncionario)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Funcionário cadastrado com sucesso!',
-                    text: 'Agora você pode bater o ponto usando reconhecimento facial!',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    $('#nomeCompleto').val('');
-                    $('#matricula').val('');
-                    $('#cpf').val('');
-                    $('#idfunc').val('');
-                    $('#filial').val('');
-                });
-            } else {
-                throw new Error('Erro ao cadastrar funcionário');
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            Swal.fire({
-                icon: 'error',
-                text: 'Erro ao cadastrar funcionário.',
-                confirmButtonText: 'OK'
-            });
-        });
-
-    } else if (username && password) {
-        if (password.length < 4) {
-            Swal.fire({
-                icon: 'error',
-                text: 'A senha deve ter pelo menos 4 caracteres.',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-    
-        // Certifique-se de que ambos `username` e `password` estão presentes na estrutura do corpo JSON
-        const dadosUsuario = {
-            username: username,
-            password: password
-        };
-        console.log("Dados a serem enviados:", dadosUsuario);
-        fetch('http://localhost:3002/cadastrarUsuario', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosUsuario)
-        })
-        .then(response => response.json()) // Transformar a resposta em JSON
-        .then(data => {
-            if (data.success) {
-                // Limpa os campos de username e password após o sucesso
-                console.log("Username:", username);
-                console.log("Password:", password);
-                $('#username').val('');
-                $('#password').val('');
-                
-                // Exibe o toast de sucesso
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Usuário cadastrado com sucesso!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    customClass: {
-                        popup: 'colored-toast'
-                    }
-                });
-            } else {
-                // Aqui você lida com o caso onde o usuário já existe
-                if (data.message === "O usuário já existe") {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Atenção!',
-                        text: 'Usuário já cadastrado.',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        customClass: {
-                            popup: 'colored-toast'
-                        }
-                    });
-                } else {
-                    throw new Error(data.message || 'Erro ao cadastrar usuário');
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro de conexão',
-                text: 'Ocorreu um erro ao conectar ao servidor.',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: {
-                    popup: 'colored-toast'
-                }
-            });
-        });
-
-    } else {
-        // Se nenhum conjunto de campos estiver completo, avisa o usuário
+    if (!imagemBase64 || !id || !nome || !matricula || !cpf || !filial) {
         Swal.fire({
             icon: 'warning',
-            text: 'Por favor, preencha os campos necessários!',
+            text: 'Por favor, preencha todos os campos obrigatórios!',
             confirmButtonText: 'OK'
         });
+        return;
     }
+
+    fetch('http://localhost:5000/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imagem: imagemBase64, id, nome, matricula, cpf, filial })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'sucesso') {
+            $('#video-container').hide();
+            Swal.fire({
+                icon: 'success',
+                title: 'Cadastro realizado com sucesso!',
+                text: 'Agora você pode bater o ponto usando reconhecimento facial!',
+                timer: 10000, // Tempo para fechar automaticamente
+                showConfirmButton: false // Não mostra botão de confirmação
+            });
+        } else {
+            $('#video-container').hide();
+            throw new Error(data.mensagem || 'Erro ao cadastrar funcionário');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        Swal.fire({
+            icon: 'error',
+            text: 'Erro ao cadastrar funcionário.',
+            confirmButtonText: 'OK'
+        });
+    });
 }
-
-
-
-
 
 // Impede entrada não numérica em Matrícula e CPF
 export function enforceNumericInput(event) {
@@ -308,18 +205,21 @@ export function iniciarReconhecimentoAutomatico() {
 }
 
 // Função para capturar a imagem e enviar para reconhecimento facial
-export function capturarImagemPonto() {
+export function capturarImagemPonto(event) {
+    event.preventDefault();
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
 
     // Define a resolução desejada para a captura
-    canvas.width = 640;
-    canvas.height = 480;
+    canvas.width = 320;
+    canvas.height = 240;
 
     // Desenha o frame do vídeo no canvas com a resolução aumentada
     context.drawImage(video, 0, 0, 640, 480);
-    const base64Image = canvas.toDataURL('image/png');
+    const base64Image = canvas.toDataURL('image/jpeg', 0.7);
+
+    console.log("Imagem em base64:", base64Image); // Imprime a imagem base64 no console
 
     const matricula = "123456"; // Aqui você deve pegar a matrícula correta do contexto
     enviarImagemParaReconhecimento(base64Image, matricula);
@@ -328,38 +228,23 @@ export function capturarImagemPonto() {
 export function enviarImagemParaReconhecimento(base64Image, matricula) {
     if (isTraining) {
         console.log("Em treinamento, a imagem não será usada para bater o ponto.");
-        return; // Interrompe a execução se estiver em treinamento
+        return;
     }
 
-    console.log("Enviando imagem para reconhecimento...");
+    console.log("Iniciando envio da imagem para reconhecimento..."); // Novo log para rastreamento
     $('.btnPonto').prop('disabled', true);
 
     $.ajax({
         url: 'http://localhost:5001/ponto',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ imagem: base64Image, matricula: matricula }),
+        data: JSON.stringify({ imagem: base64Image, matricula: matricula }), // Enviando a imagem e matrícula
         success: (response) => {
-            console.log("Resposta de reconhecimento:", response);
-            if (response.matricula) {
-                alert("Foto recebida com sucesso");
-                buscarFuncionarioPorMatricula(response.matricula)
-                    .then(funcionario => {
-                        const horaDaBatida = new Date().toISOString();
-                        enviarPontoParaBanco(funcionario, horaDaBatida);
-                    })
-                    .catch(error => {
-                        console.error("Erro ao buscar dados do funcionário:", error);
-                        showErrorAlert("Erro ao buscar dados do funcionário: " + error);
-                    });
-            } else {
-                showErrorAlert("Erro no reconhecimento facial");
-                console.error("Erro no reconhecimento facial:", response);
-            }
+            console.log("Resposta do reconhecimento:", response);
+            // Processar resposta
         },
         error: (xhr, status, error) => {
             console.error("Erro ao enviar imagem:", error);
-            showErrorAlert("Erro no reconhecimento facial. Tente novamente.");
         },
         complete: () => {
             $('.btnPonto').prop('disabled', false);
@@ -384,40 +269,6 @@ export function telaDeResposta(nome, cpf) {
     }, 2500);
 }
 
-// Inicialização e vinculação de eventos
-$(document).ready(() => {
-
-    $('form').on('submit', (event) => {
-        event.preventDefault(); // Previne o recarregamento da página
-    });
-
-
-    $('.btnPonto').on('click', iniciarReconhecimentoAutomatico);
-    $('form').on('submit', (event) => event.preventDefault());
-    $('#photo-button').on('click', capturarImagemPonto);
-
-    if (window.electronAPI && typeof window.electronAPI.onRecognitionComplete === 'function') {
-        window.electronAPI.onRecognitionComplete((result) => {
-            if (result && result.nome && result.distancia) {
-                const matricula = result.nome; // Supondo que a matrícula é retornada como 'nome'
-
-                console.log("Resultado do reconhecimento facial:", result);
-                popUpNotification('Face reconhecida com sucesso!');
-                buscarFuncionarioPorMatricula(matricula) // Busca o funcionário usando a matrícula
-                    .then(funcionario => {
-                        const horaDaBatida = new Date().toISOString();
-                        enviarPontoParaBanco(funcionario, horaDaBatida); // Envia o ponto ao banco
-                    })
-                    .catch(error => {
-                        showErrorAlert("Erro ao buscar dados do funcionário: " + error);
-                    });
-            } else {
-                erroDeFacial();
-            }
-        });
-    }
-});
-
 export function mostrarConfiguracoes() {
     const configuracoes = document.querySelector('.configuracoes');
     if (configuracoes) {
@@ -427,10 +278,105 @@ export function mostrarConfiguracoes() {
     }
 }
 
+
+// **************************************(((CADASTRO USUARIO)))*************************************************************************
+
+
+export function cadastarUsu() {
+    // Captura dos campos de cadastro de usuário
+    const username = $('#username').length ? $('#username').val().trim() : '';
+    const password = $('#password').length ? $('#password').val().trim() : '';
+
+    if (username && password) {
+        if (password.length < 4) {
+            Swal.fire({
+                icon: 'error',
+                text: 'A senha deve ter pelo menos 4 caracteres.',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+    
+        // Certifique-se de que ambos `username` e `password` estão presentes na estrutura do corpo JSON
+        const dadosUsuario = {
+            username: username,
+            password: password
+        };
+        console.log("Dados a serem enviados:", dadosUsuario);
+        fetch('http://localhost:3002/cadastrarUsuario', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosUsuario)
+        })
+        .then(response => response.json()) // Transformar a resposta em JSON
+        .then(data => {
+            if (data.success) {
+                // Limpa os campos de username e password após o sucesso
+                console.log("Username:", username);
+                console.log("Password:", password);
+                $('#username').val('');
+                $('#password').val('');
+                
+                // Exibe o toast de sucesso
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuário cadastrado com sucesso!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast'
+                    }
+                });
+            } else {
+                // Aqui você lida com o caso onde o usuário já existe
+                if (data.message === "O usuário já existe") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Atenção!',
+                        text: 'Usuário já cadastrado.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'colored-toast'
+                        }
+                    });
+                } else {
+                    throw new Error(data.message || 'Erro ao cadastrar usuário');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro de conexão',
+                text: 'Ocorreu um erro ao conectar ao servidor.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'colored-toast'
+                }
+            });
+        });
+    }
+}
+
+
 // **************************************(((TELAS DE LOGIN)))*************************************************************************
 
 
 // Verifica o tipo de usuário que está logando no sistema e o redireciona para a devida página
+
+
 export let usuario = $('#username')
 export let senha = $('#password')
 

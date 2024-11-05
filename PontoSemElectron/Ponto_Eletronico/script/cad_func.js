@@ -1,5 +1,5 @@
 import { voltarPagina, popUpNotification } from './globalFunction.js';
-import { toggleButton, enviarDados, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
+import { toggleButton, enviarFotoCadastro, iniciarCaptura, capturarImagem, enforceNumericInput, fetchFuncionarioInfo, verificaLogin } from './functions.js';
 
 // Voltar à página inicial
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Capturar imagem ao clicar no botão
-    $('#photo-button').on('click', function() {
+    $('#cadastro-button').on('click', function() {
         capturarImagem();
     });
 
@@ -33,8 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Enviar dados do funcionário ao clicar no botão
     $('#registration-form').on('submit', function(event) {
-        event.preventDefault();
-        enviarDados();
+        event.preventDefault(); // Impede a atualização da página
+        console.log('Formulário submetido sem atualizar a página');
+        enviarFotoCadastro(); // Chama a função que envia os dados
     });
 
     // Verifica as informações do funcionário

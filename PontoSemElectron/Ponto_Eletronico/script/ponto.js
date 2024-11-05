@@ -6,18 +6,15 @@ import {
 } from './functions.js';
 
 $(document).ready(() => {
-    // Adiciona evento para o botão de "Bater Ponto"
-    $('.btnPonto').on('click', iniciarReconhecimentoAutomatico);
+    // Botão para iniciar o reconhecimento e ativar a câmera
+    $('#btnIniciarCamera').on('click', iniciarReconhecimentoAutomatico);
 
-    // Impede que a página seja atualizada ao submeter o formulário
-    $('form').on('submit', (event) => {
-        event.preventDefault(); // Evita a atualização da página
+    // Botão para capturar a imagem (agora o evento é passado para a função)
+    $('#btnCapturarImagem').on('click', (event) => {
+        event.preventDefault(); // Evita qualquer atualização da página
+        capturarImagemPonto(event); // Passa o evento para a função
     });
 
     // Adiciona funcionalidade ao botão de configurações
     $('#btnConfig').on('click', mostrarConfiguracoes);
-
-    $('#photo-button').on('click', function() {
-        capturarImagemPonto(); // Chama a função para capturar a imagem
-    });
-})
+});
