@@ -199,3 +199,45 @@
 2024-11-05 11:30:58,212 - DEBUG - Starting new HTTP connection (1): localhost:3000
 2024-11-05 11:30:58,276 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
 2024-11-05 11:30:58,281 - INFO - 127.0.0.1 - - [05/Nov/2024 11:30:58] "POST /ponto HTTP/1.1" 200 -
+2024-11-05 13:51:51,210 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 13:51:51,211 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 14:07:45,263 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 14:07:45,264 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 14:09:53,837 - INFO - 127.0.0.1 - - [05/Nov/2024 14:09:53] "OPTIONS /process_image HTTP/1.1" 200 -
+2024-11-05 14:09:53,869 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_{'originalEvent': {'isTrusted': True}, 'type': 'click', 'target': {'jQuery3600342266500925807241': {'events': {'click': [{'type': 'click', 'origType': 'click', 'guid': 2, 'namespace': ''}]}}}, 'currentTarget': {'jQuery3600342266500925807241': {'events': {'click': [{'type': 'click', 'origType': 'click', 'guid': 2, 'namespace': ''}]}}}, 'relatedTarget': None, 'timeStamp': 14360, 'jQuery360034226650092580724': True, 'delegateTarget': {'jQuery3600342266500925807241': {'events': {'click': [{'type': 'click', 'origType': 'click', 'guid': 2, 'namespace': ''}]}}}, 'handleObj': {'type': 'click', 'origType': 'click', 'guid': 2, 'namespace': ''}}.jpg
+2024-11-05 14:09:53,870 - INFO - Loading weights.
+2024-11-05 14:09:53,870 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 14:09:55,966 - DEBUG - Creating converter from 3 to 5
+2024-11-05 14:09:59,547 - ERROR - Erro ao processar imagem: 'dict' object has no attribute 'capitalize'
+2024-11-05 14:09:59,548 - INFO - 127.0.0.1 - - [05/Nov/2024 14:09:59] "[35m[1mPOST /process_image HTTP/1.1[0m" 500 -
+2024-11-05 14:10:51,267 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 14:10:51,268 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 14:10:58,618 - INFO - 127.0.0.1 - - [05/Nov/2024 14:10:58] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 14:10:58,628 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 14:10:58,628 - INFO - Loading weights.
+2024-11-05 14:10:58,628 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 14:11:00,412 - DEBUG - Creating converter from 3 to 5
+2024-11-05 14:11:03,664 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:13:16,895 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:14:16,372 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-05 14:14:16,372 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 14:14:46,674 - INFO - 127.0.0.1 - - [05/Nov/2024 14:14:46] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-05 14:14:46,683 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-05 14:14:46,683 - INFO - Loading weights.
+2024-11-05 14:14:46,683 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-05 14:14:48,441 - DEBUG - Creating converter from 3 to 5
+2024-11-05 14:14:51,607 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:17:06,272 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:19:21,439 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:21:36,607 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:23:51,788 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:26:06,943 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:28:22,111 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:30:37,279 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-05 14:32:52,448 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-05 14:32:52,478 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-05 14:32:52,481 - INFO - 127.0.0.1 - - [05/Nov/2024 14:32:52] "POST /ponto HTTP/1.1" 200 -

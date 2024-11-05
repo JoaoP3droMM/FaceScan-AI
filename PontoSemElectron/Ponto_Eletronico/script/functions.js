@@ -1,6 +1,6 @@
 // Importando as funções globais e variaveis
 import { voltarPagina, popUpNotification, hideNotification, showAlert, showErrorAlert } from './globalFunction.js'
-import { containerid, retorno, barra, icone } from './variables.js'
+import { usuario, senha } from './variables.js'
 
 let isTraining = false;
 
@@ -163,28 +163,19 @@ export async function fetchFuncionarioInfo() {
 
 // **************************************(((PONTO)))*************************************************************************
 
-let videoStream; // Variável para armazenar o stream de vídeo
+let videoStream;
 
-// Função para iniciar o reconhecimento facial automaticamente ao carregar a página
 export function iniciarReconhecimentoAutomatico() {
     if (isTraining) {
         console.log("O sistema está em treinamento. Ponto não será registrado.");
-        return; // Interrompe a execução se estiver em treinamento
+        return;
     }
 
     popUpNotification('Iniciando reconhecimento facial...');
-    const container = $('#container').get(0);
-    if (container) {
-        container.classList.add('hidden'); // Esconde o container
-    } else {
-        console.error("Elemento com id 'container' não encontrado.");
-    }
+    $('#container').addClass('hidden');
 
-    // Acessar a câmera
     const video = document.getElementById('video');
-    const constraints = {
-        video: { facingMode: 'user' } // Usar a câmera frontal
-    };
+    const constraints = { video: { facingMode: 'user' } };
 
     if (videoStream) {
         console.log("Câmera já ativada.");
@@ -193,7 +184,7 @@ export function iniciarReconhecimentoAutomatico() {
 
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
-            videoStream = stream; // Armazena o stream
+            videoStream = stream;
             video.srcObject = stream;
             video.play();
             $('#video-container').removeClass('hidden');
@@ -204,24 +195,19 @@ export function iniciarReconhecimentoAutomatico() {
         });
 }
 
-// Função para capturar a imagem e enviar para reconhecimento facial
 export function capturarImagemPonto(event) {
     event.preventDefault();
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
 
-    // Define a resolução desejada para a captura
     canvas.width = 320;
     canvas.height = 240;
 
-    // Desenha o frame do vídeo no canvas com a resolução aumentada
     context.drawImage(video, 0, 0, 640, 480);
     const base64Image = canvas.toDataURL('image/jpeg', 0.7);
 
-    console.log("Imagem em base64:", base64Image); // Imprime a imagem base64 no console
-
-    const matricula = "123456"; // Aqui você deve pegar a matrícula correta do contexto
+    const matricula = "123456"; // Ajustar para obter a matrícula correta
     enviarImagemParaReconhecimento(base64Image, matricula);
 }
 
@@ -231,41 +217,36 @@ export function enviarImagemParaReconhecimento(base64Image, matricula) {
         return;
     }
 
-    console.log("Iniciando envio da imagem para reconhecimento..."); // Novo log para rastreamento
+    console.log("Iniciando envio da imagem para reconhecimento...");
     $('.btnPonto').prop('disabled', true);
 
     $.ajax({
         url: 'http://localhost:5001/ponto',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ imagem: base64Image, matricula: matricula }), // Enviando a imagem e matrícula
+        data: JSON.stringify({ imagem: base64Image, matricula: matricula }),
         success: (response) => {
             console.log("Resposta do reconhecimento:", response);
-            // Processar resposta
         },
         error: (xhr, status, error) => {
             console.error("Erro ao enviar imagem:", error);
         },
         complete: () => {
             $('.btnPonto').prop('disabled', false);
-            console.log("Botão reabilitado.");
         }
     });
 }
 
-// Função para mostrar a tela de resposta com os dados do funcionário
 export function telaDeResposta(nome, cpf) {
-    retorno.removeClass("hidden");
-    containerid.addClass("hidden");
-    barra.addClass("changebar-ativo");
-    
+    $('#profile').removeClass("hidden");
+    $('#container').addClass("hidden");
+
     document.getElementById("nomeFuncionario").innerText = nome || "Nome não encontrado";
     document.getElementById("cpfFuncionario").innerText = cpf || "CPF não encontrado";
 
     setTimeout(() => {
-        barra.removeClass("changebar-ativo");
-        retorno.addClass("hidden");
-        containerid.removeClass("hidden");
+        $('#profile').addClass("hidden");
+        $('#container').removeClass("hidden");
     }, 2500);
 }
 
@@ -284,8 +265,8 @@ export function mostrarConfiguracoes() {
 
 export function cadastarUsu() {
     // Captura dos campos de cadastro de usuário
-    const username = $('#username').length ? $('#username').val().trim() : '';
-    const password = $('#password').length ? $('#password').val().trim() : '';
+    const username = usuario.length ? usuario.val().trim() : '';
+    const password = senha.length ? senha.val().trim() : '';
 
     if (username && password) {
         if (password.length < 4) {
@@ -314,8 +295,8 @@ export function cadastarUsu() {
                 // Limpa os campos de username e password após o sucesso
                 console.log("Username:", username);
                 console.log("Password:", password);
-                $('#username').val('');
-                $('#password').val('');
+                usuario.val('');
+                senha.val('');
                 
                 // Exibe o toast de sucesso
                 Swal.fire({
@@ -373,13 +354,6 @@ export function cadastarUsu() {
 
 // **************************************(((TELAS DE LOGIN)))*************************************************************************
 
-
-// Verifica o tipo de usuário que está logando no sistema e o redireciona para a devida página
-
-
-export let usuario = $('#username')
-export let senha = $('#password')
-
 // Função para redirecionar para a página de ponto
 export function pagina_ponto() {
     window.location.href = 'ponto.html'
@@ -392,28 +366,26 @@ export async function verificaLogin(event, telaRedirecionada) {
     }
 
     // Lógica de validação e login
-    const userNameInput = $('#username')
-    const passwordInput = $('#password')
-    let userName = userNameInput.val()
-    let password = passwordInput.val()
+    let usuarioValue = usuario.val()
+    let senhaValue = senha.val()
 
-    if (!userName || !password) {
+    if (!usuarioValue || !senhaValue) {
         popUpNotification('Preencha todos os campos!')
         return
     }
 
-    if (userName === 'mestre' && password === '102030'){
+    if (usuarioValue === 'mestre' && senhaValue === '102030'){
         window.location.href = telaRedirecionada
     }else {
         console.log('Preparando para enviar dados do funcionário...')
         try {
-            console.log('Enviando dados do funcionário...')
+            console.log(`Enviando dados do funcionário.\n Usuario: ${usuarioValue}\n Senha: ${senhaValue}  `)
             const response = await fetch('http://localhost:3000/verificarLogin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username: userName, password }),
+                body: JSON.stringify({ username: usuarioValue, password: senhaValue }),
             })
             
             // Log a resposta antes de verificar se está OK
@@ -444,8 +416,8 @@ export async function verificaLogin(event, telaRedirecionada) {
                         popup: 'colored-toast'
                     }
                 })
-                userNameInput.val('')
-                passwordInput.val('')
+                usuario.val('')
+                senha.val('')
             }
         } catch (error) {
             console.error('Erro:', error)

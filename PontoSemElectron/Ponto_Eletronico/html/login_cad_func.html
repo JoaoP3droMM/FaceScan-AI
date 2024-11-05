@@ -1,41 +1,51 @@
+<!-- Tela HTML de login do cadastro de funcionários -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://code.jquery.com;">
+    
     <link rel="stylesheet" href="../styles/login.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src="../script/login_cad_func.js" defer></script> <!-- Corrigido -->
+    <script type="module" src="../script/login_cad_func.js" defer></script>
+    <script type="module" src="../script/variables.js" defer></script>
     <script type="module" src="../script/functions.js" defer></script>
     <title>Login - A Casa Brasileira</title>
 </head>
 <body>
+    <!-- Botão que retorna a tela de ponto -->
     <div class="botao-voltar">
         <button type="button" id="pagina-ponto"><img src="../assets/voltar.png" class="imgVoltar"></button>
     </div>
+
+    <!-- Formulário de login para o cadastro de funcionários -->
     <div class="container">
         <h1>Cadastrar Funcionário</h1>
         <br>
         <img src="../assets/logo-casa-brasileira.png" alt="Logo A Casa Brasileira">
         <br><br>
         <form id="login-form">
+            <!-- Campo de username com um placeholder para orientar o usuário. O termo required o torna obrigatório -->
             <div class="form-group">
                 <input type="text" id="username" placeholder="Usuário" required>
             </div>
+            <!-- Campo de senha com placeholder para orientar o usuário -->
             <div class="form-group">
                 <input type="password" id="password" placeholder="Senha" required>
             </div>
+            <!-- Botão de login. Este é o responsavel por verificar o login e enviar para a página correta -->
             <div class="form-group">
-                <div id="notification" class="notification hidden">
-                    <p id="notificacao-default"></p>
-                </div>
-                <button type="submit" id="btnEntrar">ENTRAR</button> <!-- Corrigido -->
+                <button type="submit" id="btnEntrar">ENTRAR</button>
             </div>
-        </form>
+        </form> 
     </div>
+
+    <!-- Aqui temos a tela de carregamento (inicialmente oculta) que aparece enquanto o sistema processa a autenticação -->
     <div class="telacarregamento hidden" id="telacarregamento">
         <div class="loading-wave">
           <div class="loading-bar"></div>
@@ -44,5 +54,13 @@
           <div class="loading-bar"></div>
         </div>
     </div>
+
+    <!-- Se você parou para ler este comentário é porque está tão perdido quanto os fãs no fim de GOT
+    até porque esperar ter uma explicação para um fechamento de tag body e html é ser muito usuário de
+    bicicleta com rodinhas. Mas não se preocupe! Você não é um otário sozinho, preencha a lista de otários
+    que pararam para ler isso e não deixe o próximo imbecil achar que é o unico burro entre nós:
+        1 - João Pedro
+        2 -     
+    -->
 </body>
 </html>

@@ -1,40 +1,23 @@
-// Script da página de login do cadastro de usuários
+// Lógica que controla o formulário de login
 
 /* ********************************************************************************** */
 // Import das funções
-import { usuario, senha, pagina_ponto, verificaLogin } from './functions.js'
+import { pagina_ponto, verificaLogin } from './functions.js'
 
 
 /* ********************************************************************************** */
-// Quando a página estiver carregada
+// Manipulação de eventos
 $(document).ready(function() {
-    let telaRedirecionada = '../html/cad_usuario.html'
+    let telaRedirecionada = '../html/usu.html' // Aqui é para tornar mais fácil, eu
+                                                    // copiei e colei este código no login
+                                                    // de usuarios e só troco o valor dessa
+                                                    // variavel. Stonks 🤑🤑🤑🤑🤑🤑🤑
 
     $('#login-form').on('submit', function(e) {
         e.preventDefault()
-        verificaLogin(e, telaRedirecionada) // Passando a tela redirecionada
+        verificaLogin(e, telaRedirecionada) // Redireciona para a url armazenada na variavel
     })
 
-    $('#pagina-ponto').on('click', pagina_ponto)
-})
-
-/* ********************************************************************************** */
-// Adiciona a função de login a página
-document.addEventListener('DOMContentLoaded', () => {
-    const form = $('#login-form')
-    form.on('submit', (e) => {
-        e.preventDefault()
-        verificaLogin()
-    })
-})
-
-/* ********************************************************************************** */
-// Adicionando função de bater ponto ao botão sair
-$('#pagina-ponto').on('click', pagina_ponto)
-
-/* ******************************************************************************** */
-// Chama a verificação de login
-$('#login-form').on('submit', function(e) {
-    e.preventDefault()
-    verificaLogin(e)
+    $('#pagina-ponto').on('click', pagina_ponto) // Quando o usuário clica em voltar, ele 
+                                                 // retorna ao ponto
 })
