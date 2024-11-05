@@ -62,6 +62,26 @@ export function hideNotification() {
 }
 
 // ****************************************************************************************************
+
+// Função auxiliar para exibir alertas
+export const mostrarAlerta = (icon, title, text, toast = false) => {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        toast: toast,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+            popup: 'colored-toast'
+        }
+    })
+}
+
+// ****************************************************************************************************
+
 // // Função global da tela de carregamento para uso através da classe hidden
 // export function telaDeLoadOn() {
 //     const load = $('#telacarregamento')

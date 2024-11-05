@@ -1,85 +1,134 @@
 // Importando as funções globais e variaveis
-import { voltarPagina, popUpNotification, hideNotification, showAlert, showErrorAlert } from './globalFunction.js'
-import { usuario, senha, novoUsuario, novaSenha } from './variables.js'
+import { 
+    voltarPagina, 
+    popUpNotification, 
+    hideNotification, 
+    mostrarAlerta, 
+    showErrorAlert
+} from './globalFunction.js'
+
+import {
+    usuario, 
+    senha, 
+    novoUsuario, 
+    novaSenha, 
+    matriculaInput,
+    idInput,
+    cpfInput,
+    nomeInput,
+    filialInput,
+    btnSairCF,
+    btnCadastrar, 
+    btnFoto, 
+    formularioCadFunc,
+    camera,
+    videoCamera,
+    canvas
+} from './variables.js'
 
 let isTraining = false;
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
 
-// Funções do cadastro de funcionários
-export const buttonCadastro = $('#start-capture');
-
-export function toggleButton(enable = true) {
-    $('#start-capture').prop('disabled', !enable);
+// Função que habilita ou desabilita o botão cadastrar de acordo com o enable
+function toggleButton(enable = true) {
+    btnCadastrar.prop('disabled', !enable)
 }
 
-// Função que inicia a captura de imagem da câmera
-export function iniciarCaptura() {
-    const video = $('#video')[0];
-    const videoContainer = $('#video-container');
+// Função que abre a câmera e exibe o que ela está vendo
+export function abrirCamera() {
 
+    // Acessa os recursos do navegador, mais precisamente a câmera
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
-            video.srcObject = stream;
-            video.play();
+            camera.srcObject = stream;
+            camera.play()
 
-            videoContainer.removeClass('hidden').show();
+            // Torna a imagem da câmera visível para o usuário
+            videoCamera.removeClass('hidden').show()
         })
         .catch(err => {
-            console.error('Erro ao acessar a câmera:', err);
-            popUpNotification('Erro ao acessar a câmera.');
-        });
+            console.error('Erro ao acessar a câmera:', err)
+            mostrarAlerta('error', 'Erro ao acessar a câmera', '', true)
+        })
 }
 
-// Função que captura a imagem da câmera e oculta o vídeo
-export function capturarImagem() {
-    const video = $('#video')[0];
-    const canvas = $('#canvas')[0];
-    const context = canvas.getContext('2d');
+// Função que captura a imagem da câmera e converte em base64
+export function tirarFotoFunc() {
+    // Obtém o context (função do canvas que permite desenhar e manipular imagens)
+    const context = canvas.getContext('2d')
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // Define largura e altura com base nas dimensões da câmera
+    canvas.width = camera.cameraWidth
+    canvas.height = camera.cameraHeight
 
-    const imagemCapturada = canvas.toDataURL('image/png');
+    /* Desenha a imagem atual da câmera no canvas (ao invés de tirar a foto, desenhamos uma cópia
+       do que tem na tela) */
+    context.drawImage(camera, 0, 0, canvas.width, canvas.height)
 
-    const stream = video.srcObject;
-    stream.getTracks().forEach(track => track.stop());
-    video.srcObject = null;
-    $('#video-container').addClass('hidden');
+    // Converte nosso desenho a uma imagem jpeg
+    const imagemCapturada = canvas.toDataURL('image/jpeg')
 
-    enviarFotoCadastro(imagemCapturada);
+    /* Aqui pegamos o frame atual do vídeo e criamos um objeto com este valor
+       Esta propriedade cria uma variável que armazena a referência do stream de vídeo atual */
+    const stream = camera.srcObject
+
+    /* Este método retorna uma lista de todos os frames que estão ativos no vídeo, e paramos em
+       algum frame aleatório (tirando a foto) */
+    stream.getTracks().forEach(track => track.stop())
+
+    // Encerra o processo e esconde o vídeo
+    camera.srcObject = null
+    videoCamera.addClass('hidden')
+
+    // Chama a função que envia a foto para a API de cadastro no ponto, passando a imagem capturada
+    // como parâmetro
+    enviarFotoCadastro(imagemCapturada)
 }
 
-// Função que envia os dados cadastrais para o MongoDB
+// Função que envia os dados cadastrais para o backend
 export function enviarFotoCadastro(imagemBase64) {
-    const id = $('#idfunc').val().trim();
-    const nome = $('#nomeCompleto').val().trim();
-    const matricula = $('#matricula').val().trim();
-    const cpf = $('#cpf').val().trim();
-    const filial = $('#filial').val().trim();
 
-    if (!imagemBase64 || !id || !nome || !matricula || !cpf || !filial) {
-        Swal.fire({
-            icon: 'warning',
-            text: 'Por favor, preencha todos os campos obrigatórios!',
-            confirmButtonText: 'OK'
-        });
-        return;
-    }
+    // Declarando variaveis com os valores dos inputs
+    let valorID = Number(idInput.val().trim())
+    let valorMTR = Number(matriculaInput.val().trim())
+    let valorCPF = Number(cpfInput.val().trim())
+    let valorFIL = Number(filialInput.val().trim())
+    let valorNOM = nomeInput.val().trim()
 
+    console.log(valorID, valorNOM, valorMTR, valorCPF, valorFIL)
+    // Enviando os dados para o backend realizar o cadastro do funcionário
     fetch('http://localhost:5000/cadastro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imagem: imagemBase64, id, nome, matricula, cpf, filial })
+        body: JSON.stringify({ imagem: imagemBase64, valorID, valorNOM, valorMTR, valorCPF, valorFIL })
     })
     .then(response => response.json())
     .then(data => {
+
+        // Verofica a resposta do servidor
         if (data.status === 'sucesso') {
-            $('#video-container').hide();
+            // videoCamera.hide()
             Swal.fire({
                 icon: 'success',
                 title: 'Cadastro realizado com sucesso!',
@@ -88,17 +137,14 @@ export function enviarFotoCadastro(imagemBase64) {
                 showConfirmButton: false // Não mostra botão de confirmação
             });
         } else {
-            $('#video-container').hide();
+            videoCamera.hide()
+            mostrarAlerta('error', 'Erro ao cadastrar funcionário', '', true)
             throw new Error(data.mensagem || 'Erro ao cadastrar funcionário');
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        Swal.fire({
-            icon: 'error',
-            text: 'Erro ao cadastrar funcionário.',
-            confirmButtonText: 'OK'
-        });
+        mostrarAlerta('error', 'Erro ao cadastrar funcionário', '', true)
     });
 }
 
@@ -268,32 +314,15 @@ export function cadastarUsu() {
     const username = novoUsuario.length ? novoUsuario.val().trim() : '';
     const password = novaSenha.length ? novaSenha.val().trim() : '';
 
-    // Função auxiliar para exibir alertas
-    const showAlert = (icon, title, text, toast = false) => {
-        Swal.fire({
-            icon: icon,
-            title: title,
-            text: text,
-            toast: toast,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: {
-                popup: 'colored-toast'
-            }
-        });
-    };
-
     // Verifica se os imputs estão preenchidos
     if (!username || !password) {
-        showAlert('error', 'Erro', 'Por favor, preencha todos os campos.');
+        mostrarAlerta('error', 'Erro', 'Por favor, preencha todos os campos.');
         return;
     }
 
     // Verifica se o conteúdo da senha tem mais de 4 caracteres
     if (password.length < 4) {
-        showAlert('info', 'Erro', 'A senha deve ter pelo menos 4 caracteres.', true);
+        mostrarAlerta('info', 'Erro', 'A senha deve ter pelo menos 4 caracteres.', true);
         return;
     }
 
@@ -323,13 +352,13 @@ export function cadastarUsu() {
                 limparCampos();
 
                 // Emite a mensagem de sucesso
-                showAlert('success', 'Sucesso', 'Usuário cadastrado com sucesso!', true);
+                mostrarAlerta('success', 'Sucesso', 'Usuário cadastrado com sucesso!', true);
 
             // Se o envio dos dados deu errado... 
             } else {
                 // Verifica se o usuário já existe
                 if (data.message === "O usuário já existe") {
-                    showAlert('warning', 'Atenção!', 'Nome de usuário já cadastrado.', true);
+                    mostrarAlerta('warning', 'Atenção!', 'Nome de usuário já cadastrado.', true);
                 // Caso o usuário não exista e ele não consiga cadastrar no banco (por algum outro motivo) 
                 } else {
                     throw new Error(data.message || 'Erro ao cadastrar usuário');
@@ -338,7 +367,7 @@ export function cadastarUsu() {
         } catch (error) {
             // Caso haja algum erro de conexão
             console.error('Erro:', error);
-            showAlert('error', 'Erro de conexão', 'Ocorreu um erro ao conectar ao servidor.', true);
+            mostrarAlerta('error', 'Erro de conexão', 'Ocorreu um erro ao conectar ao servidor.', true);
         }
     };
 
