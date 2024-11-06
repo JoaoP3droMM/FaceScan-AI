@@ -31,6 +31,21 @@ btnFoto.on('click', function(event) {
 matriculaInput.on('keypress', forceNumero)
     
 // ****************************************************************************************************
+// Variável de controle do estado do treinamento
+let treinamentoConcluido = false;
+
+// Função para verificar o status do treinamento periodicamente
+function verificarStatusTreinamento() {
+    fetch('http://localhost:5000/status_treinamento')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'treinamento_concluido') {
+                treinamentoConcluido = true;
+            }
+        })
+        .catch(error => console.error('Erro ao verificar status do treinamento:', error));
+}
+
 // Enviar dados do funcionário ao clicar no botão
 formularioCadFunc.on('submit', function(event) {
     event.preventDefault() // Impede a atualização da página ao enviar o formulário

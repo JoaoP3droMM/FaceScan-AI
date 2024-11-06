@@ -50,12 +50,20 @@ def converterSalvar(base64_string, filename, target_size=(640, 480)):
 
 
 # ********************************************************************************************************
-# Função para executar o treinamento da IA
-def exec_treinamento_async():
-    """Função para executar o treinamento em uma thread separada."""
-    salvar_fotos_funcionarios()
-    exec_treinamento(modo="cadastro", registrar_ponto=False)
+# Variável de controle para o treinamento
+treinamento_em_andamento = False
 
+def exec_treinamento_async():
+    global treinamento_em_andamento
+    if not treinamento_em_andamento:  # Verifica se o treinamento já está em andamento
+        treinamento_em_andamento = True  # Marca o treinamento como iniciado
+        salvar_fotos_funcionarios()
+        exec_treinamento(modo="cadastro", registrar_ponto=False)
+        treinamento_em_andamento = False  # Marca o treinamento como concluído
+        logging.info("Treinamento concluído")
+    else:
+        logging.info("Tentativa de treinamento ignorada, já está em andamento.")
+    
 
 # ********************************(DEFININDO ROTAS DE API)************************************************
 
@@ -98,7 +106,7 @@ def cadastro():
                 "foto": foto_base64,
                 "sync": False
             }},
-            upsert=True  # Cria um novo documento se a matrícula não existir
+            upsert=True
         )
 
         # Respostas de acordo com o que foi feito
@@ -109,15 +117,24 @@ def cadastro():
         else:
             logging.warning(f"Nenhuma atualização feita para a matrícula: {matricula}")
 
-        # Inicia o treinamento em uma nova thread
-        treinamento_thread = Thread(target=exec_treinamento_async)
-        treinamento_thread.start()
-
+        # **Treinamento direto na rota (não usando thread)**
+        logging.info("Iniciando o treinamento...")
+        exec_treinamento_async()  # Função de treinamento, pode ser bloqueante
+        
         return jsonify({"status": "sucesso", "mensagem": "Funcionário cadastrado com sucesso!"}), 200
 
     except Exception as e:
         logging.error(f"Erro ao cadastrar funcionário: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+
+# ********************************************************************************************************
+@app.route('/status_treinamento', methods=['GET'])
+def status_treinamento():
+    # Retorna o status do treinamento
+    # Isso será uma resposta rápida dizendo ao front-end que o treinamento está completo
+    return jsonify({"status": "treinamento_concluido"})
+
 
 # ********************************************************************************************************
 # Rota de cadastro de usuários (logar no sistema)

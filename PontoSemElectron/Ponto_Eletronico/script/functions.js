@@ -56,7 +56,7 @@ function toggleButton(enable = true) {
 }
 
 // Função que abre a câmera e exibe o que ela está vendo
-export function abrirCamera() {
+export async function abrirCamera() {
 
     // Acessa os recursos do navegador, mais precisamente a câmera
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -74,7 +74,7 @@ export function abrirCamera() {
 }
 
 // Função que captura a imagem da câmera e converte em base64
-export function tirarFotoFunc() {
+export async function tirarFotoFunc() {
     // Obtém o context (função do canvas que permite desenhar e manipular imagens)
     const context = canvas.getContext('2d')
 
@@ -107,7 +107,7 @@ export function tirarFotoFunc() {
 }
 
 // Função que envia os dados cadastrais para o backend
-export function enviarFotoCadastro(imagemBase64) {
+export async function enviarFotoCadastro(imagemBase64) {
 
     // Declarando variaveis com os valores dos inputs
     let valorID = Number(idInput.val().trim())
@@ -126,18 +126,19 @@ export function enviarFotoCadastro(imagemBase64) {
     .then(response => response.json())
     .then(data => {
 
-        // Verofica a resposta do servidor
+        // Verifica a resposta do servidor
         if (data.status === 'sucesso') {
-            // videoCamera.hide()
             Swal.fire({
                 icon: 'success',
                 title: 'Cadastro realizado com sucesso!',
                 text: 'Agora você pode bater o ponto usando reconhecimento facial!',
-                timer: 10000, // Tempo para fechar automaticamente
+                timer: 100000, // Tempo para fechar automaticamente
                 showConfirmButton: false // Não mostra botão de confirmação
             })
+            // Inicia a verificação do status do treinamento após o cadastro bem-sucedido
+            treinamentoConcluido = false; // Reseta o estado para iniciar o monitoramento
+            verificarStatusTreinamento();
         } else {
-            videoCamera.hide()
             mostrarAlerta('error', 'Erro ao cadastrar funcionário', '', true)
             throw new Error(data.mensagem || 'Erro ao cadastrar funcionário')
         }
@@ -149,7 +150,7 @@ export function enviarFotoCadastro(imagemBase64) {
 }
 
 // Impede entrada não numérica em Matrícula e CPF (chamada no cad_func.js)
-export function forceNumero(event) {
+export async function forceNumero(event) {
     if (!/[0-9]/.test(event.key)) {
         event.preventDefault()
     }

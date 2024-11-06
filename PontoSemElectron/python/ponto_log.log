@@ -262,3 +262,6 @@
 2024-11-06 11:06:28,478 - DEBUG - Starting new HTTP connection (1): localhost:3000
 2024-11-06 11:06:28,545 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
 2024-11-06 11:06:28,548 - INFO - 127.0.0.1 - - [06/Nov/2024 11:06:28] "POST /ponto HTTP/1.1" 200 -
+2024-11-06 13:53:13,789 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-06 13:53:13,790 - INFO - [33mPress CTRL+C to quit[0m
