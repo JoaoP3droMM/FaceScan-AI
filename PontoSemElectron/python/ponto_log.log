@@ -265,3 +265,89 @@
 2024-11-06 13:53:13,789 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5001
 2024-11-06 13:53:13,790 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-06 14:04:03,616 - INFO - 127.0.0.1 - - [06/Nov/2024 14:04:03] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 14:04:03,625 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 14:04:03,625 - INFO - Loading weights.
+2024-11-06 14:04:03,625 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 14:04:05,192 - DEBUG - Creating converter from 3 to 5
+2024-11-06 14:04:08,368 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:11,453 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:14,524 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:17,596 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:20,668 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:23,740 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:26,817 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:29,885 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:32,956 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:36,028 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:39,100 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:42,172 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:04:45,245 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-06 14:04:45,410 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-06 14:04:45,413 - INFO - 127.0.0.1 - - [06/Nov/2024 14:04:45] "POST /ponto HTTP/1.1" 200 -
+2024-11-06 14:06:47,169 - INFO - 127.0.0.1 - - [06/Nov/2024 14:06:47] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 14:06:47,185 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 14:06:47,185 - INFO - Loading weights.
+2024-11-06 14:06:47,186 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 14:06:51,626 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:06:54,716 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:06:57,789 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:00,860 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:03,932 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:07,035 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:10,141 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:32,111 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-06 14:07:32,112 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-06 14:07:44,008 - INFO - 127.0.0.1 - - [06/Nov/2024 14:07:44] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 14:07:44,025 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 14:07:44,026 - INFO - Loading weights.
+2024-11-06 14:07:44,028 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 14:07:45,689 - DEBUG - Creating converter from 3 to 5
+2024-11-06 14:07:48,689 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:51,741 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:54,812 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:07:57,884 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:00,956 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:04,028 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:07,100 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:10,172 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:13,249 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:16,316 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:19,388 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:22,460 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:25,532 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:28,604 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:31,676 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:34,748 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:08:37,822 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-06 14:08:37,911 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-06 14:08:37,915 - INFO - 127.0.0.1 - - [06/Nov/2024 14:08:37] "POST /ponto HTTP/1.1" 200 -
+2024-11-06 14:46:48,508 - INFO - 127.0.0.1 - - [06/Nov/2024 14:46:48] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 14:46:48,515 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 14:46:48,516 - INFO - Loading weights.
+2024-11-06 14:46:48,517 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 14:46:52,438 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:46:55,549 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:46:58,620 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:01,692 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:04,764 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:07,836 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:10,908 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:13,980 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:17,053 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:20,131 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:23,197 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:26,268 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:29,340 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:32,412 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:35,485 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:38,556 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:41,629 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:44,700 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 14:47:47,773 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-06 14:47:47,842 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-06 14:47:47,845 - INFO - 127.0.0.1 - - [06/Nov/2024 14:47:47] "POST /ponto HTTP/1.1" 200 -
+2024-11-06 14:57:25,998 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-06 14:57:25,998 - INFO - [33mPress CTRL+C to quit[0m

@@ -8,6 +8,7 @@ import logging
 import cv2
 import numpy as np
 from flask import Flask, jsonify, request
+from flask_socketio import SocketIO
 from pymongo import MongoClient
 from flask_cors import CORS
 from threading import Thread
@@ -15,25 +16,23 @@ from treinamento import exec_treinamento
 from converterImagem import salvar_fotos_funcionarios
 from cadastrarUsuario import cadastrar_usuario
 
-
 # ********************************************************************************************************
 # Desabilitando o uso de GPUs (tirar mensagem chata quando roda o sistema)
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-# Configuração do Flask e CORS (API's)
+# Configuração do Flask, CORS, e SocketIO (API's)
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")  # Habilita SocketIO com suporte a CORS
 
 # Configuração da conexão com MongoDB
 client = MongoClient('mongodb://localhost:27017')
 db = client['pontoCB']
 collection = db['funcionarios']
 
-
 # Diretório de saída para imagens temporárias
 imagensTemporarias = os.path.join(os.path.dirname(__file__), 'temp')
 os.makedirs(imagensTemporarias, exist_ok=True)
-
 
 # ********************************************************************************************************
 # Decodifica uma string de imagem em base64 e a salva em disco
@@ -48,7 +47,6 @@ def converterSalvar(base64_string, filename, target_size=(640, 480)):
     cv2.imwrite(filename, imagemRedimencionada)
     logging.info(f"Imagem salva e redimensionada para {target_size} em {filename}")
 
-
 # ********************************************************************************************************
 # Variável de controle para o treinamento
 treinamento_em_andamento = False
@@ -61,9 +59,10 @@ def exec_treinamento_async():
         exec_treinamento(modo="cadastro", registrar_ponto=False)
         treinamento_em_andamento = False  # Marca o treinamento como concluído
         logging.info("Treinamento concluído")
+        # Envia uma mensagem via WebSocket para o front-end
+        socketio.emit('status', {'mensagem': 'Cadastro concluído'})
     else:
         logging.info("Tentativa de treinamento ignorada, já está em andamento.")
-    
 
 # ********************************(DEFININDO ROTAS DE API)************************************************
 
@@ -127,17 +126,7 @@ def cadastro():
         logging.error(f"Erro ao cadastrar funcionário: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
-
 # ********************************************************************************************************
-@app.route('/status_treinamento', methods=['GET'])
-def status_treinamento():
-    # Retorna o status do treinamento
-    # Isso será uma resposta rápida dizendo ao front-end que o treinamento está completo
-    return jsonify({"status": "treinamento_concluido"})
-
-
-# ********************************************************************************************************
-# Rota de cadastro de usuários (logar no sistema)
 @app.route('/cadastrarUsuario', methods=['POST'])
 def route_cadastrar_usuario():
     data = request.get_json()
@@ -150,4 +139,4 @@ def route_cadastrar_usuario():
 # ********************************************************************************************************
 # Define a porta da API
 if __name__ == "__main__":
-    app.run(port=5000)
+    socketio.run(app, port=5000)  # Usa socketio.run ao invés de app.run

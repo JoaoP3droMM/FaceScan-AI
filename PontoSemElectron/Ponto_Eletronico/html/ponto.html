@@ -1,25 +1,39 @@
+<!-- Núcleo da aplicação. Onde o usuário pode navegar por todo o sistema e interagir com as outras
+ telas, podendo assim realizar cadastros e bater o ponto -->
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Ponto Eletrônico</title>
+
     <link rel="stylesheet" href="../styles/ponto.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="../script/ponto.js" defer></script>
     <script type="module" src="../script/functions.js" defer></script>
     <script type="module" src="../script/globalFunction.js" defer></script>
+    <script type="module" src="../script/variables.js" defer></script>
+
+    <title>Sistema de Ponto Eletrônico</title>
 </head>
 <body>
+
+    <!-- Este bloco cria um botão de configurações que, ao ser clicado, exibe links para as páginas 
+     de cadastro de funcionário e usuário. -->
     <div class="configuracoes">
         <button id="btnConfig"><img src="../assets/config.png" class="configImg"></button>
         <div class="dropdown-config">
             <a href="login_cad_func.html"><strong>Cadastrar Funcionário</strong></a>
-            <a href="login_cad_usu.html"><strong>Cadastrar Usuario</strong></a>  <!-- Falta de criatividade para nome melhor -->
+            <a href="login_cad_usu.html"><strong>Cadastrar Usuario</strong></a>
+            <a href="login_cad_func.html"><strong>Configurações</strong></a>
         </div>
     </div>
+
+    <!-- Bloco principal de reconhecimento -->
     <div class="container" id="container">
         <div class="recognition" id="recognition">
             <h1>Sistema de Ponto Eletrônico</h1>
@@ -28,21 +42,9 @@
             <button id="btnIniciarCamera" type="button" class="btnPonto"><h2>Bater Ponto</h2></button>
             <br>
         </div>
-        <!-- Alert Falso -->
-        <div id="notification" class="notification hidden">
-            <p id="notificacao-default"></p>
-        </div>
-        
     </div>
-
-    <div class="profile hidden" id="erroContainer">
-        <div class="info">
-            <i class="" id="icone-error" ></i>
-            <h1>Error </h1>
-        <strong><span id="errorType"></span></strong>
-        </div>
-    </div>
-
+    
+    <!-- Tela de retorno que irá trazer as informações do funcionário que acabou de bater o ponto -->
     <div class="profile hidden" id="profile">
         <div class="info">
             <p id="funcionario_img"><i class="fa-solid fa-circle-check fa-3x"></i></p>
@@ -57,12 +59,8 @@
     <div id="video-container" class="hidden">
         <video id="video" autoplay></video>
         <button id="btnCapturarImagem" type="button" class="btnCaptura"></button>
-        <!-- Adicione o canvas aqui -->
         <canvas id="canvas" style="display:none;"></canvas>
     </div>        
-
-
-    <div id="mensagem" class="mensagem hidden"></div>
 
     <!-- Tela de carregamento -->
     <div class="telacarregamento hidden" id="telacarregamento">
@@ -74,5 +72,6 @@
          <div class="loading-bar"></div>
         </div>
     </div>
+
 </body>
 </html>

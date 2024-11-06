@@ -10,12 +10,20 @@
     <link rel="stylesheet" href="../styles/cadastro.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
 
+    <!-- Script do Socket.IO -->
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="../script/globalFunction.js" defer></script>
     <script type="module" src="../script/functions.js" defer></script>
     <script type="module" src="../script/cad_func.js" defer></script>    
     <script type="module" src="../script/variables.js" defer></script>
+    
+    <script>
+        // Conectar ao WebSocket no momento em que a página é carregada
+        const socket = io('http://localhost:5000')
+    </script>
 
     <title>Cadastro de Funcionário</title>
 </head>
