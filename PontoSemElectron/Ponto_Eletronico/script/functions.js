@@ -118,7 +118,7 @@ export function enviarFotoCadastro(imagemBase64) {
 
     console.log(valorID, valorNOM, valorMTR, valorCPF, valorFIL, imagemBase64)
     // Enviando os dados para o backend realizar o cadastro do funcionário
-    fetch('http://localhost:5000/cadastro', {
+    fetch('http://localhost:5000/cadastroFunc', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imagem: imagemBase64, id: valorID, nome: valorNOM, matricula: valorMTR, cpf: valorCPF, filial: valorFIL })

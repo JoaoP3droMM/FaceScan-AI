@@ -1,7 +1,10 @@
+# Script principal que gerencia todas as operações de cadastro no banco de dados
+
+# ********************************************************************************************************
+# Import das bibliotecas e módulos
 import os
 import base64
 import logging
-import sys
 import cv2
 import numpy as np
 from flask import Flask, jsonify, request
@@ -12,22 +15,12 @@ from treinamento import exec_treinamento
 from converterImagem import salvar_fotos_funcionarios
 from cadastrarUsuario import cadastrar_usuario
 
-# Configuração de logging
-logging.basicConfig(
-    filename='cadastro_log.log',
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
 
-def global_exception_handler(exctype, value, traceback):
-    logging.critical("Exceção não tratada", exc_info=(exctype, value, traceback))
-
-sys.excepthook = global_exception_handler
-
-# Desabilitando o uso de GPUs
+# ********************************************************************************************************
+# Desabilitando o uso de GPUs (tirar mensagem chata quando roda o sistema)
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-# Configuração do Flask e CORS
+# Configuração do Flask e CORS (API's)
 app = Flask(__name__)
 CORS(app)
 
@@ -36,37 +29,47 @@ client = MongoClient('mongodb://localhost:27017')
 db = client['pontoCB']
 collection = db['funcionarios']
 
-# Diretório de saída para imagens
-output_dir = os.path.join(os.path.dirname(__file__), 'temp')
-os.makedirs(output_dir, exist_ok=True)
 
-def decode_and_save_image(base64_string, filename, target_size=(640, 480)):
-    """Decodifica uma imagem em base64 e salva no disco."""
+# Diretório de saída para imagens temporárias
+imagensTemporarias = os.path.join(os.path.dirname(__file__), 'temp')
+os.makedirs(imagensTemporarias, exist_ok=True)
+
+
+# ********************************************************************************************************
+# Decodifica uma string de imagem em base64 e a salva em disco
+def converterSalvar(base64_string, filename, target_size=(640, 480)):
     if base64_string.startswith("data:image"):
         base64_string = base64_string.split(",")[1]
     
-    image_data = base64.b64decode(base64_string)
-    nparr = np.frombuffer(image_data, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    img_resized = cv2.resize(img, target_size)
-    cv2.imwrite(filename, img_resized)
+    stringImagem = base64.b64decode(base64_string)
+    npArray = np.frombuffer(stringImagem, np.uint8)
+    img = cv2.imdecode(npArray, cv2.IMREAD_COLOR)
+    imagemRedimencionada = cv2.resize(img, target_size)
+    cv2.imwrite(filename, imagemRedimencionada)
     logging.info(f"Imagem salva e redimensionada para {target_size} em {filename}")
 
+
+# ********************************************************************************************************
+# Função para executar o treinamento da IA
 def exec_treinamento_async():
     """Função para executar o treinamento em uma thread separada."""
     salvar_fotos_funcionarios()
     exec_treinamento(modo="cadastro", registrar_ponto=False)
 
-@app.route('/cadastro', methods=['POST'])
+
+# ********************************(DEFININDO ROTAS DE API)************************************************
+
+# ********************************************************************************************************
+# Rota de cadastro de funcionários
+@app.route('/cadastroFunc', methods=['POST'])
 def cadastro():
-    """Rota para cadastro de nova imagem e treinamento."""
     try:
         data = request.get_json()
         foto_base64 = data.get("imagem")
         matricula = data.get("matricula")
         nome = data.get("nome")
 
-        # Converte campos numéricos
+        # Converte campos recebidos pela API em números para gravar no banco
         try:
             id_funcionario = int(data.get("id"))
             cpf = int(data.get("cpf"))
@@ -81,8 +84,8 @@ def cadastro():
             return jsonify({"status": "erro", "mensagem": "Imagem, matrícula, id, nome, cpf e filial são obrigatórios"}), 400
 
         # Salvar a imagem recebida
-        filename = os.path.join(output_dir, "foto_cadastro.jpg")
-        decode_and_save_image(foto_base64, filename)
+        filename = os.path.join(imagensTemporarias, "foto_cadastro.jpg")
+        converterSalvar(foto_base64, filename)
 
         # Atualizar ou inserir o funcionário com novos dados
         result = collection.update_one(
@@ -98,6 +101,7 @@ def cadastro():
             upsert=True  # Cria um novo documento se a matrícula não existir
         )
 
+        # Respostas de acordo com o que foi feito
         if result.upserted_id:
             logging.info(f"Novo funcionário criado com a matrícula: {matricula}")
         elif result.modified_count > 0:
@@ -115,9 +119,10 @@ def cadastro():
         logging.error(f"Erro ao cadastrar funcionário: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+# ********************************************************************************************************
+# Rota de cadastro de usuários (logar no sistema)
 @app.route('/cadastrarUsuario', methods=['POST'])
 def route_cadastrar_usuario():
-    """Rota para cadastro de novo usuário."""
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -125,5 +130,7 @@ def route_cadastrar_usuario():
     # Chama a função de cadastro de usuário
     return cadastrar_usuario(username, password)
 
+# ********************************************************************************************************
+# Define a porta da API
 if __name__ == "__main__":
     app.run(port=5000)
