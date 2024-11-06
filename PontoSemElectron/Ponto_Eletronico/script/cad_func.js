@@ -4,7 +4,7 @@
 // ****************************************************************************************************
 // Import das funções
 import { voltarPagina } from './globalFunction.js';
-import { enviarFotoCadastro, abrirCamera, tirarFotoFunc, enforceNumericInput, 
+import { enviarFotoCadastro, abrirCamera, tirarFotoFunc, forceNumero, 
         fetchFuncionarioInfo } from './functions.js';
 import { matriculaInput, btnSairCF, btnCadastrar, btnFoto, formularioCadFunc } from './variables.js'
 
@@ -28,7 +28,7 @@ btnFoto.on('click', function(event) {
 
 // ****************************************************************************************************
 // Impede entrada não numérica no input de Matrícula (digitar letras e caracteres especiais)
-matriculaInput.on('keypress', enforceNumericInput)
+matriculaInput.on('keypress', forceNumero)
     
 // ****************************************************************************************************
 // Enviar dados do funcionário ao clicar no botão

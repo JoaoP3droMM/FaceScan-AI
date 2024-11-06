@@ -79,12 +79,12 @@ export function tirarFotoFunc() {
     const context = canvas.getContext('2d')
 
     // Define largura e altura com base nas dimensões da câmera
-    canvas.width = camera.cameraWidth
-    canvas.height = camera.cameraHeight
+    canvas.width = camera.videoWidth
+    canvas.height = camera.videoHeight
 
     /* Desenha a imagem atual da câmera no canvas (ao invés de tirar a foto, desenhamos uma cópia
        do que tem na tela) */
-    context.drawImage(camera, 0, 0, canvas.width, canvas.height)
+       context.drawImage(camera, 0, 0, canvas.width, canvas.height)
 
     // Converte nosso desenho a uma imagem jpeg
     const imagemCapturada = canvas.toDataURL('image/jpeg')
@@ -111,17 +111,17 @@ export function enviarFotoCadastro(imagemBase64) {
 
     // Declarando variaveis com os valores dos inputs
     let valorID = Number(idInput.val().trim())
-    let valorMTR = Number(matriculaInput.val().trim())
+    let valorMTR = matriculaInput.val().trim()
     let valorCPF = Number(cpfInput.val().trim())
     let valorFIL = Number(filialInput.val().trim())
     let valorNOM = nomeInput.val().trim()
 
-    console.log(valorID, valorNOM, valorMTR, valorCPF, valorFIL)
+    console.log(valorID, valorNOM, valorMTR, valorCPF, valorFIL, imagemBase64)
     // Enviando os dados para o backend realizar o cadastro do funcionário
     fetch('http://localhost:5000/cadastro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imagem: imagemBase64, valorID, valorNOM, valorMTR, valorCPF, valorFIL })
+        body: JSON.stringify({ imagem: imagemBase64, id: valorID, nome: valorNOM, matricula: valorMTR, cpf: valorCPF, filial: valorFIL })
     })
     .then(response => response.json())
     .then(data => {
@@ -135,55 +135,56 @@ export function enviarFotoCadastro(imagemBase64) {
                 text: 'Agora você pode bater o ponto usando reconhecimento facial!',
                 timer: 10000, // Tempo para fechar automaticamente
                 showConfirmButton: false // Não mostra botão de confirmação
-            });
+            })
         } else {
             videoCamera.hide()
             mostrarAlerta('error', 'Erro ao cadastrar funcionário', '', true)
-            throw new Error(data.mensagem || 'Erro ao cadastrar funcionário');
+            throw new Error(data.mensagem || 'Erro ao cadastrar funcionário')
         }
     })
     .catch(error => {
         console.error('Erro:', error);
         mostrarAlerta('error', 'Erro ao cadastrar funcionário', '', true)
-    });
+    })
 }
 
-// Impede entrada não numérica em Matrícula e CPF
-export function enforceNumericInput(event) {
+// Impede entrada não numérica em Matrícula e CPF (chamada no cad_func.js)
+export function forceNumero(event) {
     if (!/[0-9]/.test(event.key)) {
-        event.preventDefault();
+        event.preventDefault()
     }
 }
 
-// Busca informações de funcionários na API
+// Busca informações de funcionários (nome, cpf, id, filial) em uma API externa
 export async function fetchFuncionarioInfo() {
-    const matricula = $('#matricula').val().trim();
-    if (!matricula) return;
 
+    // Verifica se o campo matrícula foi preenchido
+    const matricula = matriculaInput.val().trim()
+    if (!matricula) return
+
+    // Aqui tentamos fazer a requisição para a API do Protheus buscando os dados do funcionário pela matrícula
     try {
-        const response = await fetch(`https://casabrasileiraprod.coachingtech.com.br/funcionarios/matricula/${matricula}`);
-        const funcionario = await response.json();
+        const respostaAPI = await fetch(`https://casabrasileiraprod.coachingtech.com.br/funcionarios/matricula/${matricula}`);
+        const funcionario = await respostaAPI.json();
 
+        // Verificamos se o funcionário existe e contém informações
         if (funcionario && Object.keys(funcionario).length > 0) {
-            $('#nomeCompleto').val(funcionario.nome || '');
-            $('#filial').val(funcionario.codfil || '');
-            $('#cpf').val(funcionario.cpf || '');
-            $('#matricula').val(funcionario.matricula || '');
-            $('#idfunc').val(funcionario.id || '');
+            nomeInput.val(funcionario.nome || '')
+            filialInput.val(funcionario.codfil || '')       // Preenche com os dados dos funcionários.
+            cpfInput.val(funcionario.cpf || '')             // Se não houver dados, ele deixa o campo
+            matriculaInput.val(funcionario.matricula || '') // vazio.
+            idInput.val(funcionario.id || '')               
 
-            popUpNotification('Funcionário encontrado');
-            toggleButton(true); // Ativa o botão após encontrar o funcionário
+            mostrarAlerta('success', 'Funcionário encontrado!', '', true)
+            toggleButton(true); // Ativa o botão de cadastro após encontrar o funcionário
         } else {
-            popUpNotification('Funcionário não encontrado');
-            toggleButton(false); // Desativa o botão se não encontrar o funcionário
+            mostrarAlerta('error', 'Funcionário não encontrado', '', true);
         }
+
+        // Caso haja algum erro no envio dos dados para a API de busca
     } catch (error) {
         console.error('Erro ao buscar informações do usuário:', error);
-        Swal.fire({
-            icon: 'error',
-            text: 'Erro ao buscar informações do usuário',
-            confirmButtonText: 'OK'
-        });
+        mostrarAlerta('error', 'Erro ao buscar informações!', 'Consulte o suporte técnico', true)
     }
 }
 
