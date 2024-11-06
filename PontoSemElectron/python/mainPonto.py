@@ -57,11 +57,10 @@ def ponto():
     try:
         data = request.get_json()
         foto_base64 = data.get("imagem")
-        matricula = data.get("matricula")
 
-        if not foto_base64 or not matricula:
-            logging.error("Imagem em base64 ou matrícula não fornecida.")
-            return jsonify({"status": "erro", "mensagem": "Imagem em base64 e matrícula são obrigatórias"}), 400
+        if not foto_base64:
+            logging.error("Imagem em base64 não fornecida.")
+            return jsonify({"status": "erro", "mensagem": "Imagem em base64 é obrigatória"}), 400
 
         # Salvar a imagem recebida
         filename = os.path.join(output_dir, "foto_ponto.jpg")
@@ -85,12 +84,12 @@ def ponto():
         agora = datetime.now()
         limite_tempo = agora - timedelta(minutes=5)
         batida_recente = db['pontos'].find_one({
-            "codigo_funcionario": matricula,
+            "codigo_funcionario": nome_reconhecido,
             "timestamp": {"$gte": limite_tempo}
         })
 
         if batida_recente:
-            logging.warning(f"Batida duplicada detectada para a matrícula: {matricula}.")
+            logging.warning(f"Batida duplicada detectada para a matrícula: {nome_reconhecido}.")
             return jsonify({"status": "erro", "mensagem": "Batida de ponto já registrada."}), 409
 
         # Registrar ponto e sincronizar

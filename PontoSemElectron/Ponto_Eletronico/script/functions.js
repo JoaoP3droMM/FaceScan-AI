@@ -23,7 +23,10 @@ import {
     formularioCadFunc,
     camera,
     videoCamera,
-    canvas
+    canvas,
+    cameraPonto,
+    elementosCamera,
+    canvasPonto
 } from './variables.js'
 
 let isTraining = false;
@@ -47,80 +50,95 @@ let isTraining = false;
 
 // **************************************(((PONTO)))*************************************************************************
 
-let videoStream;
+let videoStream
 
+// Lida com a ativação da câmera e a configuração do vídeo para o reconhecimento facial
 export function iniciarReconhecimentoAutomatico() {
+
+    // Verifica se o treinamento está em execuição
     if (isTraining) {
-        console.log("O sistema está em treinamento. Ponto não será registrado.");
-        return;
+        console.log("O sistema está em treinamento. Ponto não será registrado.")
+        return
     }
 
-    popUpNotification('Iniciando reconhecimento facial...');
-    $('#container').addClass('hidden');
+    // Alerta indicativo
+    mostrarAlerta('success', 'Iniciando reconhecimento facial...', '', true)
 
-    const video = document.getElementById('video');
-    const constraints = { video: { facingMode: 'user' } };
+    // Definimos o tipo de requisição que estamos pedindo ao navegador
+    const tipoDeDado = { video: { facingMode: 'user' } }
 
-    if (videoStream) {
-        console.log("Câmera já ativada.");
-        return;
-    }
-
-    navigator.mediaDevices.getUserMedia(constraints)
+    // Pede ao navegador o acesso a câmera
+    navigator.mediaDevices.getUserMedia(tipoDeDado)
         .then((stream) => {
-            videoStream = stream;
-            video.srcObject = stream;
-            video.play();
-            $('#video-container').removeClass('hidden');
+            videoStream = stream
+            video.srcObject = stream
+
+            // Abre a câmera e a mostra na tela
+            video.play()
+            elementosCamera.removeClass('hidden')
         })
+
+        // Caso não consiga acessar a câmera
         .catch((error) => {
-            console.error("Erro ao acessar a câmera:", error);
-            showErrorAlert("Não foi possível acessar a câmera. Verifique as permissões.");
-        });
+            console.error("Erro ao acessar a câmera:", error)
+            mostrarAlerta('error', 'Não foi possível acessar a câmera!', 'Verifique as permissões.', true)
+        })
 }
 
+// Essa função captura um quadro da câmera, transforma-o em base64
 export function capturarImagemPonto(event) {
-    event.preventDefault();
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
+    event.preventDefault()
+    const context = canvas.getContext('2d')
 
-    canvas.width = 320;
-    canvas.height = 240;
+    // Define o tamanho da imagem que foi tirada
+    canvasPonto.width = 320
+    canvasPonto.height = 240
+    
+    // Desenha um quadrado da câmera com escada 640x480 e o converte para jpeg com 70% de qualidade
+    context.drawImage(video, 0, 0, 640, 480)
+    const base64Image = canvas.toDataURL('image/jpeg', 0.7)
 
-    context.drawImage(video, 0, 0, 640, 480);
-    const base64Image = canvas.toDataURL('image/jpeg', 0.7);
-
-    const matricula = "123456"; // Ajustar para obter a matrícula correta
-    enviarImagemParaReconhecimento(base64Image, matricula);
+    // Chama a função que envia os dados para o backend passando a string de foto como parâmetro
+    enviarImagemParaReconhecimento(base64Image)
 }
 
-export function enviarImagemParaReconhecimento(base64Image, matricula) {
+// Envia a imagem tirada para o back
+export function enviarImagemParaReconhecimento(base64Image) {
+
+    // Verifica se o treinamento está sendo executado
     if (isTraining) {
         console.log("Em treinamento, a imagem não será usada para bater o ponto.");
         return;
     }
 
-    console.log("Iniciando envio da imagem para reconhecimento...");
-    $('.btnPonto').prop('disabled', true);
-
+    // Faz o envio para o backend por uma API para realizar o reconhecimento
     $.ajax({
         url: 'http://localhost:5001/ponto',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ imagem: base64Image, matricula: matricula }),
+        data: JSON.stringify({ imagem: base64Image }),
         success: (response) => {
             console.log("Resposta do reconhecimento:", response);
+            
+            // Verifica se a resposta contém os dados necessários (nome e CPF)
+            if (response && response.status === "sucesso") {
+                // Supondo que a resposta tenha um objeto 'funcionario' com 'nome' e 'cpf'
+                const { nome, cpf } = response.funcionario || {};
+                // Chama a função para exibir a resposta com os dados recebidos
+                telaDeResposta(nome, cpf);
+            } else {
+                // Caso a resposta não seja bem-sucedida, exibe uma mensagem de erro
+                mostrarErro('Erro ao registrar ponto', 'Falha no reconhecimento facial ou dados insuficientes.');
+            }
         },
         error: (xhr, status, error) => {
             console.error("Erro ao enviar imagem:", error);
-        },
-        complete: () => {
-            $('.btnPonto').prop('disabled', false);
+            mostrarErro("Erro na comunicação com o servidor", "Não foi possível registrar a batida de ponto.");
         }
     });
 }
 
+// Tela de resposta do ponto eletrônico (Precisa arrumar)
 export function telaDeResposta(nome, cpf) {
     $('#profile').removeClass("hidden");
     $('#container').addClass("hidden");
@@ -134,8 +152,22 @@ export function telaDeResposta(nome, cpf) {
     }, 2500);
 }
 
+// Função auxiliar para exibir uma mensagem de erro
+function mostrarErro(title, message) {
+    Swal.fire({
+        icon: 'error',
+        title: title,
+        text: message
+    });
+}
+
+// Função que mostra o dropdown com os links para as áreas de cadastro e configurações
 export function mostrarConfiguracoes() {
+
+    // Pega a div de configurações no geral
     const configuracoes = document.querySelector('.configuracoes');
+    
+    // Se configurações existir ele adiciona aclasse show
     if (configuracoes) {
         configuracoes.classList.toggle('show'); // Alterna a classe 'show' para mostrar/ocultar o menu
     } else {

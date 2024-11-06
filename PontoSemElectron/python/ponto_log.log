@@ -351,3 +351,71 @@
 2024-11-06 14:57:25,998 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5001
 2024-11-06 14:57:25,998 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-06 16:56:48,829 - INFO - 127.0.0.1 - - [06/Nov/2024 16:56:48] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 16:56:48,834 - ERROR - Imagem em base64 ou matrícula não fornecida.
+2024-11-06 16:56:48,835 - INFO - 127.0.0.1 - - [06/Nov/2024 16:56:48] "[31m[1mPOST /ponto HTTP/1.1[0m" 400 -
+2024-11-06 16:57:37,532 - INFO - 127.0.0.1 - - [06/Nov/2024 16:57:37] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 16:57:37,551 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 16:57:37,552 - INFO - Loading weights.
+2024-11-06 16:57:37,552 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 16:57:39,419 - DEBUG - Creating converter from 3 to 5
+2024-11-06 16:57:42,819 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:57:45,916 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:57:48,989 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:57:52,060 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:57:55,134 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:57:58,204 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:01,277 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:04,349 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:07,420 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:10,493 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:13,576 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:16,636 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:19,709 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:22,780 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:25,853 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:28,924 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:31,996 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:35,068 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:38,140 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:41,212 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 16:58:44,285 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-06 16:58:44,380 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-06 16:58:44,385 - INFO - 127.0.0.1 - - [06/Nov/2024 16:58:44] "POST /ponto HTTP/1.1" 200 -
+2024-11-06 17:11:10,202 - INFO - 127.0.0.1 - - [06/Nov/2024 17:11:10] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 17:11:10,209 - ERROR - Imagem em base64 ou matrícula não fornecida.
+2024-11-06 17:11:10,209 - INFO - 127.0.0.1 - - [06/Nov/2024 17:11:10] "[31m[1mPOST /ponto HTTP/1.1[0m" 400 -
+2024-11-06 17:16:13,273 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-06 17:16:13,273 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-06 17:16:18,688 - INFO - 127.0.0.1 - - [06/Nov/2024 17:16:18] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 17:16:18,698 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 17:16:18,698 - INFO - Loading weights.
+2024-11-06 17:16:18,698 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 17:16:20,520 - DEBUG - Creating converter from 3 to 5
+2024-11-06 17:16:23,939 - ERROR - Erro ao receber foto para batida de ponto: name 'matricula' is not defined
+2024-11-06 17:16:23,939 - INFO - 127.0.0.1 - - [06/Nov/2024 17:16:23] "[35m[1mPOST /ponto HTTP/1.1[0m" 500 -
+2024-11-06 17:31:14,929 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2024-11-06 17:31:14,930 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-06 17:31:22,317 - INFO - 127.0.0.1 - - [06/Nov/2024 17:31:22] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 17:31:22,325 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 17:31:22,325 - INFO - Loading weights.
+2024-11-06 17:31:22,325 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 17:31:24,033 - DEBUG - Creating converter from 3 to 5
+2024-11-06 17:31:27,327 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 17:31:30,435 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 17:31:33,500 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-06 17:31:33,525 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-06 17:31:33,530 - INFO - 127.0.0.1 - - [06/Nov/2024 17:31:33] "POST /ponto HTTP/1.1" 200 -
+2024-11-06 17:32:47,399 - INFO - 127.0.0.1 - - [06/Nov/2024 17:32:47] "OPTIONS /ponto HTTP/1.1" 200 -
+2024-11-06 17:32:47,405 - INFO - Imagem salva e redimensionada para (640, 480) em /home/joao/Documentos/Projetos/aCasaBrasileira/Ponto/Ponto_Web/PontoEletronico_Web/PontoSemElectron/python/temp/foto_ponto.jpg
+2024-11-06 17:32:47,405 - INFO - Loading weights.
+2024-11-06 17:32:47,405 - INFO - Looking for /home/joao/.keras-facenet/20180402-114759/20180402-114759-weights.h5
+2024-11-06 17:32:51,345 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 17:32:54,397 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 17:32:57,471 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 17:33:00,540 - DEBUG - Starting new HTTP connection (1): 192.168.0.29:7000
+2024-11-06 17:33:03,613 - DEBUG - Starting new HTTP connection (1): localhost:3000
+2024-11-06 17:33:03,631 - DEBUG - http://localhost:3000 "GET /buscarFuncionario/000002 HTTP/1.1" 200 438320
+2024-11-06 17:33:03,634 - INFO - 127.0.0.1 - - [06/Nov/2024 17:33:03] "POST /ponto HTTP/1.1" 200 -

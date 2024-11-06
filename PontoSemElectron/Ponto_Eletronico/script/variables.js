@@ -6,6 +6,13 @@ export let barra = $('#barraponto')
 export let icone = $('#icone-error')
 
 // ****************************************************************************************************
+// Tela de ponto
+export let cameraPonto = $('#video')
+export let elementosCamera = $('#video-container')
+export let canvasPonto = $('#canvas')
+export let botaoPonto = $('#btnPonto')
+
+// ****************************************************************************************************
 // Tela de login
 export let usuario = $('#username')
 export let senha = $('#password')

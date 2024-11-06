@@ -11,7 +11,7 @@ $(document).ready(() => {
     // Botão para iniciar o reconhecimento e ativar a câmera
     $('#btnIniciarCamera').on('click', (event) => {
         event.preventDefault()
-        iniciarReconhecimentoAutomatico  
+        iniciarReconhecimentoAutomatico()
     })
 
     // Botão para capturar a imagem (agora o evento é passado para a função)
