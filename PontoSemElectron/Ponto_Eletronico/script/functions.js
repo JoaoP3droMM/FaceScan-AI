@@ -32,22 +32,6 @@ import {
 let isTraining = false;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // **************************************(((PONTO)))*************************************************************************
 
 let videoStream
@@ -174,30 +158,6 @@ export function mostrarConfiguracoes() {
         console.error("Elemento com a classe 'configuracoes' não encontrado.");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // **************************************(((CADASTRO DE FUNCIONARIOS)))*************************************************************************
