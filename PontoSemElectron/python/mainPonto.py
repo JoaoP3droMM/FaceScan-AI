@@ -144,5 +144,8 @@ def ponto():
         logging.error(f"Erro ao receber foto para batida de ponto: {e}")
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+
+# ********************************************************************************************************
+# Definindo a porta que irá rodar o servidor
 if __name__ == "__main__":
     app.run(port=5001)

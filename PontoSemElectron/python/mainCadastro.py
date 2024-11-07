@@ -12,6 +12,7 @@ from flask_socketio import SocketIO
 from pymongo import MongoClient
 from flask_cors import CORS
 from threading import Thread
+from werkzeug.security import generate_password_hash, check_password_hash
 from treinamento import exec_treinamento
 from converterImagem import salvar_fotos_funcionarios
 from cadastrarUsuario import cadastrar_usuario
@@ -22,7 +23,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 # Configuração do Flask, CORS, e SocketIO (API's)
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins="*")  # Habilita SocketIO com suporte a CORS
 
 # Configuração da conexão com MongoDB
@@ -33,6 +34,35 @@ collection = db['funcionarios']
 # Diretório de saída para imagens temporárias
 imagensTemporarias = os.path.join(os.path.dirname(__file__), 'temp')
 os.makedirs(imagensTemporarias, exist_ok=True)
+
+# ********************************************************************************************************
+# Rota para verificar login
+@app.route('/verificarLogin', methods=['POST'])
+def verificar_login():
+    try:
+        data = request.get_json()
+        logging.info(f"Recebido dados: {data}")  # Adiciona log para ver o conteúdo
+        username = data.get("username")
+        password = data.get("password")
+
+        if not username or not password:
+            return jsonify({"status": "erro", "mensagem": "Username e password são obrigatórios"}), 400
+
+        # Verifica no banco de dados
+        usuarioDB = db['users'].find_one({"username": username})
+        passwordDB = db['users'].find_one({'password': password})
+
+        # Verifica as credenciais com as do banco de dados
+        if usuarioDB and usuarioDB.get("username") == username and passwordDB and passwordDB.get("password") == password:
+            return jsonify({"status": "sucesso", "autenticado": True}), 200
+        else:
+            logging.warning(f"Falha na autenticação para o usuário {username}")
+            return jsonify({"status": "falha", "mensagem": "Credenciais inválidas"}), 401
+
+    except Exception as e:
+        logging.error(f"Erro ao verificar login: {e}")
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
 
 # ********************************************************************************************************
 # Decodifica uma string de imagem em base64 e a salva em disco

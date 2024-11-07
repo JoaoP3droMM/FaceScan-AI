@@ -31,6 +31,7 @@ import {
 
 let isTraining = false;
 
+// CORS(app, origins="http://localhost:5000", supports_credentials=True)
 
 // **************************************(((PONTO)))*************************************************************************
 
@@ -412,12 +413,13 @@ export async function verificaLogin(event, telaRedirecionada) {
         console.log('Preparando para enviar dados do funcionário...')
         try {
             console.log(`Enviando dados do funcionário.\n Usuario: ${usuarioValue}\n Senha: ${senhaValue}  `)
-            const response = await fetch('http://localhost:3000/verificarLogin', {
+            const response = await fetch('http://localhost:5000/verificarLogin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username: usuarioValue, password: senhaValue }),
+                credentials: 'include',  // Garante que as credenciais sejam enviadas
             })
             
             // Log a resposta antes de verificar se está OK
