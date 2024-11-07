@@ -4,7 +4,7 @@
 import {
     iniciarReconhecimentoAutomatico,
     mostrarConfiguracoes,
-    capturarImagemPonto,
+    capturarImagemPonto
 } from './functions.js';
 
 $(document).ready(() => {
@@ -22,4 +22,5 @@ $(document).ready(() => {
 
     // Adiciona funcionalidade ao botão de configurações
     $('#btnConfig').on('click', mostrarConfiguracoes);
+
 })

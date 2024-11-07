@@ -39,52 +39,97 @@ let videoStream
 
 // Lida com a ativação da câmera e a configuração do vídeo para o reconhecimento facial
 export function iniciarReconhecimentoAutomatico() {
-
-    // Verifica se o treinamento está em execuição
+    // Verifica se o treinamento está em execução
     if (isTraining) {
-        console.log("O sistema está em treinamento. Ponto não será registrado.")
-        return
+        console.log("O sistema está em treinamento. Ponto não será registrado.");
+        return;
     }
 
     // Alerta indicativo
-    mostrarAlerta('success', 'Iniciando reconhecimento facial...', '', true)
+    mostrarAlerta('success', 'Iniciando reconhecimento facial...', '', true);
 
     // Definimos o tipo de requisição que estamos pedindo ao navegador
-    const tipoDeDado = { video: { facingMode: 'user' } }
+    const tipoDeDado = { video: { facingMode: 'user' } };
 
-    // Pede ao navegador o acesso a câmera
+    // Pede ao navegador o acesso à câmera
     navigator.mediaDevices.getUserMedia(tipoDeDado)
         .then((stream) => {
-            videoStream = stream
-            video.srcObject = stream
+            videoStream = stream;
+            video.srcObject = stream;
+
+            // Aplica a transformação CSS para inverter a câmera
+            video.style.transform = 'scaleX(-1)'; // Espelha horizontalmente a câmera
 
             // Abre a câmera e a mostra na tela
-            video.play()
-            elementosCamera.removeClass('hidden')
+            video.play();
+            elementosCamera.removeClass('hidden');
         })
-
-        // Caso não consiga acessar a câmera
         .catch((error) => {
-            console.error("Erro ao acessar a câmera:", error)
-            mostrarAlerta('error', 'Não foi possível acessar a câmera!', 'Verifique as permissões.', true)
-        })
+            console.error("Erro ao acessar a câmera:", error);
+            mostrarAlerta('error', 'Não foi possível acessar a câmera!', 'Verifique as permissões.', true);
+        });
 }
 
 // Essa função captura um quadro da câmera, transforma-o em base64
 export function capturarImagemPonto(event) {
-    event.preventDefault()
-    const context = canvas.getContext('2d')
+    event.preventDefault();
 
-    // Define o tamanho da imagem que foi tirada
-    canvasPonto.width = 320
-    canvasPonto.height = 240
-    
-    // Desenha um quadrado da câmera com escada 640x480 e o converte para jpeg com 70% de qualidade
-    context.drawImage(video, 0, 0, 640, 480)
-    const base64Image = canvas.toDataURL('image/jpeg', 0.7)
+    const context = canvas.getContext('2d');
+    console.log('Capturando imagem...')
 
-    // Chama a função que envia os dados para o backend passando a string de foto como parâmetro
-    enviarImagemParaReconhecimento(base64Image)
+    // Configura o canvas para corresponder à resolução da câmera
+    canvas.width = 640;
+    canvas.height = 480;
+
+    // Desenha a imagem da câmera no canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Converte o conteúdo do canvas para base64 e envia para o backend
+    const base64Image = canvas.toDataURL('image/jpeg', 0.7);
+    enviarImagemParaReconhecimento(base64Image);
+}
+
+// Função para exibir a resposta ao usuário sobre o ponto eletrônico
+export function mostrarMensagemRetorno(status, nome, cpf) {
+    let titulo = '';
+    let mensagem = '';
+    let tipoIcone = '';
+
+    // Verifica o status da batida de ponto
+    switch (status) {
+        case 'sucesso':
+            titulo = 'Ponto Registrado';
+            mensagem = `Ponto registrado com sucesso para o funcionário: ${nome} (CPF: ${cpf})`;
+            tipoIcone = 'success';
+            break;
+        case 'falha_reconhecimento':
+            titulo = 'Falha no Reconhecimento';
+            mensagem = 'Não foi possível reconhecer o rosto. Tente novamente.';
+            tipoIcone = 'error';
+            break;
+        case 'erro_conexao':
+            titulo = 'Erro de Conexão';
+            mensagem = 'Não foi possível se conectar ao servidor. Verifique a conexão.';
+            tipoIcone = 'error';
+            break;
+        case 'em_treinamento':
+            titulo = 'Sistema em Treinamento';
+            mensagem = 'O sistema está em treinamento. Ponto não será registrado.';
+            tipoIcone = 'info';
+            break;
+        default:
+            titulo = 'Erro Desconhecido';
+            mensagem = 'Ocorreu um erro desconhecido. Tente novamente.';
+            tipoIcone = 'error';
+    }
+
+    // Exibe o alerta de retorno com SweetAlert
+    Swal.fire({
+        icon: tipoIcone,
+        title: titulo,
+        text: mensagem,
+        showConfirmButton: true,
+    });
 }
 
 // Envia a imagem tirada para o back
@@ -107,16 +152,20 @@ export function enviarImagemParaReconhecimento(base64Image) {
             
             // Verifica se a resposta contém os dados necessários (nome e CPF)
             if (response && response.status === "sucesso") {
+                mostrarMensagemRetorno('sucesso', nome, cpf)  // Exibe sucesso
+
                 // Supondo que a resposta tenha um objeto 'funcionario' com 'nome' e 'cpf'
-                const { nome, cpf } = response.funcionario || {};
+                const { nome, cpf } = response.funcionario || {}
                 // Chama a função para exibir a resposta com os dados recebidos
                 telaDeResposta(nome, cpf);
             } else {
+                mostrarMensagemRetorno('falha_reconhecimento')
                 // Caso a resposta não seja bem-sucedida, exibe uma mensagem de erro
                 mostrarErro('Erro ao registrar ponto', 'Falha no reconhecimento facial ou dados insuficientes.');
             }
         },
         error: (xhr, status, error) => {
+            mostrarMensagemRetorno('erro_conexao')
             console.error("Erro ao enviar imagem:", error);
             mostrarErro("Erro na comunicação com o servidor", "Não foi possível registrar a batida de ponto.");
         }

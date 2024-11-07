@@ -8,6 +8,7 @@ import logging
 import cv2
 import numpy as np
 import requests
+from datetime import datetime
 from datetime import datetime, timedelta
 from flask import Flask, jsonify, request, abort
 from pymongo import MongoClient
@@ -27,10 +28,36 @@ CORS(app)
 # Configuração da conexão com MongoDB
 client = MongoClient('mongodb://localhost:27017')
 db = client['pontoCB']
+collection = db.pontos_batidos
 
 # Diretório de saída para imagens
 pastaTemp = os.path.join(os.path.dirname(__file__), 'temp')
 os.makedirs(pastaTemp, exist_ok=True)
+
+
+# ********************************************************************************************************
+# Função que redimenciona a imagem do ponto
+def resize_with_aspect_ratio(image, target_size=(640, 480)):
+    original_height, original_width = image.shape[:2]
+    target_width, target_height = target_size
+
+    # Calcula as proporções para manter o aspecto da imagem original
+    scale_width = target_width / original_width
+    scale_height = target_height / original_height
+    scale = min(scale_width, scale_height)  # Escolhe a menor escala para manter tudo visível
+
+    # Calcula o novo tamanho
+    new_width = int(original_width * scale)
+    new_height = int(original_height * scale)
+    resized_image = cv2.resize(image, (new_width, new_height))
+
+    # Cria uma imagem em branco (com fundo preto) e centraliza a imagem redimensionada
+    final_image = np.zeros((target_height, target_width, 3), dtype=np.uint8)
+    y_offset = (target_height - new_height) // 2
+    x_offset = (target_width - new_width) // 2
+    final_image[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = resized_image
+
+    return final_image
 
 
 # ********************************************************************************************************
@@ -52,7 +79,7 @@ def decode_and_save_image(base64_string, filename, target_size=(640, 480)):
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # Redimensionando a imagem para 640x480
-    img_resized = cv2.resize(img, target_size)
+    img_resized = resize_with_aspect_ratio(img, target_size)
 
     # Salvando a imagem na pasta temporária
     cv2.imwrite(filename, img_resized)
@@ -93,7 +120,7 @@ def ponto():
             return jsonify({"status": "erro", "mensagem": "Imagem em base64 é obrigatória"}), 400
 
         # Salvar a imagem recebida
-        filename = os.path.join(pastaTemp, "foto_ponto.jpg")
+        filename = os.path.join(pastaTemp, "foto_recebida.jpg")
         decode_and_save_image(foto_base64, filename)
 
         # Chamada para reconhecimento facial no modo de ponto
