@@ -15,6 +15,7 @@ sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 # ********************************************************************************** #
 # Obtendo o diretório atual do script
 script_dir = os.path.dirname(os.path.abspath(__file__))
+base_dir = os.path.dirname(script_dir)
 
 # Carregando o Haarcascade e o FaceNet (Modelo de IA e código que reconhece o rosto na câmera)
 HaarCascade = cv2.CascadeClassifier(os.path.join(script_dir, 'haarcascade_frontalface_default.xml'))
@@ -27,7 +28,7 @@ MyFaceNet = FaceNet()
 
 # ********************************************************************************** #
 # Diretório das imagens
-folder = os.path.join(script_dir, 'fotos')
+folder = os.path.join(base_dir, 'fotos')
 database = {}
 
 # ********************************************************************************** #
@@ -72,7 +73,7 @@ for filename in os.listdir(folder):
 
 # ********************************************************************************** #
 # Salvando o banco de dados em 'data.pkl'
-data_path = os.path.join(script_dir, "data.pkl")
+data_path = os.path.join(base_dir, "data.pkl")
 with open(data_path, "wb") as myfile:
     pickle.dump(database, myfile)
 print(f"Processamento concluído e banco de dados salvo em '{data_path}'.")
