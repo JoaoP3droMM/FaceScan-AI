@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconhecimento Facial</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Controle Facial</h2>
+        
+        <video id="webcam" width="320" height="240" autoplay muted></video>
+        <button id="btnStartWebcam">1. Ligar Webcam</button>
+
+        <hr>
+
+        <h3>Captura</h3>
+        <input type="text" id="matricula" placeholder="Digite a matrícula">
+        <button id="btnCaptura">2. Salvar Foto</button>
+
+        <hr>
+
+        <h3>Ações</h3>
+        <button id="btnTreinamento">3. Treinar Modelo</button>
+        <button id="btnReconhecimento">4. Reconhecer</button>
+
+        <div id="status">...</div>
+    </div>
+
+    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+
+    <script src="{% static 'core/index.js' %}"></script>
+</body>
+</html>
