@@ -1,0 +1,21 @@
+<div id="modal-reconhecimento-overlay" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close-btn" onclick="fecharModalReconhecimento()">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </button>
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Reconhecimento Facial</h3>
+        <div class="camera-placeholder" style="position: relative; overflow: hidden; background-color: #000; display: flex; align-items: center; justify-content: center;">
+            <video id="video-reconhecimento" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+            <div id="loader-camera-rec" style="color: white; position: absolute;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Iniciando câmera...
+            </div>
+            <div id="scan-line" style="position: absolute; width: 100%; height: 2px; background: #4da6ff; top: 0; display: none; box-shadow: 0 0 10px #4da6ff;"></div>
+        </div>
+        <div id="msg-reconhecimento" class="feedback-box" style="display: none; margin-top: 15px;"></div>
+        <div style="display: flex; gap: 15px; width: 100%; margin-top: 25px;">
+            <button id="btn-reconhecer" class="btn-action btn-blue" style="flex: 1; justify-content: center; padding: 12px; font-size: 16px;">
+                <i class="fa-solid fa-expand"></i> Reconhecer
+            </button>
+        </div>
+    </div>
+</div>

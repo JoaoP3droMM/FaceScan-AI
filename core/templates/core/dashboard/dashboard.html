@@ -1,0 +1,70 @@
+{% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <title>FaceScan AI</title>
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <link rel="stylesheet" href="{% static 'css/global.css' %}">
+        
+    </head>
+{% block head_css %}
+    <link rel="stylesheet" href="{% static 'core/dashboard/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="main-card">
+        <header>
+            <h1>FaceScan AI</h1>
+            <button class="btn-large" onclick="abrirModalReconhecimento()">Iniciar novo reconhecimento</button>
+        </header>
+
+        <div class="action-bar">
+            <button class="btn-action btn-green" onclick="abrirModal()">
+                <i class="fa-solid fa-circle-plus"></i> Cadastrar usuário
+            </button>
+
+            <button class="btn-action btn-red" onclick="abrirModalDelete()">
+                <i class="fa-solid fa-circle-xmark"></i> Deletar usuário
+            </button>
+
+            <button class="btn-action btn-blue" onclick="abrirModalUpdate()">
+                <i class="fa-solid fa-circle-plus"></i> Atualizar usuário
+            </button>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header-title">
+                Usuários registrados
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Matrícula</th>
+                        <th>Data de registro</th>
+                        <th>Ultimo reconhecimento</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-usuarios">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn page-prev">Anterior</button>
+            <span class="page-info">Pag 1 - 10</span>
+            <button class="page-btn page-next">Próxima</button>
+        </div>
+    </div>
+
+    {% include 'core/dashboard/modals/modal_cadastro.html' %}
+    {% include 'core/dashboard/modals/modal_reconhecimento.html' %}
+    {% include 'core/dashboard/modals/modal_deleteuser.html' %}
+    {% include 'core/dashboard/modals/modal_updateuser.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'core/dashboard/index.js' %}"></script>
+{% endblock %}
