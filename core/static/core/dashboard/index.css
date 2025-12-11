@@ -1,0 +1,300 @@
+:root {
+    --primary-blue: #4da6ff; /* Azul claro dos botões/cabeçalho */
+    --dark-blue: #2b85e0; /* Hover do azul */
+    --action-green: #009933;
+    --action-red: #f04d4d;
+    --bg-light: #f4f4f4;
+    --border-color: #dcdcdc;
+    --text-color: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #222; /* Fundo escuro para destacar o card branco como na imagem */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container Principal (O "Papel" Branco) */
+.main-card {
+    background-color: white;
+    width: 100%;
+    max-width: 1200px;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Cabeçalho */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #000;
+}
+
+.btn-large {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-large:hover { background-color: var(--dark-blue); }
+
+/* Barra de Ações (Botões Coloridos) */
+.action-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-green { background-color: var(--action-green); }
+.btn-red { background-color: var(--action-red); }
+.btn-blue { background-color: var(--primary-blue); }
+
+/* Tabela Container */
+.table-container {
+    border-radius: 8px 8px 0 0;
+    overflow: hidden; /* Para arredondar o header */
+    border: 1px solid #e0e0e0;
+}
+
+.table-header-title {
+    background-color: var(--primary-blue);
+    color: black; /* Na imagem o texto parece preto/escuro sobre o azul */
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #eee;
+    color: #222;
+    padding: 12px;
+    text-align: center; /* Centralizado como na imagem */
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 500;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    background-color: #f2f2f2; /* Fundo cinza claro nas linhas */
+    color: #333;
+}
+
+/* Zebra e linhas vazias */
+tbody tr:nth-child(even) td {
+    background-color: #e8e8e8; /* Ligeiramente mais escuro para efeito zebra sutil */
+}
+
+/* Garantir altura mínima para linhas para ficarem iguais à imagem */
+tbody tr {
+    height: 45px;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.page-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.page-prev {
+    background-color: #ddd;
+    color: #555;
+}
+
+.page-next {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.page-info {
+    font-size: 14px;
+    color: #333;
+}
+
+/* --- CSS da Modal --- */
+
+/* Fundo escuro atrás da modal */
+.modal-overlay {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+    z-index: 1000; /* Garante que fique acima de tudo */
+    justify-content: center;
+    align-items: center;
+}
+
+/* O cartão branco da modal */
+.modal-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 600px; /* Largura ajustada para caber os inputs */
+    max-width: 90%;
+    position: relative; /* Para posicionar o botão fechar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Botão de fechar (X vermelho) */
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: red; /* Cor do ícone */
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Área cinza da câmera */
+.camera-placeholder {
+    width: 320px;
+    height: 200px;
+    background-color: #d9d9d9;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+/* Layout dos Inputs (lado a lado) */
+.modal-form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    flex: 1; /* Faz os inputs ocuparem tamanhos iguais */
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #000;
+}
+
+/* Estilo dos campos de texto (Cinza claro igual imagem) */
+.modal-input {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Botão Verde de Cadastrar */
+.btn-submit-modal {
+    background-color: #009933; /* Verde escuro */
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-submit-modal:hover {
+    background-color: #007a29;
+}
+
+/* --- Estilos da Tela de Sucesso --- */
+
+/* Círculo Verde */
+.success-icon-container {
+    width: 80px;
+    height: 80px;
+    background-color: #33cc33; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    box-shadow: 0 4px 10px rgba(51, 204, 51, 0.3);
+}
+
+/* Loader Giratório */
+.loader-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #33cc33;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+/* Animação de rotação */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

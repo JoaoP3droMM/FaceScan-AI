@@ -1,0 +1,61 @@
+<div id="modal-delete-overlay" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close-btn" onclick="fecharModalDelete()">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </button>
+        <div id="view-delete-search" style="width: 100%;">
+            <h3 style="text-align: center; margin-bottom: 25px; color: #333;">Deletar Usuário</h3>
+            <div class="input-group" style="margin-bottom: 25px;">
+                <label for="delete-search-input" style="font-weight: 500; margin-bottom: 10px; display: block;">
+                    Informe a matrícula do usuário que deseja deletar:
+                </label>
+                <input type="text" id="delete-search-input" class="modal-input" placeholder="Ex: 2023001">
+            </div>
+
+            <div id="msg-delete-feedback" class="feedback-box" style="display: none; margin-bottom: 20px;"></div>
+            <button id="btn-delete-search-action" class="btn-action btn-blue" style="width: 100%; justify-content: center; padding: 12px;">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar Usuário
+            </button>
+        </div>
+
+        <div id="view-delete-confirm" style="display: none; width: 100%;">
+            <h3 style="text-align: center; margin-bottom: 20px; color: #333; color: #d9534f;">Confirmação de Deleção</h3>
+            <p style="text-align: center; margin-bottom: 25px; color: #666;">Você tem certeza que deseja remover este usuário? Esta ação não pode ser desfeita.</p>
+
+            <div class="modal-form-row" style="flex-direction: column; gap: 15px; margin-bottom: 30px;">
+                <div class="input-group">
+                    <label>Matrícula:</label>
+                    <input type="text" id="del-confirm-matricula" class="modal-input" readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                </div>
+                <div class="input-group">
+                    <label>Nome:</label>
+                    <input type="text" id="del-confirm-nome" class="modal-input" readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                </div>
+                <div class="input-group">
+                    <label>Data de registro:</label>
+                    <input type="text" id="del-confirm-data" class="modal-input" readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button onclick="toggleDeleteView('search')" class="btn-action" style="flex: 1; justify-content: center; background-color: #ccc; color: #333;">
+                    Cancelar
+                </button>
+                <button id="btn-delete-confirm-action" class="btn-action btn-red" style="flex: 1; justify-content: center; padding: 12px;">
+                    <i class="fa-solid fa-trash"></i> Deletar usuário
+                </button>
+            </div>
+        </div>
+
+        <div id="view-delete-success" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 30px 0;">
+            <div class="success-icon-container" style="margin-bottom: 20px;">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 style="color: #000; margin-bottom: 15px;">Sucesso!</h2>
+            <p style="text-align: center; color: #333; line-height: 1.5;">
+                Usuário matrícula <strong id="deleted-user-id">---</strong> foi deletado com sucesso.
+            </p>
+            <p style="font-size: 12px; color: #888; margin-top: 20px;">Fechando em instantes...</p>
+        </div>
+    </div>
+</div>
