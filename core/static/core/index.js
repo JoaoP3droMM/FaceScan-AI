@@ -92,7 +92,7 @@ btnCaptura.addEventListener('click', async () => {
     
     } catch (err) {
         console.error('Erro em salvar-foto:', err)
-        statusDiv.textContent = 'Erro de rede ao salvar. Tente novamente.'
+        statusDiv.textContent = 'Erro ao salvar. Tente novamente.'
     } finally {
         btnCaptura.disabled = false
     }
@@ -121,7 +121,7 @@ btnTreinamento.addEventListener('click', async () => {
         }
     } catch (err) {
         console.error('Erro em run-treinamento:', err)
-        statusDiv.textContent = 'Erro de rede ao treinar. Tente novamente.'
+        statusDiv.textContent = 'Erro ao treinar. Tente novamente.'
     } finally {
         btnTreinamento.disabled = false
     }
@@ -159,7 +159,7 @@ btnReconhecimento.addEventListener('click', async () => {
         }
     } catch (err) {
         console.error('Erro em reconhecer-foto:', err)
-        statusDiv.textContent = 'Erro de rede ao reconhecer. Tente novamente.'
+        statusDiv.textContent = 'Erro ao reconhecer. Tente novamente.'
     } finally {
         btnReconhecimento.disabled = false
     }
